@@ -1,0 +1,12 @@
+**bold text**\\
+** bold text**\\
+** bold text**\\
+
+* first level
+** second level **bold text** or ** with space**
+*** third level
+** **second level** - beginning with bold
+**second level with no space (see [[Creole:Require Space After Bullet Proposal]])
+** this text does not close, see what happens ** not closing
+* first level
+

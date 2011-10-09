@@ -1,0 +1,46 @@
+= Other test cases =
+
+== URLs ==
+Complex url:
+http://user:password@www.example.com:80/path/file?var=arg&var2=arg+2#anchorName
+
+And corner case: http://foo/.,!*'();:@&=+$,/?#[]!%21! (the ! at the end is not
+part of the url, as every ponctuations)
+
+== Formatting
+//foo**bar**// **foo//bar//**
+
+== Additions
+From http://www.wikicreole.org/wiki/CreoleAdditions:
+
+=== Plug-in/Extension
+<<CurrentTimePlugin format='yyyy.MM.dd'>>
+
+=== Formatting
+* This is ##monospace## text. 
+* This is ^^superscripted^^ text. 
+* This is ,,subscripted,, text. 
+* This is __underlined__ text. 
+
+=== Alternate Link Syntax
+* [[description -> link]]
+* [[the -> can be used to make a link -> TextFormattingRules]]
+
+=== Indented paragraphs
+==== First case
+This is a normal paragraph.
+:This is an indented
+paragraph in two lines.
+::This is more indented.
+==== Second case
+This is a normal paragraph.
+> This is an indented
+paragraph in two lines.
+>> This is more indented.
+
+=== Definition lists
+; First title of definition list
+: Definition of first item.
+; Second title: Second definition
+beginning on the same line.
+

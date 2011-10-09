@@ -1,0 +1,8 @@
+This is an //italic// text. \\
+This is a url: http://www.wikicreole.org. \\
+This is what can go wrong://this should be an italic text//.\\
+How about //a link, like http://example.org, in italic// text? \\
+Formatted fruits, for example://apples//, oranges, **pears** ... \\
+    & \\
+How about //a link, **like http://example.org, in italic bold**// text?
+

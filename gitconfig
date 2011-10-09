@@ -1,0 +1,7 @@
+[user]
+	name = Jonathan Grochowski
+	email = grochows@lclark.edu
+
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore

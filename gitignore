@@ -1,0 +1,9 @@
+# Emacs files
+*~
+\#*\#
+.\#*
+
+# Vim files
+.*.sw[a-z]
+*.un~
+Session.vim

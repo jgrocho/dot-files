@@ -1,0 +1,16 @@
+[ui]
+editor = vim
+username = Jonathan Grochowski <jongrocho@gmail.com>
+ssh = ssh -C
+ignore = ~/.hgignore
+merge = vimdiff
+
+[merge-tools]
+vimdiff.executable = vim
+vimdiff.args = -d $base $local $output $other +close +close
+
+[extensions]
+hgext.mq = 
+hgext.record = 
+crecord = ~/.hgext/crecord/crecord
+prompt = ~/projects/hg-prompt/prompt.py
