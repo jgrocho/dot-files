@@ -10,7 +10,7 @@ install_bash: profile bashrc dir_colors
 
 install_vim: vimrc
 	ln -s $(PWD)/vimrc $(HOME)/.vimrc
-	rsync -ax vim $(HOME)/.vim
+	rsync -ax vim/ $(HOME)/.vim
 
 install_git: gitconfig gitignore git-completion.bash
 	ln -s $(PWD)/gitconfig $(HOME)/.gitconfig
