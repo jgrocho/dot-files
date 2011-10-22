@@ -127,3 +127,9 @@ PROMPT_COMMAND='RET=$?;\
 		PS1=" \[${COLOR}\]${RET}\[\e[0m\] ${debian_chroot:+($debian_chroot)}\[\e[1;31m\]\u\[\e[0m\]${HOST} [\w]${DVCS}\n \$ ";'
 
 eval `dircolors ~/.dir_colors`
+
+# add JUnit to the class path
+export CLASSPATH=$HOME/projects/junit4.10/junit-4.10.jar
+
+# set ant options
+export ANT_OPTS=-Dant.logger.defaults=$HOME/.ant_options
