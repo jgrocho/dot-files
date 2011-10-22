@@ -1,9 +1,9 @@
 HOME=$(shell echo $$HOME)
 PWD=$(shell pwd)
-LN=ln -s -f
+LN=ln -s -f -T
 
 install: install_bash install_vim install_git install_hg
-	
+
 install_bash: profile bashrc dir_colors
 	$(LN) $(PWD)/profile $(HOME)/.profile
 	$(LN) $(PWD)/bashrc $(HOME)/.bashrc
