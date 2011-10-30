@@ -123,8 +123,8 @@ PROMPT_COMMAND='RET=$?;\
 		if [[ -n $SSH_CLIENT ]]; then\
 			HOST=" at \[\e[1;35m\]\h\[\e[0m\]";\
 		fi;\
-		DVCS=$(__git_ps1 "\n  on \[\e[0;36m\]%s \[\e[0;32m\]∓\[\e[0m\]")$(hg_ps1);\
-		PS1=" \[${COLOR}\]${RET}\[\e[0m\] ${debian_chroot:+($debian_chroot)}\[\e[1;31m\]\u\[\e[0m\]${HOST} [\w]${DVCS}\n \$ ";'
+		DVCS=$(__git_ps1 "\n on \[\e[0;36m\]%s \[\e[0;32m\]∓\[\e[0m\]")$(hg_ps1);\
+		PS1="\[${COLOR}\]${RET}\[\e[0m\] ${debian_chroot:+($debian_chroot)}\[\e[1;31m\]\u\[\e[0m\]${HOST} [\w]${DVCS}  \$ ";'
 
 eval `dircolors ~/.dir_colors`
 
