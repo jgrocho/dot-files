@@ -112,6 +112,7 @@ fi
 [[ -r /usr/local/bin/virtualenvwrapper.sh ]] && . /usr/local/bin/virtualenvwrapper.sh
 
 hg_ps1() {
+	return 0
 	if builtin hash hg 2>&- && hg prompt 2>&-; then
 		hg prompt "{ on \[\e[0;36m\]{branch} \[\e[0;34m\]☿\[\e[0m\]}" 2>/dev/null
 	fi
