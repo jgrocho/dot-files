@@ -13,10 +13,13 @@ install_vim: vimrc
 	$(LN) $(PWD)/vimrc $(HOME)/.vimrc
 	$(LN) $(PWD)/vim $(HOME)/.vim
 
-install_git: gitconfig gitignore git-completion.bash
-	$(LN) $(PWD)/gitconfig $(HOME)/.gitconfig
+install_git: private_gitconfig gitignore
+	$(LN) $(PWD)/private_gitconfig $(HOME)/.gitconfig
 	$(LN) $(PWD)/gitignore $(HOME)/.gitignore
 	$(LN) $(PWD)/git-completion.bash $(HOME)/.git-completion.bash
+
+private_gitconfig: gitconfig
+	sed 's/#TOKEN#/$(shell ./gnome-keyring-helper -n 'Github API Token')/' gitconfig > private_gitconfig
 
 install_hg: hgrc hgignore
 	$(LN) $(PWD)/hgrc $(HOME)/.hgrc

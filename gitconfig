@@ -1,7 +1,22 @@
 [user]
-	name = Jonathan Grochowski
-	email = grochows@lclark.edu
+    name = Jonathan Grochowski
+    email = jongrocho@gmail.com
+
+[alias]
+    hist = log --pretty=tformat:\"%C(yellow)%h%Creset %ad | %s%d [%an]\" --graph --date=short
 
 [core]
-	editor = vim
-	excludesfile = ~/.gitignore
+    editor = vim
+    excludesfile = ~/.gitignore
+    whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+    autocrlf = input
+    safecrlf = true
+
+[color]
+    ui = auto
+
+[color "diff"]
+    whitespace = red reverse
+[github]
+    user = jgrocho
+    token = #TOKEN#
