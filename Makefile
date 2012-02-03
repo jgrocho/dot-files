@@ -16,7 +16,6 @@ install_vim: vimrc
 install_git: private_gitconfig gitignore
 	$(LN) $(PWD)/private_gitconfig $(HOME)/.gitconfig
 	$(LN) $(PWD)/gitignore $(HOME)/.gitignore
-	$(LN) $(PWD)/git-completion.bash $(HOME)/.git-completion.bash
 
 private_gitconfig: gitconfig
 	sed 's/#TOKEN#/$(shell ./gnome-keyring-helper -n 'Github API Token')/' gitconfig > private_gitconfig

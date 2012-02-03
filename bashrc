@@ -104,8 +104,6 @@ fi
 
 [[ -d ~/.cabal/bin ]] && export PATH=$PATH:~/.cabal/bin
 
-[[ -r ~/.git-completion.bash ]] && . ~/.git-completion.bash
-
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
 [[ -r $rvm_path/scripts/completion ]] && . $rvm_path/scripts/completion
 
