@@ -10,7 +10,8 @@ vimdiff.executable = vim
 vimdiff.args = -d $base $local $output $other +close +close
 
 [extensions]
-hgext.mq = 
-hgext.record = 
+color =
+hgext.mq =
+hgext.record =
 crecord = ~/.hgext/crecord/crecord
-prompt = ~/projects/hg-prompt/prompt.py
+prompt = ~/.hgext/hg-prompt/prompt.py
