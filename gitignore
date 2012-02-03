@@ -7,3 +7,6 @@
 .*.sw[a-z]
 *.un~
 Session.vim
+
+# RVM files
+.rvmrc
