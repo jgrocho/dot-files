@@ -102,34 +102,65 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-export PATH=$PATH:~/.cabal/bin
+[[ -d ~/.cabal/bin ]] && export PATH=$PATH:~/.cabal/bin
 
-source ~/.git-completion.bash
+[[ -r ~/.git-completion.bash ]] && . ~/.git-completion.bash
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
+[[ -r $rvm_path/scripts/completion ]] && . $rvm_path/scripts/completion
+
+[[ -r /usr/local/bin/virtualenvwrapper.sh ]] && . /usr/local/bin/virtualenvwrapper.sh
 
 hg_ps1() {
-	hg prompt "{ on \[\e[0;36m\]{branch} \[\e[0;34m\]☿\[\e[0m\]}" 2>/dev/null
+	if builtin hash hg 2>&- && hg prompt 2>&-; then
+		hg prompt "{ on \[\e[0;36m\]{branch} \[\e[0;34m\]☿\[\e[0m\]}" 2>/dev/null
+	fi
+}
+
+rvm_ps1() {
+    if [[ -x ~/.rvm/bin/rvm-prompt ]]; then
+        local system=$(~/.rvm/bin/rvm-prompt s)
+        local interp=$(~/.rvm/bin/rvm-prompt i)
+        if [[ ! -n $system ]]; then
+            echo -n " (\[\e[0;31m\]♦ "
+            case $interp in
+                ruby) echo -n "$(~/.rvm/bin/rvm-prompt v g)";;
+                *)    echo -n "$(~/.rvm/bin/rvm-prompt i v g)";;
+            esac
+            echo -n "\[\e[0m\])"
+        fi
+    fi
+}
+
+virtenv_ps1() {
+    if [ -n "$VIRTUALENVWRAPPER_VIRTUALENV" ]; then
+        if [ -n "$VIRTUAL_ENV" ]; then
+            echo " (\[\e[0;32m\]ᴤ $(basename $VIRTUAL_ENV)\[\e[0m\])"
+        fi
+    fi
 }
 
 # add some fun features to the prompt
-PROMPT_COMMAND='RET=$?;\
-		if [[ $RET -eq 0 ]]; then\
-			COLOR="\e[0;32m";\
+PROMPT_COMMAND='pc_ret=$?;\
+		if [[ $pc_ret -eq 0 ]]; then\
+			pc_color="\e[0;32m";\
 		else\
-			COLOR="\e[0;31m";\
+			pc_color="\e[0;31m";\
 		fi;\
-		HOST="";\
+		pc_host="";\
 		if [[ -n $SSH_CLIENT ]]; then\
-			HOST=" at \[\e[1;35m\]\h\[\e[0m\]";\
+			pc_host=" at \[\e[1;35m\]\h\[\e[0m\]";\
 		fi;\
-		DVCS="\n$(__git_ps1 " on \[\e[0;36m\]%s \[\e[0;32m\]∓\[\e[0m\]")$(hg_ps1)";\
-		PS1="\[${COLOR}\]${RET}\[\e[0m\] ${debian_chroot:+($debian_chroot)}\[\e[1;31m\]\u\[\e[0m\]${HOST} [\w]${DVCS} \$ ";'
+		pc_dvcs="$(__git_ps1 " on \[\e[0;36m\]%s \[\e[0;32m\]∓\[\e[0m\]")$(hg_ps1)";\
+		pc_rvm="$(rvm_ps1)";\
+		pc_virtenv="$(virtenv_ps1)";\
+		PS1="\[${pc_color}\]${pc_ret}\[\e[0m\] ${debian_chroot:+($debian_chroot)}\[\e[1;31m\]\u\[\e[0m\]${pc_host} [\w]\n${pc_rvm}${pc_virtenv}${pc_dvcs} \$ ";'
+unset pc_ret pc_color pc_host pc_dvcs pc_rvm pc_virtenv
 
-eval `dircolors ~/.dir_colors`
+[[ -r ~/.dir_colors ]] && eval `dircolors ~/.dir_colors`
 
-# add JUnit to the class path
-export CLASSPATH=$HOME/projects/junit4.10/junit-4.10.jar
-
-# set ant options
-export ANT_OPTS=-Dant.logger.defaults=$HOME/.ant_options
+# set editor
+if builtin hash vim 2>&-; then
+	export EDITOR=vim
+	export VISUAL=$EDITOR
+fi
