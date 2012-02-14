@@ -1,0 +1,1 @@
+../available/eval-dircolors.bash

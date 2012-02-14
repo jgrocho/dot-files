@@ -1,0 +1,3 @@
+# This isn't the actual rvm bash-completion, but loads it up.
+[[ -n $rvm_path && -r $rvm_path/scripts/completion ]] \
+  && . $rvm_path/scripts/completion
