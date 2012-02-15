@@ -1,11 +1,12 @@
-# Return the current git branch. Will return an empty string when outside
-# a git repository. Also indicate dirty repos, untracked files and 
-# upstream divergence.
+# Return the current git branch. Will return an empty string when
+# outside a git repository. Also indicate dirty repos, untracked files
+# and upstream divergence.
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWUPSTREAM="auto"
 function git_ps1() {
-    builtin hash __git_ps1 2>&- && __git_ps1 " on \[\e[0;36m\]%s \[\e[0;32m\]∓\[\e[0m\]"
+    builtin hash __git_ps1 2>&- \
+      && __git_ps1 " on \[\e[0;36m\]%s \[\e[0;32m\]∓\[\e[0m\]"
 }
 
 # Return the current ruby version and gemset.
@@ -37,8 +38,8 @@ function virthask_ps1() {
     return
 }
 
-# Set the prompt command, any functions called from here should be quick as
-# they will be run each time the prompt is dispalyed.
+# Set the prompt command, any functions called from here should be quick
+# as they will be run each time the prompt is dispalyed.
 
 PROMPT_COMMAND='
   # First save the return value of the last run command.
