@@ -41,6 +41,7 @@ function virthask_ps1() {
 # Set the prompt command, any functions called from here should be quick
 # as they will be run each time the prompt is dispalyed.
 function prompt_command() {
+    local pc_ret pc_color pc_host pc_dvcs pc_dev_env
     # First save the return value of the last run command.
     pc_ret=$?
     # Pick a color based on that return value.
@@ -70,4 +71,3 @@ function prompt_command() {
 ${pc_dev_env}${pc_dvcs} \$ "
 }
 PROMPT_COMMAND=prompt_command
-unset pc_ret pc_color pc_host pc_dvcs pc_dev_env
