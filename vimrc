@@ -43,3 +43,6 @@ match ExtraWhitespace /\s\+$/
 
 " Show me a ruler
 set ruler
+
+" Turn off search highlighting, I care not for it
+set nohlsearch
