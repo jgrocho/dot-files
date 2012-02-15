@@ -60,6 +60,32 @@ The leading number, however, is not required. This provides a primitive
 dependency chaining mechanism, but no other mechanism yet exists to
 describe to enforce any dependency requirements.
 
+#### Available
+
+What follows is a brief description of some of the available scripts.
+
+*   `bash-completions.bash`: sources files under
+    `~/.bash-completion.d/enabled` that in `-bash-completion`. (See
+    below for more details.)
+
+*   `prompt-command.bash`: Uses the `PROMPT_COMMAND` variable to set
+    `PS1` to include some handy information. Currently, it displays the
+    last command's exit status, the user's name, the current hostname
+    when connected via SSH, the full current directory, the current Git
+    branch and status, and information about any virtual development
+    environments (i.e. rvm, virtualenv, or virthualenv).
+
+    This display makes use of color escape codes, and does not provide
+    detection of capabilities nor fallback settings. The results on
+    non-color enabled terminals is not guarenteed.
+
+*   `solarized-fix.bash`: The Solarized `dircolors.256dark` theme
+    provided by seebi/dircolors-solarized has to approximate some of the
+    solarized colors for maximum compatibility. The magical incantation
+    provided here remaps the colors to make the approximated colors
+    exact. This fix works in xterm and maybe some other terminals. (See
+    altercation/solarized/#8 for more details.)
+
 ### bash-completion.d
 
 Bash offers tab completion for a large variety of commands, but not all
@@ -92,4 +118,11 @@ to not manage it here. (Currently, my favorite is a Solarized theme that
 I am managing in a separate repo (as a submodule of the main Solarized
 repo).) If not using a color configuration, that line should be removed
 or commented out.
+
+## vim
+
+My current `vimrc` is not very feature rich and could stand to use some
+improvements and enhancements. Nevertheless, it does mostly what I want
+it to do most of the time. This is one file which will like see a lot of
+improvement over time.
 
