@@ -74,3 +74,16 @@ RVM, which provides a bash completion script, but does not load it by default.
 
 I have choosen to separate this functionality out, just in case. It needs to
 be enabled with the `bash-completion.bash` file under `bash.d`.
+
+## tmux
+
+tmux has replaced screen and I have finally joined the fun. Most of these
+settings given here for tmux are to change the key bindings to match screen,
+though not all changes have been made yet.
+
+This tmux configuration also references a color configuration file. Since
+these color files could come from nearly any source, I have chosen to not
+manage it here. (Currently, my favorite is a Solarized theme that I am
+managing in a separate repo (as a submodule of the main Solarized repo).) If
+not using a color configuration, that line should be removed or commented out.
+
