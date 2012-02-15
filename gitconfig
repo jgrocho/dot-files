@@ -3,7 +3,8 @@
     email = jongrocho@gmail.com
 
 [alias]
-    hist = log --pretty=tformat:\"%C(yellow)%h%Creset %ad | %s%d [%an]\" --graph --date=short
+    hist = log --pretty=tformat:\"%C(yellow)%h%Creset %ad | %s%C(yellow)%d%Creset [%an]\" --graph --date=short
+    lg = log --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --graph --abbrev-commit --date=relative
 
 [core]
     editor = vim
@@ -17,6 +18,3 @@
 
 [color "diff"]
     whitespace = red reverse
-[github]
-    user = jgrocho
-    token = #TOKEN#

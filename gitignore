@@ -10,3 +10,7 @@ Session.vim
 
 # RVM files
 .rvmrc
+
+# Bundler files
+/.bundle
+/bundler_stubs
