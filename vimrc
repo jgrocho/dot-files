@@ -1,3 +1,10 @@
+" load pathogen, it is not an error if the file does not exist
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+" now actually set it up if it loaded
+if exists("g:loaded_pathogen")
+    call pathogen#infect()
+endif
+
 " switch on syntax highlighting
 syntax on
 
