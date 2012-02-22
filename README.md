@@ -119,10 +119,36 @@ I am managing in a separate repo (as a submodule of the main Solarized
 repo).) If not using a color configuration, that line should be removed
 or commented out.
 
-## vim
+## Vim
 
 My current `vimrc` is not very feature rich and could stand to use some
 improvements and enhancements. Nevertheless, it does mostly what I want
 it to do most of the time. This is one file which will like see a lot of
 improvement over time.
+
+### pathogen
+
+To handle Vim plugins, I have decided to use the pathogen plugin from
+Tim Pope. Essentially pathogen allows you to separate Vim plugins into
+distinct folders under `.vim/bundle` (or any other directory under
+`.vim` as specified by the call to `pathogen#infect`). This make
+updating and removing Vim plugins much simpler, as you no longer have to
+determine which files belong to which plugins when making a
+modification.
+
+This nice separation of Vim plugins means we can utilize git's support
+for submodules to efficiently manage them. Furthermore, we can even use
+this feature to manage `pathogen` itself. However, this feature comes at
+a slight cost as we need to initialize and update the submodules
+whenever we clone this repository. This means running
+
+    git submodule init
+    git submodule update
+
+in the top-level directory of the repository after `git clone`. This
+will clone all submodules into their respective directories. This
+process can be made more selective by appending the name of the
+submodule to the commands above. Since `pathogen` is one these
+submodules though, if that submodule is not cloned then pathogen will
+not be loaded along with any bundles.
 
