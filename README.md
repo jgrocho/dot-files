@@ -152,3 +152,10 @@ submodule to the commands above. Since `pathogen` is one these
 submodules though, if that submodule is not cloned then pathogen will
 not be loaded along with any bundles.
 
+### Local Changes
+
+Since not all configurations are necessarily part of any specific plugin
+or should part of a change to plugin, (e.g. personal preferences), any
+local changes to the Vim configuration can still be placed in the usual
+locations under `vim`.
+
