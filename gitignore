@@ -14,3 +14,6 @@ Session.vim
 # Bundler files
 /.bundle
 /bundler_stubs
+
+# virthualenv folder
+.virthualenv
