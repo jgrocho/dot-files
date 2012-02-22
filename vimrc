@@ -53,3 +53,9 @@ set ruler
 
 " Turn off search highlighting, I care not for it
 set nohlsearch
+
+" We need to set grep to always show filename for vim-latex to work
+set grepprg=grep\ -nH\ $*
+
+" Set the default tex filetype
+let g:tex_flavor='latex'
