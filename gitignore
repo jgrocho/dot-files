@@ -7,6 +7,7 @@
 .*.sw[a-z]
 *.un~
 Session.vim
+.netrwhist
 
 # RVM files
 .rvmrc
