@@ -43,11 +43,6 @@ set fo=tcq
 set nocompatible
 set modeline
 
-highlight LiteralTabs ctermbg=darkgreen guibg=darkgreen
-match LiteralTabs /\s\	/
-highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
-match ExtraWhitespace /\s\+$/
-
 " Show me a ruler
 set ruler
 
@@ -65,3 +60,9 @@ let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_ViewRule_pdf='xdg-open'
 let g:Tex_CompileRule_pdf='xelatex --interaction=nonstopmode $*'
 let g:Tex_MultipleCompileFormats='pdf'
+
+set background=dark
+colorscheme solarized
+
+highlight ExtraWhitespace ctermbg=2 guibg=2
+match ExtraWhitespace /\s\+$\| \+\ze\t/
