@@ -66,6 +66,9 @@ function prompt_command() {
     # functions to prevent superfulous spacing.
     pc_dev_env="$(rvm_ps1)$(virthask_ps1)$(virtenv_ps1)"
 
+    # Set the window title for xterm and (u)rxvt
+    printf "\033]0;%s%s [%s]\007" "${USER}" "${pc_host}" "${PWD/#$HOME/~}"
+
     # Set the prompt.
     PS1="\[${pc_color}\]${EXIT}\[\e[0m\] \[\e[1;31m\]\u\[\e[0m\]${pc_host} [\w]
 ${pc_dev_env}${pc_dvcs} \$ "
