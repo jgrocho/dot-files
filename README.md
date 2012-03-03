@@ -112,13 +112,6 @@ tmux has replaced screen and I have finally joined the fun. Most of
 these settings given here for tmux are to change the key bindings to
 match screen, though not all changes have been made yet.
 
-This tmux configuration also references a color configuration file.
-Since these color files could come from nearly any source, I have chosen
-to not manage it here. (Currently, my favorite is a Solarized theme that
-I am managing in a separate repo (as a submodule of the main Solarized
-repo).) If not using a color configuration, that line should be removed
-or commented out.
-
 ## Vim
 
 My current `vimrc` is not very feature rich and could stand to use some
