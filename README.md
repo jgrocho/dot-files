@@ -79,7 +79,7 @@ What follows is a brief description of some of the available scripts.
     detection of capabilities nor fallback settings. The results on
     non-color enabled terminals is not guarenteed.
 
-*   `solarized-fix.bash`: The Solarized `dircolors.256dark` theme
+*   `solarized-fix.bash`: The solarized `dircolors.256dark` theme
     provided by seebi/dircolors-solarized has to approximate some of the
     solarized colors for maximum compatibility. The magical incantation
     provided here remaps the colors to make the approximated colors
@@ -103,7 +103,7 @@ provide bash completion and yet do not enable it by default. One notable
 example of this is RVM, which provides a bash completion script, but
 does not load it by default.
 
-I have choosen to separate this functionality out, just in case. It
+I have chosen to separate this functionality out, just in case. It
 needs to be enabled with the `bash-completion.bash` file under `bash.d`.
 
 ## tmux
