@@ -1,0 +1,27 @@
+#ifdef COLOR
+#include ".Xresources.d/colors"
+
+!! Since defines add extra spacing, we cannot use the defined colors.
+URxvt*background:       [90]#002b36
+
+!! For these setting to work, you must use a version patched with xrdb support.
+!! For xft fonts to work, you must ust a version patched with xft support.
+dmenu.selforeground:    S_base1
+dmenu.selbackground:    S_base02
+#endif
+
+!! Turn on dynamic colors. Needed for proper solarized support.
+XTerm*dynamicColors:    true
+
+!! Set the font to inconsolata
+*font:                  xft:inconsolata:size=10
+
+!! urxvt
+URxvt*buffered:         true
+URxvt*cursorBlink:      true
+URxvt*depth:            32
+URxvt*borderless:       1
+URxvt*scrollBar:        false
+URxvt*loginShell:       true
+URxvt*secondaryScroll:  true
+URxvt*savelines:        5000

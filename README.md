@@ -152,3 +152,42 @@ or should part of a change to plugin, (e.g. personal preferences), any
 local changes to the Vim configuration can still be placed in the usual
 locations under `vim`.
 
+## X
+
+X uses a few files to store configuration settings.
+
+### xinitrc
+
+This file is sourced when running `startx` and `xinit` or by most
+display managers. The main purpose of this file is to start up your
+window manager among a few other programs.
+
+A few settings/commands don't make sense to be placed in this file, such
+as the choice of window manager since that is something that is going to
+be specific to the system being used. I could check for display managers
+in an order I prefer but it seems more practical to off-load starting
+the window manager to an external file. So the last thing this file does
+is load `.xinitrc.local` which should launch a window manager and any
+other very host specific applications. If that file isn't found the
+global `/etc/X11/xinit/xinitrc` file is sourced and, failing that, a
+default window manager (`twm`) is started with a single `xterm`
+instance.
+
+### Xresources
+
+This file is really the meat of X's configuration (or it should be).
+Many X programs make use of Xresources to determine their configuration
+(and more should). This file needs to loaded or merged into the database
+with `xrdb` and this is handled by `xinitrc`.
+
+Since this file is run through the C preprocessor, we can take advantage
+of `#define`s, `#include`s, and `#ifdef`s. We can place included files
+under Xresources.d and load them as needed.
+
+#### Xresources.d
+
+This directory holds files which can be loaded by `Xresources`.
+
+*   `colors`: This holds a color theme which changes the colors used by
+    X programs. Currently this is from the solarized theme.
+
