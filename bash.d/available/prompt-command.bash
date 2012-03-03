@@ -41,11 +41,11 @@ function virthask_ps1() {
 # Set the prompt command, any functions called from here should be quick
 # as they will be run each time the prompt is dispalyed.
 function prompt_command() {
-    local pc_ret pc_color pc_host pc_dvcs pc_dev_env
     # First save the return value of the last run command.
-    pc_ret=$?
+    EXIT=$?
+    local pc_color pc_host pc_dvcs pc_dev_env
     # Pick a color based on that return value.
-    if [[ $pc_ret -eq 0 ]]; then
+    if [[ $EXIT -eq 0 ]]; then
       pc_color="\e[0;32m"
     else
       pc_color="\e[0;31m"
@@ -67,7 +67,7 @@ function prompt_command() {
     pc_dev_env="$(rvm_ps1)$(virthask_ps1)$(virtenv_ps1)"
 
     # Set the prompt.
-    PS1="\[${pc_color}\]${pc_ret}\[\e[0m\] \[\e[1;31m\]\u\[\e[0m\]${pc_host} [\w]
+    PS1="\[${pc_color}\]${EXIT}\[\e[0m\] \[\e[1;31m\]\u\[\e[0m\]${pc_host} [\w]
 ${pc_dev_env}${pc_dvcs} \$ "
 }
 PROMPT_COMMAND=prompt_command
