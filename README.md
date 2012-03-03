@@ -123,7 +123,7 @@ improvement over time.
 
 To handle Vim plugins, I have decided to use the pathogen plugin from
 Tim Pope. Essentially pathogen allows you to separate Vim plugins into
-distinct folders under `.vim/bundle` (or any other directory under
+distinct directories under `.vim/bundle` (or any other directory under
 `.vim` as specified by the call to `pathogen#infect`). This make
 updating and removing Vim plugins much simpler, as you no longer have to
 determine which files belong to which plugins when making a
