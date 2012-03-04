@@ -18,16 +18,16 @@ fi
 xsetroot -cursor_name left_ptr
 
 # Start the VirtualBox guest additons
-type -p VBoxClient-all && (VBoxClient-all &)
+hash VBoxClient-all 2>/dev/null && (VBoxClient-all &)
 
 # Start compositing manager
-type -p xcompmgr && (xcompmgr -c &)
+hash xcompmgr 2>/dev/null && (xcompmgr -c &)
 
 # Load a background image
 [[ -f ~/.fehbg && -r ~/.fehbg ]] && (sh ~/.fehbg &)
 
 # Start a urxvt daemon
-type -p urxvtd && urxvtd -q -o -f
+hash urxvtd 2>/dev/null && urxvtd -q -o -f
 
 # Some things are not reasonable to be globally shared, i.e. a WM.
 # Therefore those settings are placed in .xinitrc.local. If that file
