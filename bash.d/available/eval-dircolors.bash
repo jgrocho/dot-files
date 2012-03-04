@@ -1,5 +1,7 @@
 # Install some nice colors for ls.
-__dircolors=`type -p dircolors`
-[[ -x "${__dircolors}" && -f ~/.dircolors && -r ~/.dircolors ]] \
-  && eval `${__dircolors} ~/.dircolors`
-unset __dircolors
+case $TERM in
+  *256color*)
+    hash dircolors 2>/dev/null && [[ -f ~/.dircolors && -r ~/.dircolors ]] \
+      && eval `dircolors ~/.dircolors`
+    ;;
+esac
