@@ -32,7 +32,7 @@ type -p xcompmgr && (xcompmgr -c &)
 # we try some defaults
 if [[ -f ~/.xinitrc.local && -x ~/.xinitrc.local ]]; then
   . ~/.xinitrc.local
-else if [[ -f /etc/X11/xinit/xinitrc && -x /etc/X11/xinit/xinitrc ]]; then
+elif [[ -f /etc/X11/xinit/xinitrc && -x /etc/X11/xinit/xinitrc ]]; then
   . /etc/X11/xinit/xinitrc
 else
   twm &
