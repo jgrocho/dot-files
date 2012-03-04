@@ -26,6 +26,9 @@ type -p xcompmgr && (xcompmgr -c &)
 # Load a background image
 [[ -f ~/.fehbg && -r ~/.fehbg ]] && (sh ~/.fehbg &)
 
+# Start a urxvt daemon
+type -p urxvtd && urxvtd -q -o -f
+
 # Some things are not reasonable to be globally shared, i.e. a WM.
 # Therefore those settings are placed in .xinitrc.local. If that file
 # doesn't exist we try a global default (/etc/xinitrc) and, failing that

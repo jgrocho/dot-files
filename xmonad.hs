@@ -5,7 +5,7 @@ import XMonad.Util.Run (spawnPipe)
 import System.IO
 
 -- Define the default terminal.
-myTerminal = "urxvt"
+myTerminal = "urxvtc"
 
 -- Define number and names of workspaces.
 -- First come named layouts, which include a number.
