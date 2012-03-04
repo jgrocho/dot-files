@@ -1,5 +1,5 @@
 #ifdef COLOR
-#include ".Xresources.d/colors"
+#include "Xresources.d/colors"
 
 !! Since defines add extra spacing, we cannot use the defined colors.
 URxvt*background:       [90]#002b36
