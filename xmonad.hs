@@ -29,8 +29,16 @@ myWorkspaces = named ++ map show [(length named +1)..9]
 myLayout = avoidStruts $ layoutHook defaultConfig
 
 -- Define the Manage hook.
+-- Always send Firefox and Chromium to the "web" workspace, and Spotify
+-- to the music workspace.
 -- Adds dock support to the default.
-myManageHook = manageDocks <+> manageHook defaultConfig
+--myManageHook = manageDocks <+> manageHook defaultConfig
+myManageHook = composeAll
+    [ className =? "Firefox"  --> doShift "2:web"
+    , className =? "Chromium" --> doShift "2:web"
+    , className =? "Spotify"  --> doShift "4:music"
+    , manageDocks
+    ] <+> manageHook defaultConfig
 
 -- Define the Log hook.
 -- Configures xmobar.
