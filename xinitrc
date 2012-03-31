@@ -32,6 +32,11 @@ hash urxvtd 2>/dev/null && urxvtd -q -o -f
 # Start mouse hider
 hash unclutter 2>/dev/null && (unclutter -idle 3 &)
 
+# Start arbtt to collect statistics about window usage
+[[ -f ~/.arbtt/.virthualenv/bin/activate ]] \
+  && (source ~/.arbtt/.virthualenv/bin/activate \
+    && arbtt-capture &)
+
 # Some things are not reasonable to be globally shared, i.e. a WM.
 # Therefore those settings are placed in .xinitrc.local. If that file
 # doesn't exist we try a global default (/etc/xinitrc) and, failing that
