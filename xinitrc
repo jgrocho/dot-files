@@ -29,6 +29,9 @@ hash VBoxClient-all 2>/dev/null && (VBoxClient-all &)
 # Start a urxvt daemon
 hash urxvtd 2>/dev/null && urxvtd -q -o -f
 
+# Start mouse hider
+hash unclutter 2>/dev/null && (unclutter -idle 3 &)
+
 # Some things are not reasonable to be globally shared, i.e. a WM.
 # Therefore those settings are placed in .xinitrc.local. If that file
 # doesn't exist we try a global default (/etc/xinitrc) and, failing that
