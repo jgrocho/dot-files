@@ -12,3 +12,4 @@ if [[ -d ${BASH_USER_DIR} && -r ${BASH_USER_DIR} && -x ${BASH_USER_DIR} ]]; then
         [[ -f $f && -r $f ]] && . "$f"
     done
 fi
+unset f

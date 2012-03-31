@@ -6,3 +6,4 @@ if [[ -d ${BASH_COMPLETION_USER_DIR} && -r ${BASH_COMPLETION_USER_DIR} && \
         [[ -f $f && -r $f ]] && . "$f"
     done
 fi
+unset f
