@@ -7,6 +7,15 @@ import System.IO
 -- Define the default terminal.
 myTerminal = "urxvtc"
 
+-- Define the border color for non focused windows
+myNormalBorderColor = "#073642"
+
+-- Define the border color for the focused window
+myFocuedBorderColor = "#dc322f"
+
+-- Define the width of borders
+myBorderWidth = 1
+
 -- Define number and names of workspaces.
 -- First come named layouts, which include a number.
 -- The rest are just numbered.
@@ -34,6 +43,9 @@ main = do
     xmproc <- spawnPipe "xmobar"
     xmonad $ defaultConfig
         { terminal = myTerminal
+        , normalBorderColor = myNormalBorderColor
+        , focusedBorderColor = myFocuedBorderColor
+        , borderWidth = myBorderWidth
         , workspaces = myWorkspaces
         , layoutHook = myLayout
         , manageHook = myManageHook
