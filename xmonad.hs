@@ -67,6 +67,7 @@ main = do
         , normalBorderColor = myNormalBorderColor
         , focusedBorderColor = myFocuedBorderColor
         , borderWidth = myBorderWidth
+        , modMask = mod4Mask
         , workspaces = myWorkspaces
         , layoutHook = myLayout
         , manageHook = myManageHook
