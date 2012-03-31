@@ -26,7 +26,7 @@ myWorkspaces = named ++ map show [(length named +1)..9]
     named = zipWith (\x -> ((show x ++) ":" ++)) [1..] names
 
 -- Define the layout.
--- Adds dock suppor to the default.
+-- Adds dock support to the default.
 myLayout = avoidStruts $ layoutHook defaultConfig
 
 -- Define the Manage hook.
