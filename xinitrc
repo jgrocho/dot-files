@@ -21,7 +21,7 @@ xsetroot -cursor_name left_ptr
 hash VBoxClient-all 2>/dev/null && (VBoxClient-all &)
 
 # Start compositing manager
-hash xcompmgr 2>/dev/null && (xcompmgr -c &)
+#hash xcompmgr 2>/dev/null && (xcompmgr -c &)
 
 # Load a background image
 [[ -f ~/.fehbg && -r ~/.fehbg ]] && (sh ~/.fehbg &)
