@@ -28,7 +28,7 @@ function HighlightLongLines()
     endif
 endfunction
 " Enable it by default in all windows
-au BufWinEnter * call HighlightLongLines()
+"au BufWinEnter * call HighlightLongLines()
 " Map it to <F3>
 nnoremap <silent> <F3> :call HighlightLongLines()<CR>
 
