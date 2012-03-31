@@ -15,6 +15,7 @@ XTerm*dynamicColors:    true
 
 !! Set the font to inconsolata
 *font:                  xft:inconsolata:size=10
+dmenu.font:             inconsolata-10
 
 !! urxvt
 URxvt*buffered:         true
