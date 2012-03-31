@@ -21,7 +21,7 @@ myBorderWidth = 1
 -- The rest are just numbered.
 myWorkspaces = named ++ map show [(length named +1)..9]
   where
-    names = ["main"]
+    names = ["main", "web", "irc", "music"]
     named = zipWith (\x -> ((show x ++) ":" ++)) [1..] names
 
 -- Define the layout.
