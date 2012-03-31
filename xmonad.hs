@@ -61,6 +61,7 @@ multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
 
 main = do
     xmobar <- spawnPipe "xmobar"
+    xmobar_mpd <- spawnPipe "xmobar ~/.xmobarrc_mpd"
     xmonad $ defaultConfig
         { terminal = myTerminal
         , normalBorderColor = myNormalBorderColor

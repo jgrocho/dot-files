@@ -1,0 +1,10 @@
+Config { font = "xft:inconsolata:size=10"
+       , bgColor = "#002b36"
+       , fgColor = "#839496"
+       , position = Bottom
+       , commands = [ Run MPD ["-t","<artist> - <title> (<album>) <ppos>/<plength> <lapsed>/<length> <statei>"] 10
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "}{%mpd%"
+       }
