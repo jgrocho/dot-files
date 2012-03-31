@@ -43,8 +43,8 @@ myManageHook = composeAll
 
 -- Define the Log hook.
 -- Configures xmobar.
-myLogHook xmproc = dynamicLogWithPP xmobarPP
-    { ppOutput = hPutStrLn xmproc
+myLogHook xmobar = dynamicLogWithPP xmobarPP
+    { ppOutput = hPutStrLn xmobar
     , ppTitle = xmobarColor "#859900" "" . shorten 50
     }
 
@@ -60,7 +60,7 @@ multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
                  ]
 
 main = do
-    xmproc <- spawnPipe "xmobar"
+    xmobar <- spawnPipe "xmobar"
     xmonad $ defaultConfig
         { terminal = myTerminal
         , normalBorderColor = myNormalBorderColor
@@ -69,7 +69,7 @@ main = do
         , workspaces = myWorkspaces
         , layoutHook = myLayout
         , manageHook = myManageHook
-        , logHook = myLogHook xmproc
+        , logHook = myLogHook xmobar
         , handleEventHook = myEventHook
         }
         `additionalKeysP`
