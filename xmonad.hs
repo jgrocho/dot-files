@@ -2,6 +2,7 @@ import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.Run (spawnPipe)
+import XMonad.Util.EZConfig
 import System.IO
 
 -- Define the default terminal.
@@ -47,6 +48,17 @@ myLogHook xmproc = dynamicLogWithPP xmobarPP
     , ppTitle = xmobarColor "#859900" "" . shorten 50
     }
 
+myEventHook = handleEventHook defaultConfig <+> docksEventHook
+
+multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
+                 , ("<XF86AudioStop>", spawn "mpc stop")
+                 , ("<XF86AudioPrev>", spawn "mpc prev")
+                 , ("<XF86AudioNext>", spawn "mpc next")
+                 , ("<XF86AudioMute>", spawn "amixer set PCM toggle")
+                 , ("<XF86AudioLowerVolume>", spawn "amixer set PCM 1-")
+                 , ("<XF86AudioRaiseVolume>", spawn "amixer set PCM 1+")
+                 ]
+
 main = do
     xmproc <- spawnPipe "xmobar"
     xmonad $ defaultConfig
@@ -58,4 +70,7 @@ main = do
         , layoutHook = myLayout
         , manageHook = myManageHook
         , logHook = myLogHook xmproc
+        , handleEventHook = myEventHook
         }
+        `additionalKeysP`
+            multimediaKeys
