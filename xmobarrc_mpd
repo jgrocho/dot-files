@@ -3,8 +3,9 @@ Config { font = "xft:inconsolata:size=10"
        , fgColor = "#657b83"
        , position = Bottom
        , commands = [ Run MPD ["-t","<artist> - <title> (<album>) <ppos>/<plength> <lapsed>/<length> <statei>"] 10
+                    , Run Volume "default" "PCM" ["--","--onc","#859900","--offc","#dc323f"] 10
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "}{%mpd%"
+       , template = "%default:PCM%}{%mpd%"
        }
