@@ -1,18 +1,26 @@
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
+import XMonad.Layout
+import XMonad.Layout.NoBorders
+import XMonad.Layout.Accordion
+import XMonad.Layout.Tabbed
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.EZConfig
+
 import System.IO
+
+import qualified Solarized.Light as S
 
 -- Define the default terminal.
 myTerminal = "urxvtc"
 
 -- Define the border color for non focused windows
-myNormalBorderColor = "#073642"
+myNormalBorderColor = S.base02
 
 -- Define the border color for the focused window
-myFocuedBorderColor = "#dc322f"
+myFocuedBorderColor = S.violet
 
 -- Define the width of borders
 myBorderWidth = 1
@@ -26,8 +34,36 @@ myWorkspaces = named ++ map show [(length named +1)..9]
     named = zipWith (\x -> ((show x ++) ":" ++)) [1..] names
 
 -- Define the layout.
+-- Adds an Accordion layout and smartBorders
 -- Adds dock support to the default.
-myLayout = avoidStruts $ layoutHook defaultConfig
+myLayout = smartBorders $ avoidStruts $
+    tiled |||
+    Mirror tiled |||
+    Accordion |||
+    tabbed shrinkText solarizedTheme
+        { fontName   = "xft:inconsolata:size=8"
+        , decoHeight = 18
+        }
+  where
+    tiled = Tall nmaster delta ratio
+    -- Default number of windows in the master pane
+    nmaster = 1
+    -- Percent of screen to increment when resizing
+    delta = 3/100
+    -- Default proption of screen for the master pane
+    ratio = 1/2
+
+    solarizedTheme = defaultTheme
+        { activeColor         = S.base03
+        , inactiveColor       = S.base02
+        , urgentColor         = S.base02
+        , activeBorderColor   = S.base0
+        , inactiveBorderColor = S.base01
+        , urgentBorderColor   = S.red
+        , activeTextColor     = S.base0
+        , inactiveTextColor   = S.base01
+        , urgentTextColor     = S.orange
+        }
 
 -- Define the Manage hook.
 -- Always send Firefox and Chromium to the "web" workspace, and Spotify
