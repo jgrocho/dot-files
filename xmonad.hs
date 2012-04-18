@@ -45,6 +45,7 @@ myManageHook = composeAll
 -- Configures xmobar.
 myLogHook xmobar = dynamicLogWithPP xmobarPP
     { ppOutput = hPutStrLn xmobar
+    , ppCurrent = xmobarColor "#268bd2" ""
     , ppTitle = xmobarColor "#859900" "" . shorten 50
     }
 

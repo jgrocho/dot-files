@@ -2,7 +2,7 @@
 #include "Xresources.d/colors"
 
 !! Since defines add extra spacing, we cannot use the defined colors.
-URxvt*background:       [90]#002b36
+!!URxvt*background:       S_base03
 
 !! For these setting to work, you must use a version patched with xrdb support.
 !! For xft fonts to work, you must ust a version patched with xft support.

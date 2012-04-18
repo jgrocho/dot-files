@@ -1,6 +1,6 @@
 Config { font = "xft:inconsolata:size=10"
-       , bgColor = "#002b36"
-       , fgColor = "#839496"
+       , bgColor = "#fdf6e3"
+       , fgColor = "#657b83"
        , position = Bottom
        , commands = [ Run MPD ["-t","<artist> - <title> (<album>) <ppos>/<plength> <lapsed>/<length> <statei>"] 10
                     ]
