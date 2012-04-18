@@ -35,7 +35,8 @@ myLayout = avoidStruts $ layoutHook defaultConfig
 -- Adds dock support to the default.
 --myManageHook = manageDocks <+> manageHook defaultConfig
 myManageHook = composeAll
-    [ className =? "Firefox"  --> doShift "2:web"
+    [ isFullscreen --> doFullFloat
+    , className =? "Firefox"  --> doShift "2:web"
     , className =? "Chromium" --> doShift "2:web"
     , className =? "Spotify"  --> doShift "4:music"
     , manageDocks
