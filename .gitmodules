@@ -10,3 +10,6 @@
 [submodule "emacs.d/emacs-color-theme-solarzied"]
 	path = emacs.d/emacs-color-theme-solarzied
 	url = https://github.com/sellout/emacs-color-theme-solarized.git
+[submodule "vim/bundle/tabular"]
+	path = vim/bundle/tabular
+	url = https://github.com/godlygeek/tabular.git
