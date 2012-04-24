@@ -69,7 +69,11 @@ function prompt_command() {
     # Set the window title for xterm and (u)rxvt
     case $TERM in
       xterm*|*rxvt*)
-        printf "\033]0;%s%s [%s]\007" "${USER}" "${pc_host}" "${PWD/#$HOME/~}"
+        local host
+        [[ -n $SSH_CLIENT ]] \
+          && host="@$(hostname)" \
+          || host=""
+        printf "\033]0;%s%s [%s]\007" "${USER}" "${host}" "${PWD/#$HOME/~}"
         ;;
     esac
 
