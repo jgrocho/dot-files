@@ -24,6 +24,7 @@
     color-theme
     color-theme-solarized
     proof-general
+    auctex
     )
   "A list of packages to ensure are installed at launch")
 
@@ -50,6 +51,42 @@
 
 ;;; Load egg (Emacs Got Git)
 (require 'egg)
+
+;;; Use Xe(La)TeX by default for better font support.
+(setq TeX-engine 'xetex)
+;;; Create PDFs by default
+(setq TeX-PDF-mode t)
+
+;;; Define a list of modes in which to always enable flyspell-mode
+(defvar my-flyspell-modes
+  '(
+    LaTeX-mode-hook
+    )
+  )
+
+;;; Turn on flyspell-mode for all of the the above modes
+(dolist (hook my-flyspell-modes)
+  (add-hook hook (lambda () (flyspell-mode 1))))
+
+;;; Define a list of modes in which to always auto-fill text
+(defvar my-auto-fill-modes
+  '(
+    LaTeX-mode-hook
+    )
+  )
+
+;;; Turn on auto-fill-mode for all of the above modes
+(dolist (hook my-auto-fill-modes)
+  (add-hook hook 'turn-on-auto-fill))
+
+;;; Show line numbers on the side
+(global-linum-mode t)
+
+;;; Show column number in the mode line
+(column-number-mode t)
+
+;;; Highlight trailing whitespace
+(setq-default show-trailing-whitespace t)
 
 ;;; Disable Ctrl-z
 (global-unset-key "\^z")
