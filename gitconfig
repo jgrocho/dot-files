@@ -4,7 +4,7 @@
 
 [alias]
     hist = log --pretty=tformat:\"%C(yellow)%h%Creset %ad | %s%C(yellow)%d%Creset [%an]\" --graph --date=short
-    lg = log --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' --graph --abbrev-commit --date=relative
+    lg = log --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --graph --abbrev-commit --date=relative
     fixup = "!f() { git commit --fixup=$1 ; mpg123 ~/fixup.mp3 >/dev/null 2>&1 & }; f"
 
 [core]
