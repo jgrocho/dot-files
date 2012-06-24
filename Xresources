@@ -17,7 +17,7 @@ XTerm*dynamicColors:    true
 *font:                  xft:inconsolata:size=10
 dmenu.font:             inconsolata-10
 Emacs.FontBackend:      xft
-Emacs.font:             inconsolata-g-10
+Emacs.font:             inconsolata-g-12
 
 !! urxvt
 URxvt*buffered:         true
