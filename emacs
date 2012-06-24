@@ -23,7 +23,7 @@
     ido-ubiquitous
     color-theme
     color-theme-solarized
-    proof-general
+    ;proof-general
     auctex
     )
   "A list of packages to ensure are installed at launch")
@@ -45,12 +45,12 @@
 (load-theme 'solarized-light t)
 
 ;;; Load ProofGeneral
-(require 'proof-site)
-(setq proof-electric-terminator-enable t)
+;(require 'proof-site)
+;(setq proof-electric-terminator-enable t)
 ;(load "/usr/share/emacs/site-lisp/ProofGeneral/generic/proof-site.el")
 
 ;;; Load egg (Emacs Got Git)
-(require 'egg)
+;(require 'egg)
 
 ;;; Use Xe(La)TeX by default for better font support.
 (setq TeX-engine 'xetex)
