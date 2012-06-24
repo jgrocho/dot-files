@@ -1,0 +1,4 @@
+# sudo-chown command line completion
+# Copyright 2012 "Jonathan Grochowski" <jongrocho@gmail.com>
+
+complete -u sudo-chown
