@@ -5,8 +5,11 @@ GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWUPSTREAM="auto"
 function git_ps1() {
-    builtin hash __git_ps1 2>&- \
-      && __git_ps1 " on \[\e[0;36m\]%s \[\e[0;32m\]∓\[\e[0m\]"
+    if [[ -r /usr/share/git/git-prompt.sh ]]; then
+        source /usr/share/git/git-prompt.sh
+        builtin hash __git_ps1 2>&- \
+          && __git_ps1 " on \[\e[0;36m\]%s \[\e[0;32m\]∓\[\e[0m\]"
+    fi
 }
 
 # Return the current ruby version and gemset.
