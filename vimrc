@@ -23,9 +23,15 @@ filetype plugin indent on	" required
 syntax on
 
 set relativenumber
-nnoremap <F2> :set relativenonumber!<CR>:set foldcolumn=0<CR>
+nnoremap <F2> :set relativenumber!<CR>:set foldcolumn=0<CR>
 
-" Highlight long lines
+"set background=light
+colorscheme solarized
+
+highlight ExtraWhitespace ctermbg=2 guibg=2
+match ExtraWhitespace /\s\+$\| \+\ze\t/
+
+" Highlight long lines {{{
 function HighlightLongLines()
     let w:highlight_long_lines
         \ = exists('w:highlight_long_lines') ?
@@ -42,16 +48,16 @@ endfunction
 "au BufWinEnter * call HighlightLongLines()
 " Map it to <F3>
 nnoremap <silent> <F3> :call HighlightLongLines()<CR>
+"}}}
 
 " Spell check highlighting colours
 hi clear SpellBad
 hi SpellBad term=reverse ctermfg=red
 
-" turn off auto adding comments on next line
-" so you can cut and paste reliably
-" http://vimdoc.sourceforge.net/htmldoc/change.html#fo-table
+" Auto wrap text and comments
 set fo=tcq
-set nocompatible
+
+" Allow setting vim options from a comment at the end or tail of a file
 set modeline
 
 " Show me a ruler
@@ -60,6 +66,7 @@ set ruler
 " Turn off search highlighting, I care not for it
 set nohlsearch
 
+" Latex: {{{
 " We need to set grep to always show filename for vim-latex to work
 set grepprg=grep\ -nH\ $*
 
@@ -71,18 +78,15 @@ let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_ViewRule_pdf='xdg-open'
 let g:Tex_CompileRule_pdf='xelatex --interaction=nonstopmode $*'
 let g:Tex_MultipleCompileFormats='pdf'
+" }}}
 
-"set background=light
-colorscheme solarized
-
-highlight ExtraWhitespace ctermbg=2 guibg=2
-match ExtraWhitespace /\s\+$\| \+\ze\t/
-
+" Haskell: {{{
 " Setup up haskell related stuff
 " Use GHC functionality for haskell files
 au BufEnter *.{l,}hs compiler ghc
 
 " Configure browser for haskell_doc.vim
 let g:haddock_browser = "xdg-open"
+" }}}
 
 " vim: set et ts=4 sw=4 fdm=marker:
