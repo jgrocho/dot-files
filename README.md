@@ -119,31 +119,21 @@ improvements and enhancements. Nevertheless, it does mostly what I want
 it to do most of the time. This is one file which will like see a lot of
 improvement over time.
 
-### pathogen
+### Vundle
 
-To handle Vim plugins, I have decided to use the pathogen plugin from
-Tim Pope. Essentially pathogen allows you to separate Vim plugins into
-distinct directories under `.vim/bundle` (or any other directory under
-`.vim` as specified by the call to `pathogen#infect`). This make
-updating and removing Vim plugins much simpler, as you no longer have to
-determine which files belong to which plugins when making a
-modification.
+Vundle is a vim plug-in manager for Vim inspired by Pathogen and
+bundler. It allows Vim bundles to be installed from GitHub, vim-scripts,
+or any git repository. Bundles are configured in `vimrc` with a line
 
-This nice separation of Vim plugins means we can utilize git's support
-for submodules to efficiently manage them. Furthermore, we can even use
-this feature to manage `pathogen` itself. However, this feature comes at
-a slight cost as we need to initialize and update the submodules
-whenever we clone this repository. This means running
+    Bundle 'bundle-name'
 
-    git submodule init
-    git submodule update
+where `'bundle-name'` is either a GitHub `username/repo`, a vim-script
+`name` or a URL to a git repo like
+`git://git.wincent.com/command-t.git`.
 
-in the top-level directory of the repository after `git clone`. This
-will clone all submodules into their respective directories. This
-process can be made more selective by appending the name of the
-submodule to the commands above. Since `pathogen` is one these
-submodules though, if that submodule is not cloned then pathogen will
-not be loaded along with any bundles.
+Once configured, launching `vim` and running `:BundleInstall` will
+download each of the configured bundles into `~/.vim/bundle/`. Running
+`:BundleInstall!` will update all configured bundles.
 
 ### Local Changes
 

@@ -1,15 +1,26 @@
-" load pathogen, it is not an error if the file does not exist
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-" now actually set it up if it loaded
-if exists("g:loaded_pathogen")
-    call pathogen#infect()
-endif
+" Vundle: {{{
+set nocompatible
+filetype off                    " required!
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" Vundle manages Vundle required
+Bundle 'gmarik/vundle'
+
+" My Bundles: {{{
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'godlygeek/tabular'
+Bundle 'scrooloose/nerdtree'
+Bundle 'git://vim-latex.git.sourceforge.net/gitroot/vim-latex/vim-latex'
+Bundle 'lukerandall/haskellmode-vim'
+"}}}
+
+filetype plugin indent on	" required
+"}}}
 
 " switch on syntax highlighting
 syntax on
-
-" enable filetype detection, plus loading of filetype plugins
-filetype plugin indent on
 
 set relativenumber
 nnoremap <F2> :set relativenonumber!<CR>:set foldcolumn=0<CR>
@@ -73,3 +84,5 @@ au BufEnter *.{l,}hs compiler ghc
 
 " Configure browser for haskell_doc.vim
 let g:haddock_browser = "xdg-open"
+
+" vim: set et ts=4 sw=4 fdm=marker:
