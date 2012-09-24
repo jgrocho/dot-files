@@ -14,6 +14,7 @@ Bundle 'godlygeek/tabular'
 Bundle 'scrooloose/nerdtree'
 Bundle 'git://vim-latex.git.sourceforge.net/gitroot/vim-latex/vim-latex'
 Bundle 'lukerandall/haskellmode-vim'
+Bundle 'VimClojure'
 "}}}
 
 filetype plugin indent on	" required
