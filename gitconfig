@@ -3,8 +3,8 @@
     email = jongrocho@gmail.com
 
 [alias]
-    hist = log --pretty=tformat:\"%C(yellow)%h%Creset %ad | %s%C(yellow)%d%Creset [%an]\" --graph --date=short
-    lg = log --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --graph --abbrev-commit --date=relative
+    hist = log --pretty=tformat:\"%C(red)%h%Creset %C(green)%ad%Creset | %s%C(yellow)%d%Creset %C(bold)[%an]%Creset\" --graph --date=short
+    lg = log --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold)<%an>%Creset' --graph --abbrev-commit --date=relative
     fixup = "!f() { git commit --fixup=$1 ; mpg123 ~/fixup.mp3 >/dev/null 2>&1 & }; f"
 
 [core]
