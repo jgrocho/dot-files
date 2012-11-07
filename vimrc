@@ -15,6 +15,7 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'git://vim-latex.git.sourceforge.net/gitroot/vim-latex/vim-latex'
 Bundle 'lukerandall/haskellmode-vim'
 Bundle 'VimClojure'
+Bundle 'indenthaskell.vim'
 "}}}
 
 filetype plugin indent on	" required
