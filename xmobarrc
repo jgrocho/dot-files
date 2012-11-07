@@ -1,6 +1,6 @@
 Config { font = "xft:inconsolata:size=11"
-       , bgColor = "#fdf6e3"
-       , fgColor = "#657b83"
+       , bgColor = "#002b36"
+       , fgColor = "#839496"
        , position = Top
        , commands = [ Run MultiCpu ["-L","3","-H","50","--normal","#859900","--high","#dc322f","-t","Cpu: <total0>% * <total1>%"] 10
                     , Run Memory ["-t","Mem: <usedratio>%"] 10

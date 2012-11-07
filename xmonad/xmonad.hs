@@ -12,7 +12,7 @@ import XMonad.Util.EZConfig
 
 import System.IO
 
-import qualified Solarized.Light as S
+import qualified Solarized.Dark as S
 
 -- Define the default terminal.
 myTerminal = "urxvtc"
@@ -84,8 +84,8 @@ myManageHook = composeAll
 -- Configures xmobar.
 myLogHook xmobar = dynamicLogWithPP xmobarPP
     { ppOutput = hPutStrLn xmobar
-    , ppCurrent = xmobarColor "#268bd2" ""
-    , ppTitle = xmobarColor "#859900" "" . shorten 50
+    , ppCurrent = xmobarColor S.blue ""
+    , ppTitle = xmobarColor S.green "" . shorten 50
     , ppLayout = const ""
     }
 

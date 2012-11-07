@@ -28,7 +28,7 @@ syntax on
 set relativenumber
 nnoremap <F2> :set relativenumber!<CR>:set foldcolumn=0<CR>
 
-"set background=light
+set background=dark
 colorscheme solarized
 
 highlight ExtraWhitespace ctermbg=2 guibg=2
