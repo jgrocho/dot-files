@@ -55,7 +55,7 @@ function prompt_command() {
     fi
 
     # Only show the host name for remote connections
-    [[ -n $SSH_CLIENT ]] \
+    [[ -n $SSH_TTY || -n $SSH_CONNECTION ]] \
       && pc_host=" at \[\e[1;35m\]\h\[\e[0m\]" \
       || pc_host=""
 
