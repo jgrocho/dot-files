@@ -16,6 +16,7 @@ Bundle 'git://vim-latex.git.sourceforge.net/gitroot/vim-latex/vim-latex'
 Bundle 'lukerandall/haskellmode-vim'
 Bundle 'VimClojure'
 Bundle 'indenthaskell.vim'
+Bundle 'pbrisbin/html-template-syntax'
 "}}}
 
 filetype plugin indent on	" required
