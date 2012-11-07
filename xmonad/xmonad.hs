@@ -3,6 +3,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout
+import XMonad.Layout.Fullscreen
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Accordion
 import XMonad.Layout.Tabbed
@@ -36,14 +37,15 @@ myWorkspaces = named ++ map show [(length named +1)..9]
 -- Define the layout.
 -- Adds an Accordion layout and smartBorders
 -- Adds dock support to the default.
-myLayout = smartBorders $ avoidStruts $
+myLayout = smartBorders $ avoidStruts (
     tiled |||
     Mirror tiled |||
     Accordion |||
     tabbed shrinkText solarizedTheme
         { fontName   = "xft:inconsolata:size=8"
         , decoHeight = 18
-        }
+        }) |||
+    fullscreenFull Full
   where
     tiled = Tall nmaster delta ratio
     -- Default number of windows in the master pane
