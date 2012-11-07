@@ -18,3 +18,5 @@ Session.vim
 
 # virthualenv folder
 .virthualenv
+# hsenv folders
+.hsenv_*

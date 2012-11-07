@@ -37,8 +37,8 @@ function virtenv_ps1() {
 }
 
 function virthask_ps1() {
-    [[ -n $VIRTHUALENV && -n $VIRTHUALENV_NAME ]] \
-      && echo " (\[\e[0;34m\]λ $VIRTHUALENV_NAME\[\e[0m\])"
+    [[ -n $HSENV && -n $HSENV_NAME ]] \
+      && echo " (\[\e[0;34m\]λ $HSENV_NAME\[\e[0m\])"
 }
 
 # Set the prompt command, any functions called from here should be quick
