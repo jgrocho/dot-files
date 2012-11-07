@@ -14,8 +14,8 @@ dmenu.selbackground:    S_base02
 XTerm*dynamicColors:    true
 
 !! Set the font to inconsolata
-*font:                  xft:inconsolata:size=10
-dmenu.font:             inconsolata-10
+*font:                  xft:inconsolata:size=11
+dmenu.font:             inconsolata-11
 Emacs.FontBackend:      xft
 Emacs.font:             inconsolata-g-12
 
