@@ -2,3 +2,5 @@ xmonad.hi
 xmonad.o
 xmonad-*-linux
 xmonad.errors
+*.o
+*.hi
