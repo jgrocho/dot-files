@@ -98,9 +98,9 @@ multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
                  , ("<XF86AudioStop>", spawn "mpc stop")
                  , ("<XF86AudioPrev>", spawn "mpc prev")
                  , ("<XF86AudioNext>", spawn "mpc next")
-                 , ("<XF86AudioMute>", spawn "amixer set PCM toggle")
-                 , ("<XF86AudioLowerVolume>", spawn "amixer set PCM 1-")
-                 , ("<XF86AudioRaiseVolume>", spawn "amixer set PCM 1+")
+                 , ("<XF86AudioMute>", spawn "amixer set Master toggle")
+                 , ("<XF86AudioLowerVolume>", spawn "amixer set Master unmute; amixer set Master 1-")
+                 , ("<XF86AudioRaiseVolume>", spawn "amixer set Master unmute; amixer set Master 1+")
                  ]
 
 main = do
