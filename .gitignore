@@ -1,2 +1,4 @@
 # Ignore the vim spell directory
 /vim/spell/
+# Ignore vim haskellmode configuration
+/vim/haskellmode.config
