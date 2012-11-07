@@ -91,6 +91,9 @@ myLogHook xmobar = dynamicLogWithPP xmobarPP
 
 myEventHook = handleEventHook defaultConfig <+> docksEventHook
 
+myKeys = [ ("M-b", sendMessage ToggleStruts)
+         ]
+
 multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
                  , ("<XF86AudioStop>", spawn "mpc stop")
                  , ("<XF86AudioPrev>", spawn "mpc prev")
@@ -118,3 +121,5 @@ main = do
         }
         `additionalKeysP`
             multimediaKeys
+        `additionalKeysP`
+            myKeys
