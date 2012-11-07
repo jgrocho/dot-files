@@ -107,7 +107,8 @@ multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
                  ]
 
 main = do
-    xmobar <- spawnPipe "xmobar"
+    xmobar0 <- spawnPipe "xmobar -x 0"
+    xmobar1 <- spawnPipe "xmobar -x 1"
     xmonad $ defaultConfig
         { terminal = myTerminal
         , normalBorderColor = myNormalBorderColor
@@ -117,7 +118,7 @@ main = do
         , workspaces = myWorkspaces
         , layoutHook = myLayout
         , manageHook = myManageHook
-        , logHook = myLogHook xmobar
+        , logHook = myLogHook xmobar0 >> myLogHook xmobar1
         , handleEventHook = myEventHook
         , focusFollowsMouse = False
         }
