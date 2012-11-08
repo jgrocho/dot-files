@@ -40,10 +40,6 @@ hash unclutter 2>/dev/null && { unclutter -idle 3 & }
 # Start redshift to adjust the monitor color
 hash redshift 2>/dev/null && { redshift & }
 
-# Try a global default before falling back to some reasonable defaults
-if [[ -f /etc/X11/xinit/xinitrc && -x /etc/X11/xinit/xinitrc ]]; then
-   . /etc/X11/xinit/xinitrc
-else
-  twm &
-  exec xterm -login
-fi
+# Start xmonad from the user's binary just in case anything ever happens to
+# xmonad (e.g. is uninstalled)
+exec ~/.xmonad/xmonad-x86_64-linux
