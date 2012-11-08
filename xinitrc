@@ -37,14 +37,12 @@ hash unclutter 2>/dev/null && (unclutter -idle 3 &)
   && (source ~/.arbtt/.virthualenv/bin/activate \
     && arbtt-capture &)
 
-# Some things are not reasonable to be globally shared, i.e. a WM.
-# Therefore those settings are placed in .xinitrc.local. If that file
-# doesn't exist we try a global default (/etc/xinitrc) and, failing that
-# we try some defaults
-if [[ -f ~/.xinitrc.local && -x ~/.xinitrc.local ]]; then
-  . ~/.xinitrc.local
-elif [[ -f /etc/X11/xinit/xinitrc && -x /etc/X11/xinit/xinitrc ]]; then
-  . /etc/X11/xinit/xinitrc
+# Start redshift to adjust the monitor color
+hash redshift 2>/dev/null && (redshift &)
+
+# Try a global default before falling back to some reasonable defaults
+if [[ -f /etc/X11/xinit/xinitrc && -x /etc/X11/xinit/xinitrc ]]; then
+   . /etc/X11/xinit/xinitrc
 else
   twm &
   exec xterm -login
