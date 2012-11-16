@@ -9,6 +9,26 @@ managing these files.
 Throughout this document, when referring to these dotfiles, I will leave
 off the leading `.` except where it may be ambiguous.
 
+## Local changes
+
+In my experience, the best way to handle local changes is by making
+commits to a local branch. I try to keep the number of local changes
+small. Any commits that could end up being more generally useful are
+cherry-picked onto the `master` branch. And if any new changes come from
+upstream, I can rebase the local branch against `master`. This way, even
+in the presence of local changes, most of my configurations will stay
+up-to-date.
+
+This method helps me avoid storing important configurations outside of
+git. I can also avoid merging `master` into the local branch, which
+would clutter my history with needless merge commits. All local changes
+are commits on top of `master`, making it very easy to see what changes
+are specific to a machine.
+
+This should let me remove the `*.d/enabled/.gitignore` files described
+below, but I have not yet tried that. This way, I'd be able to see which
+file are enabled locally by examining the git log.
+
 ## \*.d
 
 I have attempted (and will continue) to make my settings as
