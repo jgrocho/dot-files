@@ -42,7 +42,7 @@
 
 ;;; Load solarized color-theme
 (require 'color-theme)
-(load-theme 'solarized-light t)
+(load-theme 'solarized-dark t)
 
 ;;; Load ProofGeneral
 ;(require 'proof-site)
