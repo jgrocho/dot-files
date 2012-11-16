@@ -73,7 +73,7 @@ function prompt_command() {
     case $TERM in
       xterm*|*rxvt*)
         local host
-        [[ -n $SSH_CLIENT ]] \
+        [[ -n $SSH_TTY || -n $SSH_CONNECTION ]] \
           && host="@$(hostname)" \
           || host=""
         printf "\033]0;%s%s [%s]\007" "${USER}" "${host}" "${PWD/#$HOME/~}"
