@@ -17,6 +17,7 @@ Bundle 'lukerandall/haskellmode-vim'
 Bundle 'VimClojure'
 Bundle 'indenthaskell.vim'
 Bundle 'pbrisbin/html-template-syntax'
+Bundle 'rodjek/vim-puppet'
 "}}}
 
 filetype plugin indent on	" required
