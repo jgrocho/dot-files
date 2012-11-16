@@ -80,6 +80,15 @@ function prompt_command() {
         ;;
     esac
 
+    # Set the pane title when running inside tmux
+    if [[ -n $TMUX ]]; then
+        local host
+        [[ -n $SSH_TTY || -n $SSH_CONNECTION ]] \
+          && host="@$(hostname)" \
+          || host=""
+        printf "\033]2;%s%s [%s]\007" "${USER}" "${host}" "${PWD/#$HOME/~}"
+    fi
+
     # Set the prompt.
     PS1="\[${pc_color}\]${EXIT}\[\e[0m\] \[\e[1;31m\]\u\[\e[0m\]${pc_host} [\w]
 ${pc_dev_env}${pc_dvcs} \$ "
