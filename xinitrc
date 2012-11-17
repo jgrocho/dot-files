@@ -18,19 +18,19 @@ fi
 xsetroot -cursor_name left_ptr
 
 # Start the VirtualBox guest additons
-hash VBoxClient-all 2>/dev/null && { VBoxClient-all &; }
+hash VBoxClient-all 2>/dev/null && { VBoxClient-all & }
 
 # Start compositing manager
-hash xcompmgr 2>/dev/null && { xcompmgr -c &; }
+hash xcompmgr 2>/dev/null && { xcompmgr -c & }
 
 # Load a background image
-[[ -f ~/.fehbg && -r ~/.fehbg ]] && { sh ~/.fehbg &; }
+[[ -f ~/.fehbg && -r ~/.fehbg ]] && { sh ~/.fehbg & }
 
 # Start a urxvt daemon
 hash urxvtd 2>/dev/null && urxvtd -q -o -f
 
 # Start mouse hider
-hash unclutter 2>/dev/null && { unclutter -idle 3 &; }
+hash unclutter 2>/dev/null && { unclutter -idle 3 & }
 
 # Start arbtt to collect statistics about window usage
 [[ -f ~/.arbtt/.virthualenv/bin/activate ]] \
@@ -38,7 +38,7 @@ hash unclutter 2>/dev/null && { unclutter -idle 3 &; }
     && arbtt-capture &)
 
 # Start redshift to adjust the monitor color
-hash redshift 2>/dev/null && { redshift &; }
+hash redshift 2>/dev/null && { redshift & }
 
 # Try a global default before falling back to some reasonable defaults
 if [[ -f /etc/X11/xinit/xinitrc && -x /etc/X11/xinit/xinitrc ]]; then
