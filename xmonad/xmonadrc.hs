@@ -123,6 +123,8 @@ myEventHook = handleEventHook defaultConfig <+> docksEventHook
 myKeys = [ ("M-b", sendMessage ToggleStruts)
          , ("M-x", withFocused minimizeWindow)
          , ("M-S-x", sendMessage RestoreNextMinimizedWin)
+         , ("M-x", withFocused minimizeWindow)
+         , ("M-S-x", sendMessage RestoreNextMinimizedWin)
          , ("M-i d", spawn "xdotool mousedown 1")
          , ("M-i f", spawn "xdotool mousedown 3")
          , ("M-i e", spawn "xdotool mouseup 1")
