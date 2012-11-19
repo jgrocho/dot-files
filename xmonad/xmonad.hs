@@ -7,6 +7,7 @@ import XMonad.Layout.Fullscreen
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Accordion
 import XMonad.Layout.Tabbed
+import XMonad.Layout.Minimize
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.EZConfig
 
@@ -37,7 +38,7 @@ myWorkspaces = named ++ map show [(length named +1)..9]
 -- Define the layout.
 -- Adds an Accordion layout and smartBorders
 -- Adds dock support to the default.
-myLayout = smartBorders $ avoidStruts (
+myLayout = minimize $ smartBorders $ avoidStruts (
     tiled |||
     Mirror tiled |||
     Accordion |||
@@ -92,6 +93,8 @@ myLogHook xmobar = dynamicLogWithPP xmobarPP
 myEventHook = handleEventHook defaultConfig <+> docksEventHook
 
 myKeys = [ ("M-b", sendMessage ToggleStruts)
+         , ("M-x", withFocused minimizeWindow)
+         , ("M-S-x", sendMessage RestoreNextMinimizedWin)
          ]
 
 multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
