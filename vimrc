@@ -18,6 +18,18 @@ Bundle 'VimClojure'
 Bundle 'indenthaskell.vim'
 Bundle 'pbrisbin/html-template-syntax'
 Bundle 'rodjek/vim-puppet'
+Bundle 'jnwhiteh/vim-golang'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'ctrlp.vim'
+Bundle 'Tabular'
+Bundle 'tpope/vim-fugitive'
+Bundle 'textobj-user'
+Bundle 'textobj-entire'
+Bundle 'nosami/Omnisharp'
+Bundle 'tpope/vim-dispatch'
+Bundle 'scrooloose/syntastic'
+Bundle 'derekwyatt/vim-scala'
 "}}}
 
 filetype plugin indent on	" required
@@ -26,6 +38,7 @@ filetype plugin indent on	" required
 " switch on syntax highlighting
 syntax on
 
+set number
 set relativenumber
 nnoremap <F2> :set relativenumber!<CR>:set foldcolumn=0<CR>
 
@@ -69,28 +82,11 @@ set ruler
 
 " Turn off search highlighting, I care not for it
 set nohlsearch
+" Turn on incremental search
+set incsearch
 
-" Latex: {{{
-" We need to set grep to always show filename for vim-latex to work
-set grepprg=grep\ -nH\ $*
-
-" Set the default tex filetype
-let g:tex_flavor='latex'
-
-" Use xelatex to produce PDFs by default
-let g:Tex_DefaultTargetFormat='pdf'
-let g:Tex_ViewRule_pdf='xdg-open'
-let g:Tex_CompileRule_pdf='xelatex --interaction=nonstopmode $*'
-let g:Tex_MultipleCompileFormats='pdf'
-" }}}
-
-" Haskell: {{{
-" Setup up haskell related stuff
-" Use GHC functionality for haskell files
-au BufEnter *.{l,}hs compiler ghc
+highlight clear SignColumn
 
 " Configure browser for haskell_doc.vim
 let g:haddock_browser = "xdg-open"
-" }}}
-
 " vim: set et ts=4 sw=4 fdm=marker:
