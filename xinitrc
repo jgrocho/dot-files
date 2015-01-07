@@ -35,7 +35,10 @@ hash unclutter 2>/dev/null && { unclutter -idle 3 & }
     && arbtt-capture &)
 
 # Start redshift to adjust the monitor color
-hash redshift 2>/dev/null && { redshift & }
+hash redshift 2>/dev/null && {
+  redshift -m randr:crtc=0 &
+  redshift -m randr:crtc=1 &
+}
 
 # Start xmonad from the user's binary just in case anything ever happens to
 # xmonad (e.g. is uninstalled)
