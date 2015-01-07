@@ -9,6 +9,9 @@
 Session.vim
 .netrwhist
 
+# MonoDevelop files
+*.userprefs
+
 # RVM files
 .rvmrc
 
