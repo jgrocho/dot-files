@@ -42,6 +42,9 @@ hash redshift 2>/dev/null && {
 
 hash xautolock 2>/dev/null && hash lock 2>/dev/null && { xautolock -time 12 -locker lock & }
 
+# xmonad is not a reparenting window manager, tell java
+export _JAVA_AWT_WM_NONREPARENTING=1
+
 # Start xmonad from the user's binary just in case anything ever happens to
 # xmonad (e.g. is uninstalled)
-exec ~/.xmonad/xmonad-x86_64-linux
+exec ~/bin/xmonad

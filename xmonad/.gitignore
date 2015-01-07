@@ -1,6 +1,5 @@
-xmonad.hi
-xmonad.o
-xmonad-*-linux
-xmonad.errors
-*.o
-*.hi
+cabal.sandbox.config
+.cabal-sandbox/
+dist/
+xmonad-*.prev
+xmonadrc
