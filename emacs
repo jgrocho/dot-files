@@ -37,7 +37,7 @@
 (require 'ido)
 (ido-mode t)
 (require 'ido-ubiquitous)
-(ido-ubiquitous t)
+;(ido-ubiquitous t)
 (setq ido-enable-flex-matching t)
 
 ;;; Load solarized color-theme
@@ -45,17 +45,22 @@
 (load-theme 'solarized-dark t)
 
 ;;; Load ProofGeneral
+(setq proof-electric-terminator-enable t)
+(load "/usr/share/emacs/site-lisp/ProofGeneral/generic/proof-site.el")
 ;(require 'proof-site)
-;(setq proof-electric-terminator-enable t)
-;(load "/usr/share/emacs/site-lisp/ProofGeneral/generic/proof-site.el")
 
 ;;; Load egg (Emacs Got Git)
 ;(require 'egg)
 
 ;;; Use Xe(La)TeX by default for better font support.
-(setq TeX-engine 'xetex)
+;(setq TeX-engine 'xetex)
 ;;; Create PDFs by default
 (setq TeX-PDF-mode t)
+
+(add-hook 'LaTeX-mode-hook 'add-my-latex-environments)
+(defun add-my-latex-environments ()
+  (LaTeX-add-environments
+   '("dmath" LaTeX-env-label)))
 
 ;;; Define a list of modes in which to always enable flyspell-mode
 (defvar my-flyspell-modes
@@ -71,7 +76,7 @@
 ;;; Define a list of modes in which to always auto-fill text
 (defvar my-auto-fill-modes
   '(
-    LaTeX-mode-hook
+    ;LaTeX-mode-hook
     )
   )
 
@@ -96,7 +101,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" default))))
+ '(TeX-view-program-selection (quote (((output-dvi style-pstricks) "dvips and gv") (output-dvi "xdvi") (output-pdf "xdg-open") (output-html "xdg-open"))))
+ '(custom-safe-themes (quote ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" default)))
+ '(font-latex-math-environments (quote ("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align" "alignat" "xalignat" "dmath"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
