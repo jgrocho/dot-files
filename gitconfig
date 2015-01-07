@@ -21,3 +21,9 @@
     whitespace = red reverse
 [push]
     default = simple
+[merge]
+	tool = gitconflicts
+[mergetool "gitconflicts"]
+	cmd = gitconflicts vim $BASE $LOCAL $REMOTE $MERGED
+	trustExitCode = true
+	keepBackup = false
