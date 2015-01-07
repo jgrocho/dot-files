@@ -22,8 +22,8 @@
 [push]
     default = simple
 [merge]
-	tool = gitconflicts
+    tool = gitconflicts
 [mergetool "gitconflicts"]
-	cmd = gitconflicts vim $BASE $LOCAL $REMOTE $MERGED
-	trustExitCode = true
-	keepBackup = false
+    cmd = gitconflicts vim $BASE $LOCAL $REMOTE $MERGED
+    trustExitCode = true
+    keepBackup = false
