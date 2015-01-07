@@ -32,13 +32,17 @@ function rvm_ps1() {
 
 # Return the current Python virtual environment, if any.
 function virtenv_ps1() {
-    [[ -n $VIRTUALWRAPPER_VIRTUALENV && -n $VIRTUAL_ENV ]] \
-      && echo " (\[\e[0;32m\] $(basename $VIRTUAL_ENV)\[\e\0m\])"
+    [[ -n $VIRTUAL_ENV ]] \
+      && echo " (\[\e[0;32m\]$(basename $VIRTUAL_ENV)\[\e[0m\])"
 }
 
 function virthask_ps1() {
-    [[ -n $HSENV && -n $HSENV_NAME ]] \
-      && echo " (\[\e[0;34m\]λ $HSENV_NAME\[\e[0m\])"
+    if [[ -n $HSENV ]]; then
+        echo " (\[\e[0;34m\]λ\[\e[0m\])"
+        if [[ -n $HSENV_NAME ]]; then
+            echo " (\[\e[0;34m\]$HSENV_NAME\[\e[0m\])"
+        fi
+    fi
 }
 
 # Set the prompt command, any functions called from here should be quick
