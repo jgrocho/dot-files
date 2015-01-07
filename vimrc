@@ -40,7 +40,7 @@ syntax on
 
 set number
 set relativenumber
-nnoremap <F2> :set relativenumber!<CR>:set foldcolumn=0<CR>
+nnoremap <F2> :set number! relativenumber!<CR>:set foldcolumn=0<CR>
 
 set background=dark
 colorscheme solarized
