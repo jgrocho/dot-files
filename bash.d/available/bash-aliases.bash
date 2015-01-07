@@ -8,6 +8,6 @@ alias pshd='>/dev/null pushd'
 alias ppd='>/dev/null popd'
 
 # Make less behave like cat for one screen of text
-alias less='less -FX'
+alias less='less -FRX'
 
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
