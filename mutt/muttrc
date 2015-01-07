@@ -1,0 +1,44 @@
+# Enable GPG support
+source /etc/Muttrc.gpg.dist
+
+# Configure caches
+set header_cache     = ~/.mutt/cache/headers
+set message_cachedir = ~/.mutt/cache/bodies
+set certificate_file = ~/.mutt/certificates
+
+# Decrypt and load passwords
+source "gpg -dq ~/.mutt/passwords.gpg |"
+
+# Configure IMAP for primary Gmail account
+set imap_user = tangleforest@gmail.com
+set imap_pass = $my_pw_tangleforest
+set folder    = imaps://tangleforest@imap.gmail.com/
+set spoolfile = "+INBOX"
+set imap_check_subscribed
+
+# Configure SMTP for Gmail
+set smtp_url  = smtps://tangleforest@smtp.gmail.com/
+set smtp_pass = $my_pw_tangleforest
+set from      = tangleforest@gmail.com
+set realname  = "Jonathan Grochowski"
+
+set postponed    = "+[Gmail]/Drafts"
+set record       = "+[Gmail]/Sent Mail"
+set move         = no
+set include
+set sort         = 'threads'
+#set sort_aux     = 'reverse-last-date-received'
+set send_charset = 'us-ascii:utf-8'
+set index_format="%4C %Z %{%b %d} %-15.15L %?M?(#%03M)&(%4l)? %?y?(%.20Y) ?%s"
+
+auto_view text/html
+
+# Configure colors
+source ~/.mutt/colors-solarized/mutt-colors-solarized-dark-16.muttrc
+
+bind editor <Tab> complete-query
+#macro pager \cb <pipe-entry>'urlview'<enter> 'Follow links with urlview'
+macro index,pager \cb "<enter-command> set my_pdsave=\$pipe_decode<enter>\
+<enter-command> unset pipe_decode<enter>\
+<pipe-message>extract_url.pl<enter>\
+<enter-command> set pipe_decode=\$my_pdsave<enter>" "Open URLs"
