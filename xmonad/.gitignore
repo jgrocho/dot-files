@@ -1,5 +1,6 @@
 cabal.sandbox.config
 .cabal-sandbox/
 dist/
-xmonad-*.prev
+xmonad-x86_64-*
+xmonad-i686-*
 xmonadrc

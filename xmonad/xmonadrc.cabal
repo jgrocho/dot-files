@@ -1,12 +1,11 @@
 ------------------------------------------------------------------------------
 name: xmonadrc
 version: 0.1.0.0
-synopsis: Peter's XMonad Configuration
-homepage: http://www.pmade.com
+synopsis: Jonathan's XMonad Configuration
 license: BSD3
-author: Peter Jones <pjones@pmade.com>
-maintainer: Peter Jones <pjones@pmade.com>
-copyright: Copyright (c) 2013,2014 Peter Jones
+author: Jonathan Grochowski <jgrocho@gmail.com>
+maintainer: Jonathan Grochowski <jgrocho@gmail.com>
+copyright: Copyright (c) 2015 Jonathan Grochowski
 category: Graphics
 build-type: Simple
 cabal-version: >=1.8
