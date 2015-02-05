@@ -22,16 +22,16 @@ import XMonad.Util.XSelection
 import System.IO
 import Data.Ratio ((%))
 
-import qualified Solarized.Dark as S
+import qualified Solarized.Dark as Theme
 
 -- Define the default terminal.
 myTerminal = "urxvtc"
 
 -- Define the border color for non focused windows
-myNormalBorderColor = S.base02
+myNormalBorderColor = Theme.base02
 
 -- Define the border color for the focused window
-myFocuedBorderColor = S.violet
+myFocuedBorderColor = Theme.violet
 
 -- Define the width of borders
 myBorderWidth = 1
@@ -78,15 +78,15 @@ myLayout =
     gameLayout = noBorders $ Full
 
     solarizedTheme = defaultTheme
-        { activeColor         = S.base03
-        , inactiveColor       = S.base02
-        , urgentColor         = S.base02
-        , activeBorderColor   = S.base0
-        , inactiveBorderColor = S.base01
-        , urgentBorderColor   = S.red
-        , activeTextColor     = S.base0
-        , inactiveTextColor   = S.base01
-        , urgentTextColor     = S.orange
+        { activeColor         = Theme.base03
+        , inactiveColor       = Theme.base02
+        , urgentColor         = Theme.base02
+        , activeBorderColor   = Theme.base0
+        , inactiveBorderColor = Theme.base01
+        , urgentBorderColor   = Theme.red
+        , activeTextColor     = Theme.base0
+        , inactiveTextColor   = Theme.base01
+        , urgentTextColor     = Theme.orange
         }
 
 -- Define the Manage hook.
@@ -113,8 +113,8 @@ myManageHook = composeAll
 -- Configures xmobar.
 myLogHook xmobar = dynamicLogWithPP xmobarPP
     { ppOutput = hPutStrLn xmobar
-    , ppCurrent = xmobarColor S.blue ""
-    , ppTitle = xmobarColor S.green "" . shorten 50
+    , ppCurrent = xmobarColor Theme.blue ""
+    , ppTitle = xmobarColor Theme.green "" . shorten 50
     , ppLayout = const ""
     }
 
