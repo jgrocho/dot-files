@@ -93,21 +93,23 @@ myLayout =
 -- Always send Firefox and Chromium to the "web" workspace, Spotify to the
 -- music workspace, and Skype and Pidgin to the chat workspace.
 myManageHook = composeAll
-    [ isFullscreen --> doFullFloat
-    , className =? "Firefox"                              --> doShift "2:web"
-    , className =? "Chromium"                             --> doShift "2:web"
-    , className =? "Spotify"                              --> doShift "4:music"
-    , className =? "Skype"                                --> doShift "3:chat"
-    , className =? "Pidgin"                               --> doShift "3:chat"
-    , className =? "Dwarf_Fortress"                       --> doShift "5:games"
-    , className =? "net-minecraft-MinecraftLauncher"      --> doShift "5:games"
-    , className =? "net-ftb-gui-LaunchFrame"              --> doShift "5:games"
-    , className =? "net-ftb-mclauncher-MinecraftLauncher" --> doShift "5:games"
-    , className =? "com-atlauncher-App"                   --> doShift "5:games"
-    , className =? "MultiMC5"                             --> doShift "5:games"
-    , className =? "Uzbl-core"                            --> doShift "2:web"
-    , manageDocks
-    ] <+> manageHook defaultConfig
+    ([isFullscreen --> doFullFloat] ++ classMappings ++ [manageDocks]) <+> manageHook defaultConfig
+  where
+    classMappings = map (\(klass, workspace) -> className =? klass --> doShift (myWorkspaces !! (workspace-1)))
+        -- A list of tuples to map X11 window class names to workspaces
+            [ ("Firefox", 2)
+            , ("Chromium", 2)
+            , ("Uzbl-core", 2)
+            , ("Skype", 3)
+            , ("Pidgin", 3)
+            , ("Spotify", 4)
+            , ("Dwarf_Fortress", 5)
+            , ("net-minecraft-MinecraftLauncher", 5)
+            , ("net-ftb-gui-LaunchFrame", 5)
+            , ("net-ftb-mclauncher-MinecraftLauncher", 5)
+            , ("com-atlauncher-App", 5)
+            , ("MultiMC5", 5)
+            ]
 
 -- Define the Log hook.
 -- Configures xmobar.
