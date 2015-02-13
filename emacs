@@ -96,7 +96,8 @@
 (setq-default show-trailing-whitespace t)
 
 ;;; Disable Ctrl-z
-(global-unset-key "\^z")
+(when (display-graphic-p)
+  (global-unset-key (kbd "C-z")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
