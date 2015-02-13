@@ -56,6 +56,8 @@
 (setq TeX-engine 'luatex)
 ;;; Create PDFs by default
 (setq TeX-PDF-mode t)
+;;; Turn on source correlate mode, i.e. enable forward and reverse search
+(add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
 
 (add-hook 'LaTeX-mode-hook 'add-my-latex-environments)
 (defun add-my-latex-environments ()
