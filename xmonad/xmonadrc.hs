@@ -128,6 +128,7 @@ myKeys = [ ("M-b", sendMessage ToggleStruts)
          , ("M-i e", spawn "xdotool mouseup 1")
          , ("M-i r", spawn "xdotool mouseup 3")
          , ("M-i o", safePromptSelection "xdg-open")
+         , ("M-i s", spawn "xset dpms force off")
          ]
 
 multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
