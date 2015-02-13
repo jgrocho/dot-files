@@ -7,7 +7,7 @@
 	       "http://tromey.com/elpa/") t)
 (add-to-list 'package-archives
 	     '("Marmalade" .
-	      "http://marmalade-repo.org/packages/") t)
+	      "http://marmalade.ferrier.me.uk/packages/") t)
 
 ;;; And initialize.
 (package-initialize)
