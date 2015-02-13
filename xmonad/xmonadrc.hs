@@ -99,6 +99,7 @@ myManageHook = composeAll
         -- A list of tuples to map X11 window class names to workspaces
             [ ("Firefox", 2)
             , ("Chromium", 2)
+            , ("Google-chrome-stable", 2)
             , ("Uzbl-core", 2)
             , ("Skype", 3)
             , ("Pidgin", 3)
