@@ -3,8 +3,8 @@ name: xmonadrc
 version: 0.1.0.0
 synopsis: Jonathan's XMonad Configuration
 license: BSD3
-author: Jonathan Grochowski <jgrocho@gmail.com>
-maintainer: Jonathan Grochowski <jgrocho@gmail.com>
+author: Jonathan Grochowski <jongrocho@gmail.com>
+maintainer: Jonathan Grochowski <jongrocho@gmail.com>
 copyright: Copyright (c) 2015 Jonathan Grochowski
 category: Graphics
 build-type: Simple
