@@ -53,7 +53,7 @@
 ;(require 'egg)
 
 ;;; Use Xe(La)TeX by default for better font support.
-;(setq TeX-engine 'xetex)
+(setq TeX-engine 'luatex)
 ;;; Create PDFs by default
 (setq TeX-PDF-mode t)
 
