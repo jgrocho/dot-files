@@ -21,7 +21,6 @@
 (defvar my-packages
   '(
     ido-ubiquitous
-    color-theme
     color-theme-solarized
     ;proof-general
     auctex
@@ -41,7 +40,7 @@
 (setq ido-enable-flex-matching t)
 
 ;;; Load solarized color-theme
-(require 'color-theme)
+(setq solarized-termcolors 256)
 (load-theme 'solarized-dark t)
 
 ;;; Load ProofGeneral
