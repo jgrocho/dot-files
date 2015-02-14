@@ -25,7 +25,6 @@ URxvt*cursorBlink:      true
 URxvt*depth:            32
 URxvt*borderless:       1
 URxvt*scrollBar:        false
-URxvt*loginShell:       true
 URxvt*secondaryScroll:  true
 URxvt*savelines:        5000
 URxvt*visualBell:       true
