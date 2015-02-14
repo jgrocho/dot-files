@@ -126,13 +126,15 @@ myEventHook = handleEventHook defaultConfig <+> docksEventHook
 myKeys = [ ("M-b", sendMessage ToggleStruts)
          , ("M-x", withFocused minimizeWindow)
          , ("M-S-x", sendMessage RestoreNextMinimizedWin)
-         , ("M-i d", spawn "xdotool mousedown 1")
-         , ("M-i f", spawn "xdotool mousedown 3")
-         , ("M-i e", spawn "xdotool mouseup 1")
-         , ("M-i r", spawn "xdotool mouseup 3")
-         , ("M-i o", safePromptSelection "xdg-open")
-         , ("M-i s", spawn "xset dpms force off")
+         , (prefix "d", spawn "xdotool mousedown 1")
+         , (prefix "f", spawn "xdotool mousedown 3")
+         , (prefix "e", spawn "xdotool mouseup 1")
+         , (prefix "r", spawn "xdotool mouseup 3")
+         , (prefix "o", safePromptSelection "xdg-open")
+         , (prefix "s", spawn "xset dpms force off")
          ]
+  where
+    prefix = let p = "M-i " in (p ++)
 
 multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
                  , ("<XF86AudioStop>", spawn "mpc stop")
