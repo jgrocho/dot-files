@@ -11,34 +11,28 @@ if [[ -d /etc/X11/xinit/xinitrc.d ]]; then
   unset f
 fi
 
-# Load up Xresources
-systemctl --user start xresources.service
-
 # Set the cursor (XMonad does set one by default)
 xsetroot -cursor_name left_ptr
 
+declare units=(
+  xresources
+  fehbg
+  urxvtd
+  unclutter
+  redshift@0
+  redshift@1
+  xautolock
+)
+
+systemctl --user start ${units[@]}
+
 # Start the VirtualBox guest additons
 hash VBoxClient-all 2>/dev/null && { VBoxClient-all & }
-
-# Load a background image
-systemctl --user start fehbg.service
-
-# Start a urxvt daemon
-systemctl --user start urxvtd.service
-
-# Start mouse hider
-systemctl --user start unclutter.service
 
 # Start arbtt to collect statistics about window usage
 [[ -f ~/.arbtt/.virthualenv/bin/activate ]] \
   && (source ~/.arbtt/.virthualenv/bin/activate \
     && arbtt-capture &)
-
-# Start redshift to adjust the monitor color
-systemctl --user start redshift@0.service
-systemctl --user start redshift@1.service
-
-systemctl --user start xautolock.service
 
 # xmonad is not a reparenting window manager, tell java
 export _JAVA_AWT_WM_NONREPARENTING=1
