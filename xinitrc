@@ -12,7 +12,7 @@ if [[ -d /etc/X11/xinit/xinitrc.d ]]; then
 fi
 
 # Load up Xresources
-[[ -f ~/.Xresources && -r ~/.Xresources ]] && xrdb -merge ~/.Xresources
+systemctl --user start xresources.service
 
 # Set the cursor (XMonad does set one by default)
 xsetroot -cursor_name left_ptr
@@ -21,13 +21,13 @@ xsetroot -cursor_name left_ptr
 hash VBoxClient-all 2>/dev/null && { VBoxClient-all & }
 
 # Load a background image
-[[ -f ~/.fehbg && -r ~/.fehbg ]] && { sh ~/.fehbg & }
+systemctl --user start fehbg.service
 
 # Start a urxvt daemon
-hash urxvtd 2>/dev/null && urxvtd -q -o -f
+systemctl --user start urxvtd.service
 
 # Start mouse hider
-hash unclutter 2>/dev/null && { unclutter -idle 3 & }
+systemctl --user start unclutter.service
 
 # Start arbtt to collect statistics about window usage
 [[ -f ~/.arbtt/.virthualenv/bin/activate ]] \
@@ -35,12 +35,10 @@ hash unclutter 2>/dev/null && { unclutter -idle 3 & }
     && arbtt-capture &)
 
 # Start redshift to adjust the monitor color
-hash redshift 2>/dev/null && {
-  redshift -m randr:crtc=0 &
-  redshift -m randr:crtc=1 &
-}
+systemctl --user start redshift@0.service
+systemctl --user start redshift@1.service
 
-hash xautolock 2>/dev/null && hash lock 2>/dev/null && { xautolock -time 12 -locker lock & }
+systemctl --user start xautolock.service
 
 # xmonad is not a reparenting window manager, tell java
 export _JAVA_AWT_WM_NONREPARENTING=1
