@@ -80,7 +80,7 @@ function prompt_command() {
         [[ -n $SSH_TTY || -n $SSH_CONNECTION ]] \
           && host="@$(hostname)" \
           || host=""
-        printf "\033]0;%s%s [%s]\007" "${USER}" "${host}" "${PWD/#$HOME/~}"
+        printf "\033]0;%s%s [%s]\007" "${USER}" "${host}" "${PWD/#$HOME/\~}"
         ;;
     esac
 
@@ -90,7 +90,7 @@ function prompt_command() {
         [[ -n $SSH_TTY || -n $SSH_CONNECTION ]] \
           && host="@$(hostname)" \
           || host=""
-        printf "\033]2;%s%s [%s]\007" "${USER}" "${host}" "${PWD/#$HOME/~}"
+        printf "\033]2;%s%s [%s]\007" "${USER}" "${host}" "${PWD/#$HOME/\~}"
     fi
 
     # Set the prompt.
