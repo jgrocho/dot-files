@@ -1,0 +1,7 @@
+[Unit]
+Description=Background Setter
+
+[Service]
+Type=oneshot
+Environment=DISPLAY=:0
+ExecStart=/home/jon/bin/fehbg

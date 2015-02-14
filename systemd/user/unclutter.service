@@ -1,0 +1,5 @@
+[Unit]
+Description=Mouse Hider
+
+[Service]
+ExecStart=/usr/bin/unclutter -display :0 -idle 3

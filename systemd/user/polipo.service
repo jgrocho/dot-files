@@ -1,0 +1,8 @@
+[Unit]
+Description=Polipo Proxy Server
+
+[Service]
+ExecStart=/usr/bin/polipo -c ~/.config/polipo/config
+
+[Install]
+WantedBy=default.target

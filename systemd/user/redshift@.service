@@ -1,0 +1,6 @@
+[Unit]
+Description=Redshift Per-Screen
+
+[Service]
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/redshift -m randr:crtc=%i

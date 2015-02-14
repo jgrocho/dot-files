@@ -1,0 +1,7 @@
+[Unit]
+Description=Xresources Settings
+ConditionPathExists=%h/.Xresources
+
+[Service]
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/xrdb -merge %h/.Xresources
