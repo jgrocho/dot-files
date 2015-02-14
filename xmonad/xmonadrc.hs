@@ -132,9 +132,16 @@ myKeys = [ ("M-b", sendMessage ToggleStruts)
          , (prefix "r", spawn "xdotool mouseup 3")
          , (prefix "o", safePromptSelection "xdg-open")
          , (prefix "s", spawn "xset dpms force off")
+         , (programPrefix "p", spawn "dmenu_run")
+         , (programPrefix "t", spawn myTerminal)
+         , (programPrefix "u", spawn "uzbl-browser")
+         , (programPrefix "f", spawn "firefox")
+         , (programPrefix "e", spawn "emacs")
+         , (programPrefix "v", spawn "vlc")
          ]
   where
     prefix = let p = "M-i " in (p ++)
+    programPrefix = let p = "M-p " in (p ++)
 
 multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
                  , ("<XF86AudioStop>", spawn "mpc stop")
