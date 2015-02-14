@@ -2,5 +2,5 @@
 Description=urxvt Daemon
 
 [Service]
-Type=simple
 ExecStart=/usr/bin/urxvtd
+Restart=on-failure

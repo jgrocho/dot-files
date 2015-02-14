@@ -5,3 +5,4 @@ ConditionFileIsExecutable=%h/bin/lock
 [Service]
 Environment=DISPLAY=:0
 ExecStart=/usr/bin/xautolock -time 12 -locker %h/bin/lock
+Restart=on-failure

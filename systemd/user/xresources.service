@@ -3,5 +3,6 @@ Description=Xresources Settings
 ConditionPathExists=%h/.Xresources
 
 [Service]
+Type=oneshot
 Environment=DISPLAY=:0
 ExecStart=/usr/bin/xrdb -merge %h/.Xresources

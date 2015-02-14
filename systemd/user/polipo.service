@@ -2,7 +2,8 @@
 Description=Polipo Proxy Server
 
 [Service]
-ExecStart=/usr/bin/polipo -c ~/.config/polipo/config
+ExecStart=/usr/bin/polipo -c %h/.config/polipo/config
+Restart=on-failure
 
 [Install]
 WantedBy=default.target
