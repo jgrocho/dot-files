@@ -13,3 +13,5 @@ Config { font = "xft:inconsolata:size=11"
        , alignSep = "}{"
        , template = "%StdinReader% }{ %wlan0wi% * %wlan0% | %multicpu% | %memory%    <fc=#cb4b16>%date%</fc>"
        }
+
+-- vim: ft=haskell
