@@ -52,16 +52,14 @@ myWorkspaces = named ++ map show [(length named +1)..9]
 -- window on the far left.
 myLayout =
     minimize $ smartBorders $
-    onWorkspace "3:chat" chatLayout $
-    onWorkspace "5:games" gameLayout $
-    avoidStruts (
-        tiled |||
-        Mirror tiled |||
-        Accordion |||
-        tabbed shrinkText solarizedTheme
-            { fontName   = "xft:inconsolata:size=8"
-            , decoHeight = 18
-            }) |||
+    onWorkspace (myWorkspaces !! (3-1)) chatLayout $
+    onWorkspace (myWorkspaces !! (5-1)) gameLayout $
+    avoidStruts
+        (   tiled
+        ||| Mirror tiled
+        ||| Accordion
+        ||| tabbedLayout
+        ) |||
     fullscreenFull Full
   where
     tiled = Tall nmaster delta ratio
@@ -71,6 +69,11 @@ myLayout =
     delta = 3/100
     -- Default proption of screen for the master pane
     ratio = 1/2
+
+    tabbedLayout = tabbed shrinkText solarizedTheme
+        { fontName   = "xft:inconsolata:size=8"
+        , decoHeight = 18
+        }
 
     chatLayout = avoidStruts $ withIM (1%7) pidginRoster Grid
     pidginRoster = ClassName "Pidgin" `And` Role "buddy_list"
