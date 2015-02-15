@@ -1,7 +1,4 @@
 ################################################################################
-ARCH        = $(shell uname -m)
-OS          = $(shell uname -s | tr '[A-Z]' '[a-z]')
-TARGET      = $(HOME)/.xmonad/xmonad-$(ARCH)-$(OS)
 SRC         = $(shell find . -type f -name '*.hs')
 SANDBOX     = cabal.sandbox.config
 XMONAD      = $(HOME)/bin/xmonad
@@ -15,10 +12,8 @@ CABAL_FLAGS = --enable-optimization=2
 all: $(XMONADRC)
 
 ################################################################################
-install: $(TARGET)
-	mkdir -p $(dir $(XMONAD))
-	cp $(XMONADRC) $(XMONAD)-new
-	mv $(XMONAD)-new $(XMONAD)
+install: $(XMONADRC)
+	install -Dm755 $(XMONADRC) $(XMONAD)
 
 ################################################################################
 restart: install
@@ -42,10 +37,3 @@ $(XMONADRC): $(SRC) $(SANDBOX)
 $(SANDBOX):
 	cabal sandbox init
 	cabal install --dependencies-only
-
-################################################################################
-$(TARGET): $(XMONADRC)
-	mkdir -p $(dir $@)
-	if [ -r $@ ]; then mv $@ $@.prev; fi
-	cp -p $< $@
-	cd $(dir $@) && ln -nfs $(notdir $@) xmonadrc
