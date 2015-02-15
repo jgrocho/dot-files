@@ -98,21 +98,24 @@ myLayout =
 myManageHook = composeAll
     ([isFullscreen --> doFullFloat] ++ classMappings ++ [manageDocks]) <+> manageHook defaultConfig
   where
-    classMappings = map (\(klass, workspace) -> className =? klass --> doShift (myWorkspaces !! (workspace-1)))
-        -- A list of tuples to map X11 window class names to workspaces
-            [ ("Firefox", 2)
-            , ("Chromium", 2)
-            , ("Google-chrome-stable", 2)
-            , ("Uzbl-core", 2)
-            , ("Skype", 3)
-            , ("Pidgin", 3)
-            , ("Spotify", 4)
-            , ("Dwarf_Fortress", 5)
-            , ("net-minecraft-MinecraftLauncher", 5)
-            , ("net-ftb-gui-LaunchFrame", 5)
-            , ("net-ftb-mclauncher-MinecraftLauncher", 5)
-            , ("com-atlauncher-App", 5)
-            , ("MultiMC5", 5)
+    classMappings = concat $
+        map (\(workspace, names) -> [className =? name --> doShift (myWorkspaces !! (workspace-1)) | name <- names])
+            [ (2, [ "Firefox"
+                  , "Chromium"
+                  , "Google-chrome-stable"
+                  , "Uzbl-core"
+                  ])
+            , (3, [ "Skype"
+                  , "Pidgin"
+                  ])
+            , (4, [ "Spotify"
+                  ])
+            , (5, [ "net-minecraft-MinecraftLauncher"
+                  , "net-ftb-gui-LaunchFrame"
+                  , "net-ftb-mclauncher-MinecraftLauncher"
+                  , "com-atlauncher-App"
+                  , "MultiMC5"
+                  ])
             ]
 
 -- Define the Log hook.
