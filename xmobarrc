@@ -5,13 +5,13 @@ Config { font = "xft:inconsolata:size=11"
        , commands = [ Run MultiCpu ["-L","3","-H","50","--normal","#859900","--high","#dc322f","-t","Cpu: <autototal>%"] 10
                     , Run Memory ["-t","Mem: <usedratio>%"] 10
                     , Run Date "%a %b %-d %-H:%M" "date" 10
-                    , Run Network "wlan0" ["-t","↓<rx> ↑<tx>","-S","True"] 10
-                    , Run Wireless "wlan0" ["-t","<essid> <quality>%"] 10
+                    , Run Network "wifi0" ["-t","↓<rx> ↑<tx>","-S","True"] 10
+                    , Run Wireless "wifi0" ["-t","<essid> <quality>%"] 10
                     , Run StdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %wlan0wi% * %wlan0% | %multicpu% | %memory%    <fc=#cb4b16>%date%</fc>"
+       , template = "%StdinReader% }{ %wifi0wi% * %wifi0% | %multicpu% | %memory%    <fc=#cb4b16>%date%</fc>"
        }
 
 -- vim: ft=haskell
