@@ -1,18 +1,26 @@
 ################################################################################
-SRC         = $(shell find . -type f -name '*.hs')
+SRC         = $(shell find src/ -type f -name '*.hs')
 SANDBOX     = cabal.sandbox.config
+
+XMONADSRC   = xmonadrc.hs
 XMONAD      = $(HOME)/bin/xmonad
 XMONADRC    = dist/build/xmonadrc/xmonadrc
+
+XMOBARSRC   = xmobar.hs
+XMOBAR      = dist/build/xmobar/xmobar
+XMOBARRC    = xmobarrc
+
+GHC_CHECK   = ghc -V | grep -q '7\.8\.4' # Required compiler version.
 CABAL_FLAGS = --enable-optimization=2
 
 ################################################################################
-.PHONEY: all install restart clean realclean
+.PHONEY: all install restart clean realclean ghc-version
 
 ################################################################################
-all: $(XMONADRC)
+all: $(XMONADRC) $(XMOBARRC)
 
 ################################################################################
-install: $(XMONADRC)
+install: $(XMONADRC) $(XMOBARRC)
 	install -Dm755 $(XMONADRC) $(XMONAD)
 
 ################################################################################
@@ -21,17 +29,25 @@ restart: install
 
 ################################################################################
 clean:
-	rm -rf dist $(XMONADRC) $(SANDBOX)
+	rm -rf dist $(XMONADRC) $(XMOBARRC) $(SANDBOX)
 
 ################################################################################
-realclean:
+realclean: clean
 	rm -rf .cabal-sandbox
 
 ################################################################################
-
-$(XMONADRC): $(SRC) $(SANDBOX)
-	ghc -V | grep -q 7.8.4 # Required compiler version.
+$(XMONADRC): $(SANDBOX) $(SRC) $(XMONADSRC)
+	$(GHC_CHECK)
 	cabal build
+
+################################################################################
+$(XMOBAR): $(SANDBOX) $(SRC) $(XMOBARSRC)
+	$(GHC_CHECK)
+	cabal build xmobar
+
+################################################################################
+$(XMOBARRC): $(XMOBAR)
+	$(XMOBAR)
 
 ################################################################################
 $(SANDBOX):
