@@ -13,8 +13,10 @@ cabal-version: >=1.8
 ------------------------------------------------------------------------------
 library
   exposed-modules:
+    Solarized
     Solarized.Dark
     Solarized.Light
+    Theme
     XMobarHs
 
   other-modules:
