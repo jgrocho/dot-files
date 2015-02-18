@@ -2,8 +2,10 @@
 module Main (main) where
 
 import XMobarHs
+import Network.HostName
 
-myConfig =
+myConfig :: String -> Config
+myConfig host =
     config { font = "xft:inconsolata:size=11"
            , bgColor = "#002b36"
            , fgColor = "#839496"
@@ -20,4 +22,6 @@ myConfig =
            , template = "%StdinReader% }{ %wifi0wi% * %wifi0% | %multicpu% | %memory%    <fc=#cb4b16>%date%</fc>"
            }
 
-main = myConfig `exportTo` "xmobarrc"
+main :: IO ()
+main = getHostName >>= exportTo' "xmobarrc" . myConfig
+  where exportTo' = flip exportTo

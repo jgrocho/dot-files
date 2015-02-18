@@ -42,3 +42,4 @@ executable xmobar
   build-depends: base
                , xmonadrc
                , text
+               , hostname == 1.0
