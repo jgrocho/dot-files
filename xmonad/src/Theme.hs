@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Theme
   ( background
   , backgroundHighlight
@@ -27,9 +29,14 @@ module Theme
   , hot
   , hottest
 
+  , font
+  , atSize
+  , normalFont
+
   ) where
 
-import           Data.String    (IsString(..))
+import           Data.Monoid
+import           Data.String
 import           Solarized
 import qualified Solarized.Dark as Dark
 
@@ -65,3 +72,12 @@ hot     :: IsString a => a
 hot     = orange
 hottest :: IsString a => a
 hottest = red
+
+font :: IsString a => a
+font = "xft:inconsolata"
+
+atSize :: (Monoid a, IsString a) => a -> Double -> a
+atSize font = mappend (font <> ":size=") . fromString . show
+
+normalFont :: (Monoid a, IsString a) => a
+normalFont = font `atSize` 11
