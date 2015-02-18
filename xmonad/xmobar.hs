@@ -1,26 +1,54 @@
 {-# LANGUAGE OverloadedStrings #-}
+
 module Main (main) where
 
-import XMobarHs
-import Network.HostName
+import           Data.Monoid      ((<>))
+import qualified Data.Text        as T
+import           Network.HostName
+import qualified Theme            as Theme
+import           XMobarHs
 
-myConfig :: String -> Config
-myConfig host =
-    config { font = "xft:inconsolata:size=11"
-           , bgColor = "#002b36"
-           , fgColor = "#839496"
+interface :: T.Text
+interface = "wifi0"
+
+dateFormat :: T.Text
+dateFormat = "%a %-d %b %-H:%M"
+
+alias :: T.Text -> T.Text
+alias = flip surround $ sepChar sharedConfig
+
+primarySeparator :: T.Text
+primarySeparator = xmobarColor Theme.foregroundSeconday " │ "
+
+secondarySeparator :: T.Text
+secondarySeparator = xmobarColor Theme.foregroundSeconday " ∙ "
+
+sharedConfig :: Config
+sharedConfig =
+    config { font = Theme.normalFont
+           , bgColor = Theme.background
+           , fgColor = Theme.foreground
            , position = Top
-           , commands = [ Run $ MultiCpu ["-L","3","-H","50","--normal","#859900","--high","#dc322f","-t","Cpu: <autototal>%"] 10
-                        , Run $ Memory ["-t","Mem: <usedratio>%"] 10
-                        , Run $ Date "%a %b %-d %-H:%M" "date" 10
-                        , Run $ Network "wifi0" ["-t","↓<rx> ↑<tx>","-S","True"] 10
-                        , Run $ Wireless "wifi0" ["-t","<essid> <quality>%"] 10
+           , commands = [ Run $ MultiCpu ["-L", "3", "-H", "50", "--normal", Theme.good, "--high", Theme.bad, "-t", "<autototal>"] 10
+                        , Run $ Memory ["-t", "<usedratio>%"] 10
+                        , Run $ Date dateFormat "date" 10
+                        , Run $ Network interface ["-t", "↓<rx> ↑<tx>", "-S", "False"] 10
+                        , Run $ Wireless interface ["-t", "<essid> <quality>%"] 10
                         , Run $ StdinReader
                         ]
-           , sepChar = "%"
-           , alignSep = "}{"
-           , template = "%StdinReader% }{ %wifi0wi% * %wifi0% | %multicpu% | %memory%    <fc=#cb4b16>%date%</fc>"
+           , template = T.intercalate (alignSep sharedConfig)
+                [ alias "StdinReader"
+                , T.intercalate primarySeparator
+                    [ T.intercalate secondarySeparator $ map alias [interface <> "wi", interface]
+                    , alias "multicpu"
+                    , alias "memory"
+                    , xmobarColor Theme.cyan $ alias "date"
+                    ]
+                ]
            }
+
+myConfig :: String -> Config
+myConfig host = sharedConfig
 
 main :: IO ()
 main = getHostName >>= exportTo' "xmobarrc" . myConfig
