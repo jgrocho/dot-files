@@ -22,16 +22,11 @@ import XMonad.Util.XSelection
 import System.IO
 import Data.Ratio ((%))
 
-import qualified Solarized.Dark as Theme
+import           Theme    (atSize)
+import qualified Theme as Theme
 
 -- Define the default terminal.
 myTerminal = "urxvtc"
-
--- Define the border color for non focused windows
-myNormalBorderColor = Theme.base02
-
--- Define the border color for the focused window
-myFocuedBorderColor = Theme.violet
 
 -- Define the width of borders
 myBorderWidth = 1
@@ -42,7 +37,7 @@ myBorderWidth = 1
 myWorkspaces = named ++ map show [(length named +1)..9]
   where
     names = ["main", "web", "chat", "music", "games"]
-    named = zipWith (\x -> ((show x ++) ":" ++)) [1..] names
+    named = zipWith (\x -> ((show x ++) "❘" ++)) [1..] names
 
 -- Define the layout.
 -- We have vertical and horizontal Tall layouts, an Accordion layout and a
@@ -71,7 +66,7 @@ myLayout =
     ratio = 1/2
 
     tabbedLayout = tabbed shrinkText solarizedTheme
-        { fontName   = "xft:inconsolata:size=8"
+        { fontName   = Theme.font `atSize` 8
         , decoHeight = 18
         }
 
@@ -81,15 +76,15 @@ myLayout =
     gameLayout = noBorders $ Full
 
     solarizedTheme = defaultTheme
-        { activeColor         = Theme.base03
-        , inactiveColor       = Theme.base02
-        , urgentColor         = Theme.base02
-        , activeBorderColor   = Theme.base0
-        , inactiveBorderColor = Theme.base01
-        , urgentBorderColor   = Theme.red
-        , activeTextColor     = Theme.base0
-        , inactiveTextColor   = Theme.base01
-        , urgentTextColor     = Theme.orange
+        { activeColor         = Theme.active
+        , activeTextColor     = Theme.activeText
+        , activeBorderColor   = Theme.activeBorder
+        , inactiveColor       = Theme.inactive
+        , inactiveTextColor   = Theme.inactiveText
+        , inactiveBorderColor = Theme.inactiveBorder
+        , urgentColor         = Theme.urgent
+        , urgentTextColor     = Theme.urgentText
+        , urgentBorderColor   = Theme.urgentBorder
         }
 
 -- Define the Manage hook.
@@ -120,12 +115,17 @@ myManageHook = composeAll
 
 -- Define the Log hook.
 -- Configures xmobar.
-myLogHook xmobar = dynamicLogWithPP xmobarPP
-    { ppOutput = hPutStrLn xmobar
-    , ppCurrent = xmobarColor Theme.blue ""
-    , ppTitle = xmobarColor Theme.green "" . shorten 50
-    , ppLayout = const ""
-    }
+myLogHook xmobar = dynamicLogWithPP
+    defaultPP { ppCurrent = xmobarColor Theme.foregroundHighlight Theme.backgroundHighlight
+              , ppVisible = xmobarColor Theme.activeText Theme.active
+              , ppHidden  = xmobarColor Theme.inactiveText Theme.inactive
+              , ppUrgent  = xmobarColor Theme.urgentText Theme.urgent . (:) '!'
+              , ppSep     = xmobarColor Theme.foregroundSeconday "" " ║ "
+              , ppWsSep   = xmobarColor Theme.foregroundSeconday "" "│"
+              , ppTitle   = xmobarColor Theme.foregroundHighlight "" . shorten 50
+              , ppLayout  = const ""
+              , ppOutput  = hPutStrLn xmobar
+              }
 
 myEventHook = handleEventHook defaultConfig <+> docksEventHook
 
@@ -168,8 +168,8 @@ main = do
     xmobar1 <- spawnPipe "xmobar -x 1"
     xmonad $ defaultConfig
         { terminal = myTerminal
-        , normalBorderColor = myNormalBorderColor
-        , focusedBorderColor = myFocuedBorderColor
+        , normalBorderColor = Theme.borderSecondary
+        , focusedBorderColor = Theme.border
         , borderWidth = myBorderWidth
         , modMask = mod4Mask
         , workspaces = myWorkspaces
