@@ -10,13 +10,14 @@ module XMobarHs
   , Run      (..)
   , xmobarColor
   , surround
+  , wrap
   , config
   , export
   , exportTo
   ) where
 
 import Prelude         hiding (Show(..), print, writeFile)
-import Data.Monoid            (Monoid, (<>))
+import Data.Monoid
 import Data.String            (IsString(..))
 import Data.Text              (Text(..), append, cons, intercalate, pack, snoc)
 import Data.Text.IO           (writeFile)
@@ -254,8 +255,13 @@ instance ToText a => ToText (Run a) where
 xmobarColor :: (Monoid a, IsString a) => a -> a -> a
 xmobarColor color content = "<fc=" <> color <> ">" <> content <> "</fc>"
 
-surround :: (Monoid a, IsString a) => a -> a -> a
-surround xs x = x <> xs <> x
+wrap :: (Eq a, Monoid a) => a -> a -> a -> a
+wrap l r m
+    | m == mempty = mempty
+    | otherwise   = l <> m <> r
+
+surround :: (Eq a, Monoid a) => a -> a -> a
+surround o m = wrap o o m
 
 export :: Config -> IO ()
 export cfg = getHomeDirectory >>= exportTo cfg . prepend ".xmobarrc"

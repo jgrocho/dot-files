@@ -15,7 +15,7 @@ dateFormat :: T.Text
 dateFormat = "%a %-d %b %-H:%M"
 
 alias :: T.Text -> T.Text
-alias = flip surround $ sepChar sharedConfig
+alias = surround $ sepChar sharedConfig
 
 primarySeparator :: T.Text
 primarySeparator = xmobarColor Theme.foregroundSeconday " │ "
