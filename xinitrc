@@ -14,6 +14,11 @@ fi
 # Set the cursor (XMonad does not set one by default)
 xsetroot -cursor_name left_ptr
 
+# Set screen layout based on hostname
+case "$HOSTNAME" in
+  qubert) xrandr --output LVDS1 --auto --primary --output VGA1 --auto --above LVDS1 ;;
+esac
+
 declare units=(
   xresources
   fehbg
