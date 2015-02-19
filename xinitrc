@@ -11,7 +11,7 @@ if [[ -d /etc/X11/xinit/xinitrc.d ]]; then
   unset f
 fi
 
-# Set the cursor (XMonad does set one by default)
+# Set the cursor (XMonad does not set one by default)
 xsetroot -cursor_name left_ptr
 
 declare units=(
