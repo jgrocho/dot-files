@@ -8,6 +8,21 @@ import           Network.HostName
 import qualified Theme            as Theme
 import           XMobarHs
 
+data Host =
+    Host { hostName    :: HostName
+         , hostCores   :: Int
+         , hostCpus    :: Int
+         , hostBattery :: Bool
+         , hostTemp    :: Bool
+         }
+
+-- hosts :: [(HostName, Host)]
+hosts = [ ("qubert", Host "qubert" 2 4 True  True  )
+        , ("randy" , Host "randy"  1 2 False False )
+        ]
+
+lookupHost host = maybe (Host "" 1 1 False False) id $ lookup host hosts
+
 interface :: T.Text
 interface = "wifi0"
 
@@ -38,23 +53,33 @@ sharedConfig =
            }
 
 multiCpuTemplate host = T.intercalate " " $ map ((<> "%") . wrap "<" ">" . ("total" <>) . T.pack . show) [0..cpus-1]
-  where cpus = maybe 1 id $ lookup host [("qubert", 4), ("randy", 2)]
+  where cpus = hostCpus host
 
-sharedTemplate =
+coreTempTemplate host = T.intercalate " " $ map ((<> "C") . wrap "<" ">" . ("core" <>) . T.pack . show) [1..cores]
+  where cores = hostCores host
+
+hostTemplate host =
     T.intercalate (alignSep sharedConfig)
         [ alias "StdinReader"
-        , T.intercalate primarySeparator
+        , T.intercalate primarySeparator $ filter (/= T.empty)
             [ T.intercalate secondarySeparator $ map alias [interface <> "wi", interface]
-            , alias "multicpu"
-            , alias "memory"
+            , T.intercalate secondarySeparator $ map alias $ "multicpu" : (if hostTemp host then ["coretemp"] else [])
+            , (if hostBattery host then alias "battery" else "") <> alias "memory"
             , xmobarColor Theme.cyan $ alias "date"
             ]
         ]
 
 myConfig :: HostName -> Config
-myConfig host =
-    sharedConfig { commands = (Run $ MultiCpu ["-L", "3", "-H", "50", "--normal", Theme.good, "--high", Theme.bad, "-t", multiCpuTemplate host] 10) : commands sharedConfig
-                 , template = sharedTemplate
+myConfig hostname = let host = lookupHost hostname in
+    sharedConfig { commands = [ Run $ MultiCpu ["-L", "3", "-H", "50", "--normal", Theme.good, "--high", Theme.bad, "-t", multiCpuTemplate host] 10 ]
+                              ++ (if hostBattery host
+                                     then [ Run $ BatteryP ["BAT0"] ["-t", "<acstatus>", "-l", Theme.bad, "-h", Theme.good, "--", "-O", "↑<left>%" <> primarySeparator, "-o", "↓<left>%" <> primarySeparator, "-i", ""] 20 ]
+                                     else [])
+                              ++ (if hostTemp host
+                                     then [ Run $ CoreTemp ["-L", "40", "-H", "60", "-l", Theme.coldest, "-h", Theme.hottest, "-t", coreTempTemplate host] 20 ]
+                                     else [])
+                              ++ commands sharedConfig
+                 , template = hostTemplate host
                  }
 
 main :: IO ()
