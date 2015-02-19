@@ -29,26 +29,33 @@ sharedConfig =
            , bgColor = Theme.background
            , fgColor = Theme.foreground
            , position = Top
-           , commands = [ Run $ MultiCpu ["-L", "3", "-H", "50", "--normal", Theme.good, "--high", Theme.bad, "-t", "<autototal>"] 10
-                        , Run $ Memory ["-t", "<usedratio>%"] 10
+           , commands = [ Run $ Memory ["-t", "<usedratio>%"] 10
                         , Run $ Date dateFormat "date" 10
                         , Run $ Network interface ["-t", "↓<rx> ↑<tx>", "-S", "False"] 10
                         , Run $ Wireless interface ["-t", "<essid> <quality>%"] 10
                         , Run $ StdinReader
                         ]
-           , template = T.intercalate (alignSep sharedConfig)
-                [ alias "StdinReader"
-                , T.intercalate primarySeparator
-                    [ T.intercalate secondarySeparator $ map alias [interface <> "wi", interface]
-                    , alias "multicpu"
-                    , alias "memory"
-                    , xmobarColor Theme.cyan $ alias "date"
-                    ]
-                ]
            }
 
-myConfig :: String -> Config
-myConfig host = sharedConfig
+multiCpuTemplate host = T.intercalate " " $ map ((<> "%") . wrap "<" ">" . ("total" <>) . T.pack . show) [0..cpus-1]
+  where cpus = maybe 1 id $ lookup host [("qubert", 4), ("randy", 2)]
+
+sharedTemplate =
+    T.intercalate (alignSep sharedConfig)
+        [ alias "StdinReader"
+        , T.intercalate primarySeparator
+            [ T.intercalate secondarySeparator $ map alias [interface <> "wi", interface]
+            , alias "multicpu"
+            , alias "memory"
+            , xmobarColor Theme.cyan $ alias "date"
+            ]
+        ]
+
+myConfig :: HostName -> Config
+myConfig host =
+    sharedConfig { commands = (Run $ MultiCpu ["-L", "3", "-H", "50", "--normal", Theme.good, "--high", Theme.bad, "-t", multiCpuTemplate host] 10) : commands sharedConfig
+                 , template = sharedTemplate
+                 }
 
 main :: IO ()
 main = getHostName >>= exportTo' "xmobarrc" . myConfig
