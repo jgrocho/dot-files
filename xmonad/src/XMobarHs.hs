@@ -1,18 +1,19 @@
 {-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
+
 module XMobarHs
-( Config   (..)
-, Position (..)
-, Align    (..)
-, Border   (..)
-, Command  (..)
-, Run      (..)
-, xmobarColor
-, surround
-, config
-, export
-, exportTo
-) where
+  ( Config   (..)
+  , Position (..)
+  , Align    (..)
+  , Border   (..)
+  , Command  (..)
+  , Run      (..)
+  , xmobarColor
+  , surround
+  , config
+  , export
+  , exportTo
+  ) where
 
 import Prelude         hiding (Show(..), print, writeFile)
 import Data.Monoid            (Monoid, (<>))
