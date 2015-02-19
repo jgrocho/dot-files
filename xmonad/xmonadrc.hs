@@ -5,6 +5,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
+import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Layout
 import XMonad.Layout.Fullscreen
@@ -166,7 +167,7 @@ multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
 main = do
     xmobar0 <- spawnPipe "xmobar -x 0"
     xmobar1 <- spawnPipe "xmobar -x 1"
-    xmonad $ defaultConfig
+    xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
         { terminal = myTerminal
         , normalBorderColor = Theme.borderSecondary
         , focusedBorderColor = Theme.border

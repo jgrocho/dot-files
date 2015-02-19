@@ -30,3 +30,4 @@ URxvt*savelines:        5000
 URxvt*visualBell:       true
 URxvt.iso14755:         false
 URxvt.intensityStyles:  false
+URxvt.urgentOnBell:     true
