@@ -253,12 +253,10 @@ instance ToText a => ToText (Run a) where
 xmobarColor :: (Monoid a, IsString a) => a -> a -> a
 xmobarColor color content = "<fc=" <> color <> ">" <> content <> "</fc>"
 
-wrap :: (Eq a, Monoid a) => a -> a -> a -> a
-wrap l r m
-    | m == mempty = mempty
-    | otherwise   = l <> m <> r
+wrap :: Monoid a => a -> a -> a -> a
+wrap l r m = l <> m <> r
 
-surround :: (Eq a, Monoid a) => a -> a -> a
+surround :: Monoid a => a -> a -> a
 surround o m = wrap o o m
 
 export :: Config -> IO ()
