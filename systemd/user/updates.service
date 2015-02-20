@@ -1,0 +1,5 @@
+[Unit]
+Description=Inform about available updates
+
+[Service]
+ExecStart=/home/jon/.config/systemd/user/scripts/updates

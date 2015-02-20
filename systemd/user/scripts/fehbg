@@ -1,0 +1,2 @@
+#!/bin/sh
+feh --no-fehbg --image-bg black --bg-max '/home/jon/background-0.jpg' '/home/jon/background-1.jpg' 

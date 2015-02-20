@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [[ `/usr/bin/pacman -Qqu` ]]; then
+    _count=`/usr/bin/pacman -Qqu | wc -l`
+    case $_count in
+        0)
+            # It should never get here, but defensive programming.
+            _message="There are no updates for Archlinux available"
+            ;;
+        1)
+            _message="There is ${_count} update for Archlinux available"
+            ;;
+        *)
+            _message="There are ${_count} updates for Archlinux available"
+            ;;
+    esac
+
+    DISPLAY=:0.0 /usr/bin/notify-send "${_message}"
+fi
