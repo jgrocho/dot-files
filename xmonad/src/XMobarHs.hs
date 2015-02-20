@@ -19,12 +19,11 @@ module XMobarHs
 import Prelude         hiding (Show(..), print, writeFile)
 import Data.Monoid
 import Data.String            (IsString(..))
-import Data.Text              (Text(..), append, cons, intercalate, pack, snoc)
+import Data.Text              (Text(..), intercalate)
 import Data.Text.IO           (writeFile)
-import Data.Text.Lazy.Builder (Builder, fromText)
 import GHC.Generics           (Generic)
 import System.Directory       (getHomeDirectory)
-import System.FilePath        (combine)
+import System.FilePath        ((</>))
 import Text.Show.Text
 import Text.Show.Text.Generic (genericShowbPrec)
 
@@ -32,7 +31,7 @@ class ToText a where
     text :: a -> Text
 
 instance ToText Text where
-    text t = '"' `cons` t `snoc` '"'
+    text = surround "\""
 
 instance ToText Int where
     text = show
@@ -41,10 +40,10 @@ instance ToText Bool where
     text = show
 
 instance ToText a => ToText [a] where
-    text xs = '[' `cons` (intercalate ", " $ map text xs) `snoc` ']'
+    text = wrap "[" "]" . intercalate "," . map text
 
 instance (ToText a, ToText b, ToText c) => ToText (a, b, c) where
-    text (a, b, c) = '(' `cons` (intercalate ", " $ map text xs) `snoc` ')'
+    text (a, b, c) = wrap "(" ")" $ intercalate "," $ map text xs
       where xs = [text a, text b, text c]
 
 data Config =
@@ -66,13 +65,12 @@ data Config =
            , sepChar          :: Text
            , alignSep         :: Text
            , template         :: Text
-           } deriving Generic
+           }
 
 instance ToText Config where
-    text n = "Config {" `append` e n `append` "}"
-      where e x = intercalate ", " [g (fst y) | y <- f x, uncurry (/=) y]
-            f x = zip (h x) (h config)
-            g x = fst x `append` " = " `append` snd x
+    text n = "Config{" <> e n <> "}"
+      where e x = intercalate "," $ map g $ h x
+            g x = fst x <> "=" <> snd x
             h x = map (\y -> (fst y, snd y x)) cfgPairs
 
 cfgPairs :: [(Text, Config -> Text)]
@@ -250,7 +248,7 @@ instance (ToText a, TextDataType r) => TextDataType (a -> r) where
 data Run a = Run a
 
 instance ToText a => ToText (Run a) where
-    text (Run x) = "Run " `append` text x
+    text (Run x) = "Run " <> text x
 
 xmobarColor :: (Monoid a, IsString a) => a -> a -> a
 xmobarColor color content = "<fc=" <> color <> ">" <> content <> "</fc>"
@@ -264,8 +262,7 @@ surround :: (Eq a, Monoid a) => a -> a -> a
 surround o m = wrap o o m
 
 export :: Config -> IO ()
-export cfg = getHomeDirectory >>= exportTo cfg . prepend ".xmobarrc"
-  where prepend = flip combine
+export cfg = getHomeDirectory >>= exportTo cfg . (</> ".xmobarrc")
 
 exportTo :: Config -> FilePath -> IO ()
 exportTo cfg file = writeFile file $ text cfg
