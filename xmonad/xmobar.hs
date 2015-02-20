@@ -14,14 +14,16 @@ data Host =
          , hostCpus    :: Int
          , hostBattery :: Bool
          , hostTemp    :: Bool
+         , hostFan     :: Bool
          }
 
--- hosts :: [(HostName, Host)]
-hosts = [ ("qubert", Host "qubert" 2 4 True  True  )
-        , ("randy" , Host "randy"  1 2 False False )
+hosts :: [(HostName, Host)]
+hosts = [ (""      , Host ""       1 1 False False False )
+        , ("qubert", Host "qubert" 2 4 True  True  True  )
+        , ("randy" , Host "randy"  1 2 False False False )
         ]
 
-lookupHost host = maybe (Host "" 1 1 False False) id $ lookup host hosts
+lookupHost host = maybe (snd $ hosts!!0) id $ lookup host hosts
 
 interface :: T.Text
 interface = "wifi0"
@@ -63,7 +65,9 @@ hostTemplate host =
         [ alias "StdinReader"
         , T.intercalate primarySeparator $ filter (/= T.empty)
             [ T.intercalate secondarySeparator $ map alias [interface <> "wi", interface]
-            , T.intercalate secondarySeparator $ map alias $ "multicpu" : (if hostTemp host then ["coretemp"] else [])
+            , T.intercalate secondarySeparator $ map alias $ ["multicpu"]
+                                                             ++ (if hostTemp host then ["coretemp"] else [])
+                                                             ++ (if hostFan host then ["cat0"] else [])
             , (if hostBattery host then alias "battery" else "") <> alias "memory"
             , xmobarColor Theme.cyan $ alias "date"
             ]
@@ -77,6 +81,9 @@ myConfig hostname = let host = lookupHost hostname in
                                      else [])
                               ++ (if hostTemp host
                                      then [ Run $ CoreTemp ["-L", "40", "-H", "60", "-l", Theme.coldest, "-h", Theme.hottest, "-t", coreTempTemplate host] 20 ]
+                                     else [])
+                              ++ (if hostFan host
+                                     then [ Run $ CatInt 0 "/sys/devices/platform/thinkpad_hwmon/fan1_input" [] 20 ]
                                      else [])
                               ++ commands sharedConfig
                  , template = hostTemplate host
