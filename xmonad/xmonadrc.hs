@@ -48,8 +48,8 @@ myWorkspaces = named ++ map show [(length named +1)..9]
 -- window on the far left.
 myLayout =
     minimize $ smartBorders $
-    onWorkspace (myWorkspaces !! (3-1)) chatLayout $
-    onWorkspace (myWorkspaces !! (5-1)) gameLayout $
+    onWorkspace (myWorkspaces !! pred 3) chatLayout $
+    onWorkspace (myWorkspaces !! pred 5) gameLayout $
     avoidStruts
         (   tiled
         ||| Mirror tiled
