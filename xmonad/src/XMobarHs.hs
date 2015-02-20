@@ -42,8 +42,12 @@ instance ToText Bool where
 instance ToText a => ToText [a] where
     text = wrap "[" "]" . intercalate "," . map text
 
+instance (ToText a, ToText b) => ToText (a, b) where
+    text (a, b) = wrap "(" ")" $ intercalate "," xs
+      where xs = [text a, text b]
+
 instance (ToText a, ToText b, ToText c) => ToText (a, b, c) where
-    text (a, b, c) = wrap "(" ")" $ intercalate "," $ map text xs
+    text (a, b, c) = wrap "(" ")" $ intercalate "," xs
       where xs = [text a, text b, text c]
 
 data Config =
@@ -172,9 +176,9 @@ data Command = Uptime                                  [Text] Int
              | UnsafeXPropertyLog Text
              | NamedXPropertyLog  Text                            Text
              | Brightness                              [Text] Int
-             | Kbd                [Text]
+             | Kbd                [(Text, Text)]
              | Locks
-             | CatInt             Int Text
+             | CatInt             Int Text             [Text] Int
              | Com                Text [Text] Text            Int
              | StdinReader
              | UnsafeStdinReader
@@ -220,7 +224,7 @@ instance ToText Command where
            (Brightness args rate)                -> textData "Brightness" args rate
            (Kbd opts)                            -> textData "KBD" opts
            (Locks)                               -> textData "Locks"
-           (CatInt n fn)                         -> textData "CatInt" n fn
+           (CatInt n fn args rate)               -> textData "CatInt" n fn args rate
            (Com prog args alias rate)            -> textData "Com" prog args alias rate
            (StdinReader)                         -> textData "StdinReader"
            (UnsafeStdinReader)                   -> textData "UnsafeStdinReader"
