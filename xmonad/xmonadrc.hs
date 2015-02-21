@@ -145,6 +145,7 @@ myKeys = [ ("M-b", sendMessage ToggleStruts)
          , (programPrefix "f", spawn "firefox")
          , (programPrefix "e", spawn "emacs")
          , (programPrefix "v", spawn "vlc")
+         , (programPrefix "s", spawn "spotify")
          ]
   where
     prefix = let p = "M-i " in (p ++)
