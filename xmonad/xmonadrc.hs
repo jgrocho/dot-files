@@ -133,23 +133,26 @@ myEventHook = handleEventHook defaultConfig <+> docksEventHook
 myKeys = [ ("M-b", sendMessage ToggleStruts)
          , ("M-x", withFocused minimizeWindow)
          , ("M-S-x", sendMessage RestoreNextMinimizedWin)
-         , (prefix "d", spawn "xdotool mousedown 1")
-         , (prefix "f", spawn "xdotool mousedown 3")
-         , (prefix "e", spawn "xdotool mouseup 1")
-         , (prefix "r", spawn "xdotool mouseup 3")
-         , (prefix "o", safePromptSelection "xdg-open")
-         , (prefix "s", spawn "xset dpms force off")
-         , (programPrefix "p", spawn "dmenu_run")
-         , (programPrefix "t", spawn myTerminal)
-         , (programPrefix "u", spawn "uzbl-browser")
-         , (programPrefix "f", spawn "firefox")
-         , (programPrefix "e", spawn "emacs")
-         , (programPrefix "v", spawn "vlc")
-         , (programPrefix "s", spawn "spotify")
          ]
-  where
-    prefix = let p = "M-i " in (p ++)
-    programPrefix = let p = "M-p " in (p ++)
+         ++ [ ("M-i " ++ key, action) | (key, action) <- prefixActions ]
+         ++ [ ("M-p " ++ key, spawn program) | (key, program) <- programList ]
+  where prefixActions =
+            [ ("d", spawn "xdotool mousedown 1")
+            , ("f", spawn "xdotool mousedown 3")
+            , ("e", spawn "xdotool mouseup 1")
+            , ("r", spawn "xdotool mouseup 3")
+            , ("o", safePromptSelection "xdg-open")
+            , ("s", spawn "xset dpms force off")
+            ]
+        programList =
+            [ ("p", "dmenu_run")
+            , ("t", myTerminal)
+            , ("u", "uzbl-browser")
+            , ("f", "firefox")
+            , ("e", "emacs")
+            , ("v", "vlc")
+            , ("s", "spotify")
+            ]
 
 multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
                  , ("<XF86AudioStop>", spawn "mpc stop")
