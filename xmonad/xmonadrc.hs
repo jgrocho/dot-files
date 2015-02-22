@@ -1,6 +1,7 @@
 module Main where
 
 import XMonad
+import XMonad.Actions.Search hiding (amazon, hackage, openstreetmap, search)
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
@@ -16,11 +17,15 @@ import XMonad.Layout.Minimize
 import XMonad.Layout.Grid
 import XMonad.Layout.IM
 import XMonad.Layout.PerWorkspace
-import XMonad.Util.Run (spawnPipe)
+import XMonad.Util.Dmenu
+import XMonad.Util.Run
 import XMonad.Util.EZConfig
 import XMonad.Util.XSelection
 
 import System.IO
+import Control.Monad (when)
+import Data.Map (Map(..))
+import qualified Data.Map as Map
 import Data.Ratio ((%))
 
 import           Theme    (atSize)
@@ -133,6 +138,8 @@ myEventHook = handleEventHook defaultConfig <+> docksEventHook
 myKeys = [ ("M-b", sendMessage ToggleStruts)
          , ("M-x", withFocused minimizeWindow)
          , ("M-S-x", sendMessage RestoreNextMinimizedWin)
+         , ("M-s", searchMulti)
+         , ("M-S-s", selectSearchBrowser "xdg-open" google)
          ]
          ++ [ ("M-i " ++ key, action) | (key, action) <- prefixActions ]
          ++ [ ("M-p " ++ key, spawn program) | (key, program) <- programList ]
@@ -153,6 +160,21 @@ myKeys = [ ("M-b", sendMessage ToggleStruts)
             , ("v", "vlc")
             , ("s", "spotify")
             ]
+        searchMulti = do
+            let names = [name ++ ":" | SearchEngine name _ <- searchList]
+            query <- menuArgs "dmenu" ["-p", "search"] names
+            when (query /= "") $ safeSpawn "xdg-open" [use multiEngine query]
+        multiEngine   = namedEngine "multi" $ intelligent $ foldr1 (!>) $ searchList ++ [prefixAware google]
+        amazon        = searchEngine "amazon" "https://www.amazon.com/s?field-keywords="
+        aur           = searchEngine "aur" "https://aur.archlinux.org/packages.php?O=0&K="
+        genius        = searchEngine "genius" "http://genius.com/search?q="
+        github        = searchEngine "github" "https://github.com/search?type=Everything&start_value=1&q="
+        hackage       = searchEngine "hackage" "http://hackage.haskell.org/packages/search?terms="
+        mdn           = searchEngine "mdn" "https://developer.mozilla.org/en-US/search?q="
+        openstreetmap = searchEngine "openstreetmap" "http://www.openstreetmap.org/search?query="
+        soundcloud    = searchEngine "soundcloud" "https://soundcloud.com/search?q="
+        urban         = searchEngine "urban" "http://www.urbandictionary.com/define.php?term="
+        searchList    = [alpha, amazon, aur, dictionary, genius, github, google, hackage, hoogle, images, imdb, maps, mathworld, mdn, openstreetmap, soundcloud, thesaurus, urban, wayback, wikipedia, wiktionary, youtube]
 
 multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
                  , ("<XF86AudioStop>", spawn "mpc stop")

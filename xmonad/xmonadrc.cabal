@@ -38,6 +38,7 @@ executable xmonadrc
                , xmonad
                , xmonad-contrib
                , xmonadrc
+               , containers >= 0.5 && < 0.6
 
 executable xmobar
   main-is: xmobar.hs
