@@ -205,7 +205,7 @@ instance ToText Command where
            (MultiCpu args rate)                  -> textData "MultiCpu" args rate
            (Battery args rate)                   -> textData "Battery" args rate
            (BatteryP dirs args rate)             -> textData "BatteryP" dirs args rate
-           (BatteryN dirs args rate alias)       -> textData "BatteryN" dirs args rate
+           (BatteryN dirs args rate alias)       -> textData "BatteryN" dirs args rate alias
            (TopProc args rate)                   -> textData "TopProc" args rate
            (TopMem args rate)                    -> textData "TopMem" args rate
            (DiskU disks args rate)               -> textData "DiskU" disks args rate
