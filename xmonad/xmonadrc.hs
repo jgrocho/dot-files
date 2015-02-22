@@ -5,7 +5,6 @@ import XMonad.Actions.Search hiding (amazon, hackage, openstreetmap, search)
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Layout
@@ -205,7 +204,6 @@ main = do
         , logHook = myLogHook xmobar0 >> myLogHook xmobar1 -- <+> ewmhDesktopsLogHook
         , handleEventHook = myEventHook
         , focusFollowsMouse = False
-        , startupHook = setWMName "LG3D"
         }
         `additionalKeysP`
             multimediaKeys
