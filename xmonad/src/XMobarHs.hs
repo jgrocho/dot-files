@@ -221,6 +221,7 @@ instance ToText Command where
            (MBox boxes opts alias)               -> textData "MBox" boxes opts alias
            (XPropertyLog prop)                   -> textData "XPropertyLog" prop
            (UnsafeXPropertyLog prop)             -> textData "UnsafeXPropertyLog" prop
+           (NamedXPropertyLog prop alias)        -> textData "NamedXPropertyLog" prop alias
            (Brightness args rate)                -> textData "Brightness" args rate
            (Kbd opts)                            -> textData "KBD" opts
            (Locks)                               -> textData "Locks"
