@@ -2,9 +2,9 @@
 
 module Main (main) where
 
-import           Data.Monoid      ((<>))
+import           Data.Monoid      ( (<>) )
 import qualified Data.Text        as T
-import           Network.HostName
+import           Network.HostName ( HostName, getHostName )
 import qualified Theme            as Theme
 import           XMobarHs
 
@@ -23,6 +23,7 @@ hosts = [ (""      , Host ""       1 1 False False False )
         , ("randy" , Host "randy"  1 2 False False False )
         ]
 
+lookupHost :: HostName -> Host
 lookupHost host = maybe (snd $ hosts!!0) id $ lookup host hosts
 
 interface :: T.Text
@@ -54,12 +55,15 @@ sharedConfig =
                         ]
            }
 
+multiCpuTemplate :: Host -> T.Text
 multiCpuTemplate host = T.intercalate " " $ map ((<> "%") . wrap "<" ">" . ("total" <>) . T.pack . show) [0..cpus-1]
   where cpus = hostCpus host
 
+coreTempTemplate :: Host -> T.Text
 coreTempTemplate host = T.intercalate " " $ map ((<> "C") . wrap "<" ">" . ("core" <>) . T.pack . show) [1..cores]
   where cores = hostCores host
 
+hostTemplate :: Host -> T.Text
 hostTemplate host =
     T.intercalate (alignSep sharedConfig)
         [ alias "StdinReader"

@@ -16,16 +16,16 @@ module XMobarHs
   , exportTo
   ) where
 
-import Prelude         hiding (Show(..), print, writeFile)
-import Data.Monoid
-import Data.String            (IsString(..))
-import Data.Text              (Text(..), intercalate)
-import Data.Text.IO           (writeFile)
-import GHC.Generics           (Generic)
-import System.Directory       (getHomeDirectory)
-import System.FilePath        ((</>))
-import Text.Show.Text
-import Text.Show.Text.Generic (genericShowbPrec)
+import Prelude         hiding ( Show(..), print, writeFile )
+import Data.Monoid            ( Monoid, (<>) )
+import Data.String            ( IsString(..) )
+import Data.Text              ( Text, intercalate )
+import Data.Text.IO           ( writeFile )
+import GHC.Generics           ( Generic )
+import System.Directory       ( getHomeDirectory )
+import System.FilePath        ( (</>) )
+import Text.Show.Text         ( Show(showbPrec), show )
+import Text.Show.Text.Generic ( genericShowbPrec )
 
 class ToText a where
     text :: a -> Text

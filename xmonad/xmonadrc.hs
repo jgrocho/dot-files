@@ -1,44 +1,52 @@
 module Main where
 
-import XMonad
-import XMonad.Actions.Search hiding (amazon, hackage, openstreetmap, search)
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.UrgencyHook
-import XMonad.Hooks.EwmhDesktops
-import XMonad.Layout
-import XMonad.Layout.Fullscreen
-import XMonad.Layout.NoBorders
-import XMonad.Layout.Accordion
-import XMonad.Layout.Tabbed
-import XMonad.Layout.Minimize
-import XMonad.Layout.Grid
-import XMonad.Layout.IM
-import XMonad.Layout.PerWorkspace
-import XMonad.Util.Dmenu
-import XMonad.Util.Run
-import XMonad.Util.EZConfig
-import XMonad.Util.XSelection
+import XMonad                       ( Dimension, Event, mod4Mask, xmonad )
+import XMonad.Config                ( defaultConfig )
+import XMonad.Core                  ( ManageHook, WorkspaceId, X, XConfig(..), handleEventHook, spawn )
+import XMonad.ManageHook            ( (-->), (<+>), (=?), className, composeAll, doShift )
+import XMonad.Operations            ( sendMessage, withFocused )
 
-import System.IO
-import Control.Monad (when)
-import Data.Map (Map(..))
-import qualified Data.Map as Map
-import Data.Ratio ((%))
+import XMonad.Actions.Search        ( SearchEngine(SearchEngine), (!>), alpha, dictionary, google, hoogle, images, imdb, intelligent, maps, mathworld, namedEngine, prefixAware, searchEngine, selectSearchBrowser, thesaurus, use, wayback, wikipedia, wiktionary, youtube )
+import XMonad.Hooks.DynamicLog      ( PP(..), defaultPP, dynamicLogWithPP, shorten, xmobarColor )
+import XMonad.Hooks.ManageDocks     ( ToggleStruts(..), avoidStruts, docksEventHook, manageDocks )
+import XMonad.Hooks.ManageHelpers   ( doFullFloat, isFullscreen )
+import XMonad.Hooks.UrgencyHook     ( NoUrgencyHook(..), withUrgencyHook )
+import XMonad.Layout                ( Full(..), Mirror(..), Tall(..), (|||) )
+import XMonad.Layout.Accordion      ( Accordion(..) )
+import XMonad.Layout.Decoration     ( Theme(..), defaultTheme, shrinkText )
+import XMonad.Layout.Fullscreen     ( fullscreenFull )
+import XMonad.Layout.Grid           ( Grid(..) )
+import XMonad.Layout.IM             ( withIM )
+import XMonad.Layout.Minimize       ( MinimizeMsg(RestoreNextMinimizedWin), minimize, minimizeWindow )
+import XMonad.Layout.NoBorders      ( noBorders, smartBorders )
+import XMonad.Layout.PerWorkspace   ( onWorkspace )
+import XMonad.Layout.Tabbed         ( tabbed )
+import XMonad.Util.Dmenu            ( menuArgs )
+import XMonad.Util.EZConfig         ( additionalKeysP )
+import XMonad.Util.Run              ( safeSpawn, spawnPipe )
+import XMonad.Util.WindowProperties ( Property(..) )
+import XMonad.Util.XSelection       ( safePromptSelection )
 
-import           Theme    (atSize)
+import System.IO                    ( Handle, hPutStrLn )
+import Control.Monad                ( when )
+import Data.Monoid                  ( All )
+import Data.Ratio                   ( (%) )
+
+import           Theme (atSize)
 import qualified Theme as Theme
 
 -- Define the default terminal.
+myTerminal :: String
 myTerminal = "urxvtc"
 
 -- Define the width of borders
+myBorderWidth :: Dimension
 myBorderWidth = 1
 
 -- Define number and names of workspaces.
 -- First come named layouts, which include a number.
 -- The rest are just numbered.
+myWorkspaces :: [WorkspaceId]
 myWorkspaces = named ++ map show [(length named +1)..9]
   where
     names = ["main", "web", "chat", "music", "games"]
@@ -95,6 +103,7 @@ myLayout =
 -- Define the Manage hook.
 -- Always send Firefox and Chromium to the "web" workspace, Spotify to the
 -- music workspace, and Skype and Pidgin to the chat workspace.
+myManageHook :: ManageHook
 myManageHook = composeAll
     ([isFullscreen --> doFullFloat] ++ classMappings ++ [manageDocks]) <+> manageHook defaultConfig
   where
@@ -120,6 +129,7 @@ myManageHook = composeAll
 
 -- Define the Log hook.
 -- Configures xmobar.
+myLogHook :: Handle -> X ()
 myLogHook xmobar = dynamicLogWithPP
     defaultPP { ppCurrent = xmobarColor Theme.foregroundHighlight Theme.backgroundHighlight
               , ppVisible = xmobarColor Theme.activeText Theme.active
@@ -132,8 +142,10 @@ myLogHook xmobar = dynamicLogWithPP
               , ppOutput  = hPutStrLn xmobar
               }
 
+myEventHook :: Event -> X All
 myEventHook = handleEventHook defaultConfig <+> docksEventHook
 
+myKeys :: [(String, X ())]
 myKeys = [ ("M-b", sendMessage ToggleStruts)
          , ("M-x", withFocused minimizeWindow)
          , ("M-S-x", sendMessage RestoreNextMinimizedWin)
@@ -175,6 +187,7 @@ myKeys = [ ("M-b", sendMessage ToggleStruts)
         urban         = searchEngine "urban" "http://www.urbandictionary.com/define.php?term="
         searchList    = [alpha, amazon, aur, dictionary, genius, github, google, hackage, hoogle, images, imdb, maps, mathworld, mdn, openstreetmap, soundcloud, thesaurus, urban, wayback, wikipedia, wiktionary, youtube]
 
+multimediaKeys :: [(String, X ())]
 multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
                  , ("<XF86AudioStop>", spawn "mpc stop")
                  , ("<XF86AudioPrev>", spawn "mpc prev")
@@ -189,6 +202,7 @@ multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
                  , ("<XF86WebCam>", spawn "sudo fan-switch")
                  ]
 
+main :: IO ()
 main = do
     xmobar0 <- spawnPipe "xmobar -x 0"
     xmobar1 <- spawnPipe "xmobar -x 1"
@@ -201,7 +215,7 @@ main = do
         , workspaces = myWorkspaces
         , layoutHook = myLayout
         , manageHook = myManageHook
-        , logHook = myLogHook xmobar0 >> myLogHook xmobar1 -- <+> ewmhDesktopsLogHook
+        , logHook = myLogHook xmobar0 >> myLogHook xmobar1
         , handleEventHook = myEventHook
         , focusFollowsMouse = False
         }

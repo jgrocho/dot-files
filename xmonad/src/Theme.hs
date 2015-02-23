@@ -41,74 +41,57 @@ module Theme
 
   ) where
 
-import           Data.Monoid
-import           Data.String
+import           Data.Monoid    ( Monoid(mappend), (<>) )
+import           Data.String    ( IsString(..) )
 import           Solarized
 import qualified Solarized.Dark as Dark
 
-background          :: IsString a => a
+background, backgroundSecondary, backgroundHighlight :: IsString a => a
 background          = Dark.base03
-backgroundSecondary :: IsString a => a
 backgroundSecondary = Dark.base03
-backgroundHighlight :: IsString a => a
 backgroundHighlight = Dark.base02
 
-foreground           :: IsString a => a
-foreground           = Dark.base0
-foregroundSeconday   :: IsString a => a
-foregroundSeconday   = Dark.base01
-foregroundHighlight  :: IsString a => a
-foregroundHighlight  = Dark.base1
+foreground, foregroundSecondary, foregroundHighlight :: IsString a => a
+foreground          = Dark.base0
+foregroundSeconday  = Dark.base01
+foregroundHighlight = Dark.base1
 
-border          :: IsString a => a
+border, borderSecondary, borderHighlight :: IsString a => a
 border          = Dark.base1
-borderSecondary :: IsString a => a
 borderSecondary = Dark.base02
-borderHighlight :: IsString a => a
 borderHighlight = Dark.base2
 
-active         :: IsString a => a
+active, activeText, activeBorder :: IsString a => a
 active         = background
-activeText     :: IsString a => a
 activeText     = foreground
-activeBorder   :: IsString a => a
 activeBorder   = border
 
-inactive       :: IsString a => a
+inactive, inactiveText, inactiveBorder :: IsString a => a
 inactive       = backgroundSecondary
-inactiveText   :: IsString a => a
 inactiveText   = foregroundSeconday
-inactiveBorder :: IsString a => a
 inactiveBorder = borderSecondary
 
-urgent         :: IsString a => a
+urgent, urgentText, urgentBorder :: IsString a => a
 urgent         = background
-urgentText     :: IsString a => a
 urgentText     = red
-urgentBorder   :: IsString a => a
 urgentBorder   = borderHighlight
 
-good :: IsString a => a
+good, bad :: IsString a => a
 good = green
-bad  :: IsString a => a
 bad  = red
 
-coldest :: IsString a => a
+coldest, cold, tepid, hot, hottest :: IsString a => a
 coldest = blue
-cold    :: IsString a => a
 cold    = cyan
-tepid   :: IsString a => a
 tepid   = green
-hot     :: IsString a => a
 hot     = orange
-hottest :: IsString a => a
 hottest = red
 
 font :: IsString a => a
 font = "xft:inconsolata"
 
 atSize :: (Monoid a, IsString a) => a -> Double -> a
-atSize font = mappend (font <> ":size=") . fromString . show
+atSize fnt = mappend (fnt <> ":size=") . fromString . show
 
 normalFont :: (Monoid a, IsString a) => a
 normalFont = font `atSize` 11
