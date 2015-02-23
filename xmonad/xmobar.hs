@@ -9,8 +9,7 @@ import qualified Theme            as Theme
 import           XMobarHs
 
 data Host =
-    Host { hostName    :: HostName
-         , hostCores   :: Int
+    Host { hostCores   :: Int
          , hostCpus    :: Int
          , hostBattery :: Bool
          , hostTemp    :: Bool
@@ -18,9 +17,9 @@ data Host =
          }
 
 hosts :: [(HostName, Host)]
-hosts = [ (""      , Host ""       1 1 False False False )
-        , ("qubert", Host "qubert" 2 4 True  True  True  )
-        , ("randy" , Host "randy"  1 2 False False False )
+hosts = [ (""      , Host 1 1 False False False )
+        , ("qubert", Host 2 4 True  True  True  )
+        , ("randy" , Host 1 2 False False False )
         ]
 
 lookupHost :: HostName -> Host
