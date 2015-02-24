@@ -86,7 +86,7 @@ myConfig hostname = let host = lookupHost hostname in
                                      then [ Run $ CoreTemp ["-L", "40", "-H", "60", "-l", Theme.coldest, "-h", Theme.hottest, "-t", coreTempTemplate host] 20 ]
                                      else [])
                               ++ (if hostFan host
-                                     then [ Run $ CatInt 0 "/sys/devices/platform/thinkpad_hwmon/fan1_input" [] 20 ]
+                                     then [ Run $ CatInt 0 "/sys/devices/platform/thinkpad_hwmon/fan1_input" ["-L", "3170", "-H", "3900", "-l", Theme.coldest, "-h", Theme.hottest] 20 ]
                                      else [])
                               ++ commands sharedConfig
                  , template = hostTemplate host
