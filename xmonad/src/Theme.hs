@@ -6,7 +6,7 @@ module Theme
   , backgroundHighlight
 
   , foreground
-  , foregroundSeconday
+  , foregroundSecondary
   , foregroundHighlight
 
   , border
@@ -53,7 +53,7 @@ backgroundHighlight = Dark.base02
 
 foreground, foregroundSecondary, foregroundHighlight :: IsString a => a
 foreground          = Dark.base0
-foregroundSeconday  = Dark.base01
+foregroundSecondary = Dark.base01
 foregroundHighlight = Dark.base1
 
 border, borderSecondary, borderHighlight :: IsString a => a
@@ -68,7 +68,7 @@ activeBorder   = border
 
 inactive, inactiveText, inactiveBorder :: IsString a => a
 inactive       = backgroundSecondary
-inactiveText   = foregroundSeconday
+inactiveText   = foregroundSecondary
 inactiveBorder = borderSecondary
 
 urgent, urgentText, urgentBorder :: IsString a => a

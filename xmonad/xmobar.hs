@@ -35,10 +35,10 @@ alias :: T.Text -> T.Text
 alias = surround $ sepChar sharedConfig
 
 primarySeparator :: T.Text
-primarySeparator = xmobarColor Theme.foregroundSeconday " │ "
+primarySeparator = xmobarColor Theme.foregroundSecondary " │ "
 
 secondarySeparator :: T.Text
-secondarySeparator = xmobarColor Theme.foregroundSeconday " ∙ "
+secondarySeparator = xmobarColor Theme.foregroundSecondary " ∙ "
 
 sharedConfig :: Config
 sharedConfig =
