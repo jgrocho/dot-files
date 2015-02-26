@@ -8,7 +8,7 @@ module XMobarHs
   , Border   (..)
   , Command  (..)
   , Run      (..)
-  , xmobarColor
+  , color
   , surround
   , wrap
   , config
@@ -17,7 +17,8 @@ module XMobarHs
   ) where
 
 import Prelude         hiding ( Show(..), print, writeFile )
-import Data.Monoid            ( Monoid, (<>) )
+import Data.List              ( foldl' )
+import Data.Monoid            ( Monoid(mappend, mempty), (<>) )
 import Data.String            ( IsString(..) )
 import Data.Text              ( Text, intercalate )
 import Data.Text.IO           ( writeFile )
@@ -255,8 +256,8 @@ data Run a = Run a
 instance ToText a => ToText (Run a) where
     text (Run x) = "Run " <> text x
 
-xmobarColor :: (Monoid a, IsString a) => a -> a -> a
-xmobarColor color content = "<fc=" <> color <> ">" <> content <> "</fc>"
+color :: (Monoid a, IsString a, Eq a) => a -> a -> a -> a
+color fc bc content = foldl' mappend "" ["<fc=", fc, if mempty == bc then "" else "," <> bc, ">", content, "</fc>"]
 
 wrap :: Monoid a => a -> a -> a -> a
 wrap l r m = l <> m <> r

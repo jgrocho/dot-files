@@ -35,10 +35,10 @@ alias :: T.Text -> T.Text
 alias = surround $ sepChar sharedConfig
 
 primarySeparator :: T.Text
-primarySeparator = xmobarColor Theme.foregroundSecondary " │ "
+primarySeparator = color Theme.foregroundSecondary "" " │ "
 
 secondarySeparator :: T.Text
-secondarySeparator = xmobarColor Theme.foregroundSecondary " ∙ "
+secondarySeparator = color Theme.foregroundSecondary "" " ∙ "
 
 sharedConfig :: Config
 sharedConfig =
@@ -72,7 +72,7 @@ hostTemplate host =
                                                              ++ (if hostTemp host then ["coretemp"] else [])
                                                              ++ (if hostFan host then ["cat0"] else [])
             , (if hostBattery host then alias "battery" else "") <> alias "memory"
-            , xmobarColor Theme.cyan $ alias "date"
+            , color Theme.cyan "" $ alias "date"
             ]
         ]
 
