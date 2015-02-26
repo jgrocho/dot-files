@@ -46,17 +46,14 @@ sharedConfig =
            , bgColor = Theme.background
            , fgColor = Theme.foreground
            , position = Top
-           , commands = [ Run $ Memory ["-t", "<usedratio>%"] 10
+           , commands = [ Run $ MultiCpu ["-S", "True", "-L", "3", "-H", "50", "--normal", Theme.good, "--high", Theme.bad, "-t", "<autototal>"] 10
+                        , Run $ Memory ["-t", "<usedratio>%"] 10
                         , Run $ Date dateFormat "date" 10
                         , Run $ Network interface ["-t", "↓<rx> ↑<tx>", "-S", "False"] 10
                         , Run $ Wireless interface ["-t", "<essid> <quality>%"] 10
                         , Run $ StdinReader
                         ]
            }
-
-multiCpuTemplate :: Host -> T.Text
-multiCpuTemplate host = T.intercalate " " $ map ((<> "%") . wrap "<" ">" . ("total" <>) . T.pack . show) [0..cpus-1]
-  where cpus = hostCpus host
 
 coreTempTemplate :: Host -> T.Text
 coreTempTemplate host = T.intercalate " " $ map ((<> "C") . wrap "<" ">" . ("core" <>) . T.pack . show) [1..cores]
@@ -78,8 +75,7 @@ hostTemplate host =
 
 myConfig :: HostName -> Config
 myConfig hostname = let host = lookupHost hostname in
-    sharedConfig { commands = [ Run $ MultiCpu ["-L", "3", "-H", "50", "--normal", Theme.good, "--high", Theme.bad, "-t", multiCpuTemplate host] 10 ]
-                              ++ (if hostBattery host
+    sharedConfig { commands = (if hostBattery host
                                      then [ Run $ BatteryP ["BAT0"] ["-t", "<acstatus>", "-l", Theme.bad, "-h", Theme.good, "--", "-O", "↑<left>%" <> primarySeparator, "-o", "↓<left>%" <> primarySeparator, "-i", ""] 20 ]
                                      else [])
                               ++ (if hostTemp host
