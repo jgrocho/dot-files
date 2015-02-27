@@ -175,9 +175,10 @@ myKeys = [ ("M-b", sendMessage ToggleStruts)
             let names = [name ++ ":" | SearchEngine name _ <- searchList]
             query <- menuArgs "dmenu" ["-p", "search"] names
             when (query /= "") $ safeSpawn "xdg-open" [use multiEngine query]
-        multiEngine   = namedEngine "multi" $ intelligent $ foldr1 (!>) $ searchList ++ [prefixAware google]
+        multiEngine   = namedEngine "multi" $ intelligent $ foldr1 (!>) $ searchList ++ [prefixAware ddg]
         amazon        = searchEngine "amazon" "https://www.amazon.com/s?field-keywords="
         aur           = searchEngine "aur" "https://aur.archlinux.org/packages.php?O=0&K="
+        ddg           = searchEngine "ddg" "https://duckduckgo.com/?t=lm&q="
         genius        = searchEngine "genius" "http://genius.com/search?q="
         github        = searchEngine "github" "https://github.com/search?type=Everything&start_value=1&q="
         hackage       = searchEngine "hackage" "http://hackage.haskell.org/packages/search?terms="
@@ -185,7 +186,7 @@ myKeys = [ ("M-b", sendMessage ToggleStruts)
         openstreetmap = searchEngine "openstreetmap" "http://www.openstreetmap.org/search?query="
         soundcloud    = searchEngine "soundcloud" "https://soundcloud.com/search?q="
         urban         = searchEngine "urban" "http://www.urbandictionary.com/define.php?term="
-        searchList    = [alpha, amazon, aur, dictionary, genius, github, google, hackage, hoogle, images, imdb, maps, mathworld, mdn, openstreetmap, soundcloud, thesaurus, urban, wayback, wikipedia, wiktionary, youtube]
+        searchList    = [alpha, amazon, aur, ddg, dictionary, genius, github, google, hackage, hoogle, images, imdb, maps, mathworld, mdn, openstreetmap, soundcloud, thesaurus, urban, wayback, wikipedia, wiktionary, youtube]
 
 multimediaKeys :: [(String, X ())]
 multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
