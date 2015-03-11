@@ -17,10 +17,10 @@ CABAL_FLAGS = --enable-optimization=2
 .PHONEY: all install restart clean realclean ghc-version
 
 ################################################################################
-all: $(XMONADRC) $(XMOBARRC)
+all: $(XMOBARRC) $(XMONADRC)
 
 ################################################################################
-install: $(XMONADRC) $(XMOBARRC)
+install: $(XMOBARRC) $(XMONADRC)
 	install -Dm755 $(XMONADRC) $(XMONAD)
 
 ################################################################################
@@ -29,7 +29,7 @@ restart: install
 
 ################################################################################
 clean:
-	rm -rf dist $(XMONADRC) $(XMOBARRC) $(SANDBOX)
+	rm -rf dist $(XMOBARRC) $(XMONADRC) $(SANDBOX)
 
 ################################################################################
 realclean: clean
