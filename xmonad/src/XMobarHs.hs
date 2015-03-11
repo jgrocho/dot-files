@@ -53,9 +53,13 @@ instance (ToText a, ToText b, ToText c) => ToText (a, b, c) where
 
 data Config =
     Config { font             :: Text
+           , additionalFonts  :: [Text]
            , bgColor          :: Text
            , fgColor          :: Text
+           , alpha            :: Int
            , position         :: Position
+           , textOffset       :: Int
+           , iconOffset       :: Int
            , lowerOnStart     :: Bool
            , hideOnStart      :: Bool
            , allDesktops      :: Bool
@@ -80,9 +84,13 @@ instance ToText Config where
 
 cfgPairs :: [(Text, Config -> Text)]
 cfgPairs = [ ( "font"             , text . font             )
+           , ( "additionalFonts"  , text . additionalFonts  )
            , ( "bgColor"          , text . bgColor          )
            , ( "fgColor"          , text . fgColor          )
+           , ( "alpha"            , text . alpha            )
            , ( "position"         , show . position         )
+           , ( "textOffset"       , text . textOffset       )
+           , ( "iconOffset"       , text . iconOffset       )
            , ( "lowerOnStart"     , text . lowerOnStart     )
            , ( "hideOnStart"      , text . hideOnStart      )
            , ( "allDesktops"      , text . allDesktops      )
@@ -102,9 +110,13 @@ cfgPairs = [ ( "font"             , text . font             )
 config :: Config
 config =
     Config { font             = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
+           , additionalFonts  = []
            , bgColor          = "#000000"
            , fgColor          = "#BFBFBF"
+           , alpha            = 255
            , position         = Top
+           , textOffset       = -1
+           , iconOffset       = -1
            , lowerOnStart     = True
            , hideOnStart      = False
            , allDesktops      = True
