@@ -45,14 +45,8 @@ sharedConfig =
     config { font = Theme.normalFont
            , bgColor = Theme.background
            , fgColor = Theme.foreground
-           , position = Top
-           , commands = [ Run $ MultiCpu ["-S", "True", "-L", "3", "-H", "50", "--normal", Theme.good, "--high", Theme.bad, "-t", "<autototal>"] 10
-                        , Run $ Memory ["-t", "<usedratio>%"] 10
-                        , Run $ Date dateFormat "date" 10
-                        , Run $ Network interface ["-t", "↓<rx> ↑<tx>", "-S", "False"] 10
-                        , Run $ Wireless interface ["-t", "<essid> <quality>%"] 10
-                        , Run $ StdinReader
-                        ]
+           , iconRoot = "/home/jon/.xmonad/icons"
+           , iconOffset = 9
            }
 
 coreTempTemplate :: Host -> T.Text
@@ -75,8 +69,16 @@ hostTemplate host =
 
 myConfig :: HostName -> Config
 myConfig hostname = let host = lookupHost hostname in
-    sharedConfig { commands = (if hostBattery host
-                                     then [ Run $ BatteryP ["BAT0"] ["-t", "<acstatus>", "-l", Theme.bad, "-h", Theme.good, "--", "-O", "↑<left>%" <> primarySeparator, "-o", "↓<left>%" <> primarySeparator, "-i", ""] 20 ]
+    sharedConfig { position = Top
+                 , commands = [ Run $ MultiCpu ["-S", "True", "-L", "3", "-H", "50", "--normal", Theme.good, "--high", Theme.bad, "-t", "<autototal>", "-p", "2"] 10
+                              , Run $ Memory ["-t", "<usedipat><usedratio>%", "--", "--used-icon-pattern", "<icon=circle_filling_%%.xpm/>"] 10
+                              , Run $ Date dateFormat "date" 10
+                              , Run $ Network interface ["-t", "↓<rx> ↑<tx>", "-S", "False"] 10
+                              , Run $ Wireless interface ["-t", "<essid> <quality>%"] 10
+                              , Run $ StdinReader
+                              ]
+                              ++ (if hostBattery host
+                                     then [ Run $ BatteryP ["BAT0"] ["-t", "<acstatus>", "--", "-O", "<leftipat><left>%" <> primarySeparator, "-o", "<leftipat><left>%" <> primarySeparator, "-i", "", "--off-icon-pattern", "<icon=battery_%%.xpm/>", "--on-icon-pattern", "<icon=battery_charging_%%.xpm/>"] 20 ]
                                      else [])
                               ++ (if hostTemp host
                                      then [ Run $ CoreTemp ["-L", "40", "-H", "60", "-l", Theme.coldest, "-h", Theme.hottest, "-t", coreTempTemplate host] 20 ]
@@ -84,10 +86,10 @@ myConfig hostname = let host = lookupHost hostname in
                               ++ (if hostFan host
                                      then [ Run $ CatInt 0 "/sys/devices/platform/thinkpad_hwmon/fan1_input" ["-L", "3170", "-H", "3900", "-l", Theme.coldest, "-h", Theme.hottest] 20 ]
                                      else [])
-                              ++ commands sharedConfig
                  , template = hostTemplate host
                  }
 
 main :: IO ()
-main = getHostName >>= exportTo' "xmobarrc" . myConfig
-  where exportTo' = flip exportTo
+main = do
+    hostname <- getHostName
+    myConfig hostname `exportTo` "xmobarrc"

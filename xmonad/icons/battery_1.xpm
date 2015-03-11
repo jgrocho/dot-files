@@ -1,0 +1,32 @@
+/* XPM */
+static char *battery_caution[] = {
+/* columns rows colors chars-per-pixel */
+"22 22 4 1 ",
+"  c #DC322F",
+". c #7B8B8E",
+"X c #839496",
+"o c None",
+/* pixels */
+"oooooooooooooooooooooo",
+"oooooooooooooooooooooo",
+"oooooooooooooooooooooo",
+"oooooooooooooooooooooo",
+"oooooooooXXXXooooooooo",
+"oooooooooooooooooooooo",
+"ooooooXXXXXXXXXXoooooo",
+"ooooooXooooooooXoooooo",
+"ooooooXooooooooXoooooo",
+"ooooooXooooooooXoooooo",
+"ooooooXooooooooXoooooo",
+"ooooooXooooooooXoooooo",
+"ooooooXooooooooXoooooo",
+"ooooooXooooooooXoooooo",
+"ooooooXo      oXoooooo",
+"ooooooXo      oXoooooo",
+"ooooooXooooooooXoooooo",
+"oooooo.XXXXXXXX.oooooo",
+"oooooooooooooooooooooo",
+"oooooooooooooooooooooo",
+"oooooooooooooooooooooo",
+"oooooooooooooooooooooo"
+};
