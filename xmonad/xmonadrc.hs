@@ -4,7 +4,8 @@ import XMonad                       ( Dimension, Event, mod4Mask, xmonad )
 import XMonad.Config                ( defaultConfig )
 import XMonad.Core                  ( ManageHook, WorkspaceId, X, XConfig(..), handleEventHook, spawn )
 import XMonad.ManageHook            ( (-->), (<+>), (=?), className, composeAll, doShift )
-import XMonad.Operations            ( sendMessage, withFocused )
+import XMonad.Operations            ( sendMessage, windows, withFocused )
+import XMonad.StackSet              ( greedyView, shift )
 
 import XMonad.Actions.Search        ( SearchEngine(SearchEngine), (!>), alpha, dictionary, google, hoogle, images, imdb, intelligent, maps, mathworld, namedEngine, prefixAware, searchEngine, selectSearchBrowser, thesaurus, use, wayback, wikipedia, wiktionary, youtube )
 import XMonad.Hooks.DynamicLog      ( PP(..), defaultPP, dynamicLogWithPP, shorten, xmobarColor )
@@ -152,6 +153,8 @@ myKeys = [ ("M-b", sendMessage ToggleStruts)
          , ("M-s", searchMulti)
          , ("M-S-s", selectSearchBrowser "xdg-open" google)
          ]
+         ++ [ ("M-C-S-" ++ k, (windows $ shift i) >> (windows $ greedyView i))
+                | (i, k) <- zip myWorkspaces $ map show [1..9] ]
          ++ [ ("M-i " ++ key, action) | (key, action) <- prefixActions ]
          ++ [ ("M-p " ++ key, spawn program) | (key, program) <- programList ]
   where prefixActions =
