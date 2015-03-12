@@ -207,6 +207,7 @@ main :: IO ()
 main = do
     xmobar0 <- spawnPipe "xmobar -x 0"
     xmobar1 <- spawnPipe "xmobar -x 1"
+    safeSpawn "xmobar" [".music_xmobarrc"]
     xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
         { terminal = myTerminal
         , normalBorderColor = Theme.borderSecondary

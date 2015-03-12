@@ -89,7 +89,23 @@ myConfig hostname = let host = lookupHost hostname in
                  , template = hostTemplate host
                  }
 
+musicConfig :: HostName -> Config
+musicConfig hostname = let host = lookupHost hostname in
+    sharedConfig { position = Bottom
+                 , commands = [ Run $ MPD ["-t", "<title> - <artist> (<album>)"] 10
+                              , Run $ Mpris2 "spotify" ["-t", "<title> - <artist> (<album>)"] 10
+                              , Run $ Volume "default" "Master" ["-t", "<volume><status>", "--", "-C", Theme.foreground, "-O", "<volumeipat>", "-c", Theme.foreground, "-o", "<icon=audio-volume-muted.xpm/>", "--volume-icon-pattern", "<icon=audio_%%.xpm/>"] 10
+                              ]
+                 , template = foldr1 (<>) [ "" -- alias "mpd"
+                                          , "}"
+                                          , alias "mpris2"
+                                          , "{"
+                                          , alias "default:Master"
+                                          ]
+                 }
+
 main :: IO ()
 main = do
     hostname <- getHostName
     myConfig hostname `exportTo` "xmobarrc"
+    musicConfig hostname `exportTo` "music_xmobarrc"
