@@ -213,8 +213,8 @@ main = do
     safeSpawn "xmobar" [".music_xmobarrc"]
     xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
         { terminal           = myTerminal
-        , normalBorderColor  = Theme.borderSecondary
         , focusedBorderColor = Theme.border
+        , normalBorderColor  = Theme.borderSecondary
         , borderWidth        = myBorderWidth
         , modMask            = mod4Mask
         , workspaces         = myWorkspaces
