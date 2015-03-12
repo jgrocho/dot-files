@@ -223,6 +223,7 @@ main = do
         , logHook = myLogHook xmobar0 >> myLogHook xmobar1
         , handleEventHook = myEventHook
         , focusFollowsMouse = False
+        , clickJustFocuses = False
         }
         `additionalKeysP`
             multimediaKeys
