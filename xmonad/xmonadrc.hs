@@ -54,6 +54,9 @@ workspaces = named ++ map show [(length named +1)..9]
     names = ["main", "web", "chat", "music", "games"]
     named = zipWith (\x -> ((show x ++) "❘" ++)) [1..] names
 
+selectWorkspace :: Int -> WorkspaceId
+selectWorkspace = (!!) workspaces . pred
+
 -- Define the layout.
 -- We have vertical and horizontal Tall layouts, an Accordion layout and a
 -- tabbed layout, that allow room for xmobar instances.
@@ -62,8 +65,8 @@ workspaces = named ++ map show [(length named +1)..9]
 -- window on the far left.
 layoutHook =
     minimize $ smartBorders $
-    onWorkspace (workspaces !! pred 3) chatLayout $
-    onWorkspace (workspaces !! pred 5) gameLayout $
+    onWorkspace (selectWorkspace 3) chatLayout $
+    onWorkspace (selectWorkspace 5) gameLayout $
     avoidStruts
         (   tiled
         ||| Mirror tiled
@@ -110,7 +113,7 @@ manageHook = composeAll
     ([isFullscreen --> doFullFloat] ++ classMappings ++ [manageDocks]) <+> XC.manageHook defaultConfig
   where
     classMappings = concat $
-        map (\(workspace, names) -> [className =? name --> doShift (workspaces !! (workspace-1)) | name <- names])
+        map (\(workspace, names) -> [className =? name --> doShift (selectWorkspace workspace) | name <- names])
             [ (2, [ "Firefox"
                   , "Chromium"
                   , "Google-chrome-stable"
