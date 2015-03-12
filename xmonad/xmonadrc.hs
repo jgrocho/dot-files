@@ -2,7 +2,7 @@ module Main where
 
 import XMonad                       ( Dimension, Event, mod4Mask, xmonad )
 import XMonad.Config                ( defaultConfig )
-import XMonad.Core                  ( ManageHook, WorkspaceId, X, spawn )
+import XMonad.Core                  ( ManageHook, WorkspaceId, X )
 import qualified XMonad.Core as XC  ( XConfig(..) )
 import XMonad.ManageHook            ( (-->), (<+>), (=?), className, composeAll, doShift )
 import XMonad.Operations            ( sendMessage, windows, withFocused )
@@ -157,14 +157,14 @@ keys = [ ("M-b", sendMessage ToggleStruts)
        ++ [ ("M-C-S-" ++ k, (windows $ shift i) >> (windows $ greedyView i))
               | (i, k) <- zip workspaces $ map show [1..9] ]
        ++ [ ("M-i " ++ key, action) | (key, action) <- prefixActions ]
-       ++ [ ("M-p " ++ key, spawn program) | (key, program) <- programList ]
+       ++ [ ("M-p " ++ key, safeSpawn program []) | (key, program) <- programList ]
   where prefixActions =
-            [ ("d", spawn "xdotool mousedown 1")
-            , ("f", spawn "xdotool mousedown 3")
-            , ("e", spawn "xdotool mouseup 1")
-            , ("r", spawn "xdotool mouseup 3")
+            [ ("d", safeSpawn "xdotool" ["mousedown", "1"])
+            , ("f", safeSpawn "xdotool" ["mousedown", "3"])
+            , ("e", safeSpawn "xdotool" ["mouseup", "1"])
+            , ("r", safeSpawn "xdotool" ["mouseup", "3"])
             , ("o", safePromptSelection "xdg-open")
-            , ("s", spawn "xset dpms force off")
+            , ("s", safeSpawn "xset" ["dpms", "force", "off"])
             ]
         programList =
             [ ("p", "dmenu_run")
@@ -193,18 +193,18 @@ keys = [ ("M-b", sendMessage ToggleStruts)
         searchList    = [alpha, amazon, aur, ddg, dictionary, genius, github, google, hackage, hoogle, images, imdb, maps, mathworld, mdn, openstreetmap, soundcloud, thesaurus, urban, wayback, wikipedia, wiktionary, youtube]
 
 multimediaKeys :: [(String, X ())]
-multimediaKeys = [ (audioKey "Play", spawn "mpc toggle")
-                 , (audioKey "Stop", spawn "mpc stop")
-                 , (audioKey "Prev", spawn "mpc prev")
-                 , (audioKey "Next", spawn "mpc next")
-                 , (audioKey "Mute", spawn "amixer set Master toggle")
-                 , (audioKey "LowerVolume", spawn "amixer set Master unmute; amixer set Master 256-")
-                 , (audioKey "RaiseVolume", spawn "amixer set Master unmute; amixer set Master 256+")
-                 , (mediaKey "Display", spawn "display_switch")
-                 , (mediaKey "TouchpadToggle", spawn "mouse_switch")
-                 , (mediaKey "ScreenSaver", spawn "lock")
-                 , (mediaKey "Battery", spawn "sudo ignore-lid")
-                 , (mediaKey "WebCam", spawn "sudo fan-switch")
+multimediaKeys = [ (audioKey "Play", safeSpawn "mpc" ["toggle"])
+                 , (audioKey "Stop", safeSpawn "mpc" ["stop"])
+                 , (audioKey "Prev", safeSpawn "mpc" ["prev"])
+                 , (audioKey "Next", safeSpawn "mpc" ["next"])
+                 , (audioKey "Mute", safeSpawn "amixer" ["set", "Master", "toggle"])
+                 , (audioKey "LowerVolume", safeSpawn "amixer" ["set", "Master", "unmute"] >> safeSpawn "amixer" ["set", "Master", "256-"])
+                 , (audioKey "RaiseVolume", safeSpawn "amixer" ["set", "Master", "unmute"] >> safeSpawn "amixer" ["set", "Master", "256+"])
+                 , (mediaKey "Display", safeSpawn "display_switch" [])
+                 , (mediaKey "TouchpadToggle", safeSpawn "mouse_switch" [])
+                 , (mediaKey "ScreenSaver", safeSpawn "lock" [])
+                 , (mediaKey "Battery", safeSpawn "sudo" ["ignore-lid"])
+                 , (mediaKey "WebCam", safeSpawn "sudo" ["fan-switch"])
                  ]
   where mediaKey k = "<XF86" ++ k ++ ">"
         audioKey k = mediaKey $ "Audio" ++ k
