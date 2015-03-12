@@ -193,19 +193,21 @@ keys = [ ("M-b", sendMessage ToggleStruts)
         searchList    = [alpha, amazon, aur, ddg, dictionary, genius, github, google, hackage, hoogle, images, imdb, maps, mathworld, mdn, openstreetmap, soundcloud, thesaurus, urban, wayback, wikipedia, wiktionary, youtube]
 
 multimediaKeys :: [(String, X ())]
-multimediaKeys = [ ("<XF86AudioPlay>", spawn "mpc toggle")
-                 , ("<XF86AudioStop>", spawn "mpc stop")
-                 , ("<XF86AudioPrev>", spawn "mpc prev")
-                 , ("<XF86AudioNext>", spawn "mpc next")
-                 , ("<XF86AudioMute>", spawn "amixer set Master toggle")
-                 , ("<XF86AudioLowerVolume>", spawn "amixer set Master unmute; amixer set Master 256-")
-                 , ("<XF86AudioRaiseVolume>", spawn "amixer set Master unmute; amixer set Master 256+")
-                 , ("<XF86Display>", spawn "display_switch")
-                 , ("<XF86TouchpadToggle>", spawn "mouse_switch")
-                 , ("<XF86ScreenSaver>", spawn "lock")
-                 , ("<XF86Battery>", spawn "sudo ignore-lid")
-                 , ("<XF86WebCam>", spawn "sudo fan-switch")
+multimediaKeys = [ (audioKey "Play", spawn "mpc toggle")
+                 , (audioKey "Stop", spawn "mpc stop")
+                 , (audioKey "Prev", spawn "mpc prev")
+                 , (audioKey "Next", spawn "mpc next")
+                 , (audioKey "Mute", spawn "amixer set Master toggle")
+                 , (audioKey "LowerVolume", spawn "amixer set Master unmute; amixer set Master 256-")
+                 , (audioKey "RaiseVolume", spawn "amixer set Master unmute; amixer set Master 256+")
+                 , (mediaKey "Display", spawn "display_switch")
+                 , (mediaKey "TouchpadToggle", spawn "mouse_switch")
+                 , (mediaKey "ScreenSaver", spawn "lock")
+                 , (mediaKey "Battery", spawn "sudo ignore-lid")
+                 , (mediaKey "WebCam", spawn "sudo fan-switch")
                  ]
+  where mediaKey k = "<XF86" ++ k ++ ">"
+        audioKey k = mediaKey $ "Audio" ++ k
 
 main :: IO ()
 main = do
@@ -227,6 +229,4 @@ main = do
         , XC.clickJustFocuses   = False
         }
         `additionalKeysP`
-            multimediaKeys
-        `additionalKeysP`
-            keys
+            (keys ++ multimediaKeys)
