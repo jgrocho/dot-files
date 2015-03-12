@@ -148,10 +148,10 @@ handleEventHook :: Event -> X All
 handleEventHook = XC.handleEventHook defaultConfig <+> docksEventHook
 
 keys :: [(String, X ())]
-keys = [ ("M-b", sendMessage ToggleStruts)
-       , ("M-x", withFocused minimizeWindow)
+keys = [ ("M-b"  , sendMessage ToggleStruts)
+       , ("M-x"  , withFocused minimizeWindow)
        , ("M-S-x", sendMessage RestoreNextMinimizedWin)
-       , ("M-s", searchMulti)
+       , ("M-s"  , searchMulti)
        , ("M-S-s", selectSearchBrowser "xdg-open" google)
        ]
        ++ [ ("M-C-S-" ++ k, (windows $ shift i) >> (windows $ greedyView i))
@@ -163,8 +163,8 @@ keys = [ ("M-b", sendMessage ToggleStruts)
             , ("f", safeSpawn "xdotool" ["mousedown", "3"])
             , ("e", safeSpawn "xdotool" ["mouseup", "1"])
             , ("r", safeSpawn "xdotool" ["mouseup", "3"])
+            , ("s", safeSpawn "xset"    ["dpms", "force", "off"])
             , ("o", safePromptSelection "xdg-open")
-            , ("s", safeSpawn "xset" ["dpms", "force", "off"])
             ]
         programList =
             [ ("p", "dmenu_run")
@@ -179,32 +179,34 @@ keys = [ ("M-b", sendMessage ToggleStruts)
             let names = [name ++ ":" | SearchEngine name _ <- searchList]
             query <- menuArgs "dmenu" ["-p", "search"] names
             when (query /= "") $ safeSpawn "xdg-open" [use multiEngine query]
-        multiEngine   = namedEngine "multi" $ intelligent $ foldr1 (!>) $ searchList ++ [prefixAware ddg]
-        amazon        = searchEngine "amazon" "https://www.amazon.com/s?field-keywords="
-        aur           = searchEngine "aur" "https://aur.archlinux.org/packages.php?O=0&K="
-        ddg           = searchEngine "ddg" "https://duckduckgo.com/?t=lm&q="
-        genius        = searchEngine "genius" "http://genius.com/search?q="
-        github        = searchEngine "github" "https://github.com/search?type=Everything&start_value=1&q="
-        hackage       = searchEngine "hackage" "http://hackage.haskell.org/packages/search?terms="
-        mdn           = searchEngine "mdn" "https://developer.mozilla.org/en-US/search?q="
+        amazon        = searchEngine "amazon"        "https://www.amazon.com/s?field-keywords="
+        aur           = searchEngine "aur"           "https://aur.archlinux.org/packages.php?O=0&K="
+        ddg           = searchEngine "ddg"           "https://duckduckgo.com/?t=lm&q="
+        genius        = searchEngine "genius"        "http://genius.com/search?q="
+        github        = searchEngine "github"        "https://github.com/search?type=Everything&start_value=1&q="
+        hackage       = searchEngine "hackage"       "http://hackage.haskell.org/packages/search?terms="
+        mdn           = searchEngine "mdn"           "https://developer.mozilla.org/en-US/search?q="
         openstreetmap = searchEngine "openstreetmap" "http://www.openstreetmap.org/search?query="
-        soundcloud    = searchEngine "soundcloud" "https://soundcloud.com/search?q="
-        urban         = searchEngine "urban" "http://www.urbandictionary.com/define.php?term="
+        soundcloud    = searchEngine "soundcloud"    "https://soundcloud.com/search?q="
+        urban         = searchEngine "urban"         "http://www.urbandictionary.com/define.php?term="
         searchList    = [alpha, amazon, aur, ddg, dictionary, genius, github, google, hackage, hoogle, images, imdb, maps, mathworld, mdn, openstreetmap, soundcloud, thesaurus, urban, wayback, wikipedia, wiktionary, youtube]
+        multiEngine   = namedEngine "multi" $ intelligent $ foldr1 (!>) $ searchList ++ [prefixAware ddg]
 
 multimediaKeys :: [(String, X ())]
-multimediaKeys = [ (audioKey "Play", safeSpawn "mpc" ["toggle"])
-                 , (audioKey "Stop", safeSpawn "mpc" ["stop"])
-                 , (audioKey "Prev", safeSpawn "mpc" ["prev"])
-                 , (audioKey "Next", safeSpawn "mpc" ["next"])
-                 , (audioKey "Mute", safeSpawn "amixer" ["set", "Master", "toggle"])
-                 , (audioKey "LowerVolume", safeSpawn "amixer" ["set", "Master", "unmute"] >> safeSpawn "amixer" ["set", "Master", "256-"])
-                 , (audioKey "RaiseVolume", safeSpawn "amixer" ["set", "Master", "unmute"] >> safeSpawn "amixer" ["set", "Master", "256+"])
-                 , (mediaKey "Display", safeSpawn "display_switch" [])
+multimediaKeys = [ (audioKey "Play"          , safeSpawn "mpc" ["toggle"])
+                 , (audioKey "Stop"          , safeSpawn "mpc" ["stop"])
+                 , (audioKey "Prev"          , safeSpawn "mpc" ["prev"])
+                 , (audioKey "Next"          , safeSpawn "mpc" ["next"])
+                 , (audioKey "Mute"          , safeSpawn "amixer" ["set", "Master", "toggle"])
+                 , (audioKey "LowerVolume"   , safeSpawn "amixer" ["set", "Master", "unmute"]
+                                                 >> safeSpawn "amixer" ["set", "Master", "256-"])
+                 , (audioKey "RaiseVolume"   , safeSpawn "amixer" ["set", "Master", "unmute"]
+                                                 >> safeSpawn "amixer" ["set", "Master", "256+"])
+                 , (mediaKey "Display"       , safeSpawn "display_switch" [])
                  , (mediaKey "TouchpadToggle", safeSpawn "mouse_switch" [])
-                 , (mediaKey "ScreenSaver", safeSpawn "lock" [])
-                 , (mediaKey "Battery", safeSpawn "sudo" ["ignore-lid"])
-                 , (mediaKey "WebCam", safeSpawn "sudo" ["fan-switch"])
+                 , (mediaKey "ScreenSaver"   , safeSpawn "lock" [])
+                 , (mediaKey "Battery"       , safeSpawn "sudo" ["ignore-lid"])
+                 , (mediaKey "WebCam"        , safeSpawn "sudo" ["fan-switch"])
                  ]
   where mediaKey k = "<XF86" ++ k ++ ">"
         audioKey k = mediaKey $ "Audio" ++ k
