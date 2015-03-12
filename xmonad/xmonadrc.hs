@@ -212,18 +212,18 @@ main = do
     xmobar1 <- spawnPipe "xmobar -x 1"
     safeSpawn "xmobar" [".music_xmobarrc"]
     xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
-        { terminal = myTerminal
-        , normalBorderColor = Theme.borderSecondary
+        { terminal           = myTerminal
+        , normalBorderColor  = Theme.borderSecondary
         , focusedBorderColor = Theme.border
-        , borderWidth = myBorderWidth
-        , modMask = mod4Mask
-        , workspaces = myWorkspaces
-        , layoutHook = myLayout
-        , manageHook = myManageHook
-        , logHook = myLogHook xmobar0 >> myLogHook xmobar1
-        , handleEventHook = myEventHook
-        , focusFollowsMouse = False
-        , clickJustFocuses = False
+        , borderWidth        = myBorderWidth
+        , modMask            = mod4Mask
+        , workspaces         = myWorkspaces
+        , layoutHook         = myLayout
+        , manageHook         = myManageHook
+        , logHook            = myLogHook xmobar0 >> myLogHook xmobar1
+        , handleEventHook    = myEventHook
+        , focusFollowsMouse  = False
+        , clickJustFocuses   = False
         }
         `additionalKeysP`
             multimediaKeys
