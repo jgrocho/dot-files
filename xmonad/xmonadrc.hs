@@ -2,7 +2,8 @@ module Main where
 
 import XMonad                       ( Dimension, Event, mod4Mask, xmonad )
 import XMonad.Config                ( defaultConfig )
-import XMonad.Core                  ( ManageHook, WorkspaceId, X, XConfig(..), handleEventHook, spawn )
+import XMonad.Core                  ( ManageHook, WorkspaceId, X, spawn )
+import qualified XMonad.Core as XC  ( XConfig(..) )
 import XMonad.ManageHook            ( (-->), (<+>), (=?), className, composeAll, doShift )
 import XMonad.Operations            ( sendMessage, windows, withFocused )
 import XMonad.StackSet              ( greedyView, shift )
@@ -37,18 +38,18 @@ import           Theme (atSize)
 import qualified Theme as Theme
 
 -- Define the default terminal.
-myTerminal :: String
-myTerminal = "urxvtc"
+terminal :: String
+terminal = "urxvtc"
 
 -- Define the width of borders
-myBorderWidth :: Dimension
-myBorderWidth = 1
+borderWidth :: Dimension
+borderWidth = 1
 
 -- Define number and names of workspaces.
 -- First come named layouts, which include a number.
 -- The rest are just numbered.
-myWorkspaces :: [WorkspaceId]
-myWorkspaces = named ++ map show [(length named +1)..9]
+workspaces :: [WorkspaceId]
+workspaces = named ++ map show [(length named +1)..9]
   where
     names = ["main", "web", "chat", "music", "games"]
     named = zipWith (\x -> ((show x ++) "❘" ++)) [1..] names
@@ -59,10 +60,10 @@ myWorkspaces = named ++ map show [(length named +1)..9]
 -- We also have a fullscreen layout that covers the xmobars.
 -- On workspace 3, we have a Grid-ed IM layout, which places the buddy list
 -- window on the far left.
-myLayout =
+layoutHook =
     minimize $ smartBorders $
-    onWorkspace (myWorkspaces !! pred 3) chatLayout $
-    onWorkspace (myWorkspaces !! pred 5) gameLayout $
+    onWorkspace (workspaces !! pred 3) chatLayout $
+    onWorkspace (workspaces !! pred 5) gameLayout $
     avoidStruts
         (   tiled
         ||| Mirror tiled
@@ -104,12 +105,12 @@ myLayout =
 -- Define the Manage hook.
 -- Always send Firefox and Chromium to the "web" workspace, Spotify to the
 -- music workspace, and Skype and Pidgin to the chat workspace.
-myManageHook :: ManageHook
-myManageHook = composeAll
-    ([isFullscreen --> doFullFloat] ++ classMappings ++ [manageDocks]) <+> manageHook defaultConfig
+manageHook :: ManageHook
+manageHook = composeAll
+    ([isFullscreen --> doFullFloat] ++ classMappings ++ [manageDocks]) <+> XC.manageHook defaultConfig
   where
     classMappings = concat $
-        map (\(workspace, names) -> [className =? name --> doShift (myWorkspaces !! (workspace-1)) | name <- names])
+        map (\(workspace, names) -> [className =? name --> doShift (workspaces !! (workspace-1)) | name <- names])
             [ (2, [ "Firefox"
                   , "Chromium"
                   , "Google-chrome-stable"
@@ -130,8 +131,8 @@ myManageHook = composeAll
 
 -- Define the Log hook.
 -- Configures xmobar.
-myLogHook :: Handle -> X ()
-myLogHook xmobar = dynamicLogWithPP
+logHook :: Handle -> X ()
+logHook xmobar = dynamicLogWithPP
     defaultPP { ppCurrent = xmobarColor Theme.foregroundHighlight Theme.backgroundHighlight
               , ppVisible = xmobarColor Theme.activeText Theme.active
               , ppHidden  = xmobarColor Theme.inactiveText Theme.inactive
@@ -143,20 +144,20 @@ myLogHook xmobar = dynamicLogWithPP
               , ppOutput  = hPutStrLn xmobar
               }
 
-myEventHook :: Event -> X All
-myEventHook = handleEventHook defaultConfig <+> docksEventHook
+handleEventHook :: Event -> X All
+handleEventHook = XC.handleEventHook defaultConfig <+> docksEventHook
 
-myKeys :: [(String, X ())]
-myKeys = [ ("M-b", sendMessage ToggleStruts)
-         , ("M-x", withFocused minimizeWindow)
-         , ("M-S-x", sendMessage RestoreNextMinimizedWin)
-         , ("M-s", searchMulti)
-         , ("M-S-s", selectSearchBrowser "xdg-open" google)
-         ]
-         ++ [ ("M-C-S-" ++ k, (windows $ shift i) >> (windows $ greedyView i))
-                | (i, k) <- zip myWorkspaces $ map show [1..9] ]
-         ++ [ ("M-i " ++ key, action) | (key, action) <- prefixActions ]
-         ++ [ ("M-p " ++ key, spawn program) | (key, program) <- programList ]
+keys :: [(String, X ())]
+keys = [ ("M-b", sendMessage ToggleStruts)
+       , ("M-x", withFocused minimizeWindow)
+       , ("M-S-x", sendMessage RestoreNextMinimizedWin)
+       , ("M-s", searchMulti)
+       , ("M-S-s", selectSearchBrowser "xdg-open" google)
+       ]
+       ++ [ ("M-C-S-" ++ k, (windows $ shift i) >> (windows $ greedyView i))
+              | (i, k) <- zip workspaces $ map show [1..9] ]
+       ++ [ ("M-i " ++ key, action) | (key, action) <- prefixActions ]
+       ++ [ ("M-p " ++ key, spawn program) | (key, program) <- programList ]
   where prefixActions =
             [ ("d", spawn "xdotool mousedown 1")
             , ("f", spawn "xdotool mousedown 3")
@@ -167,7 +168,7 @@ myKeys = [ ("M-b", sendMessage ToggleStruts)
             ]
         programList =
             [ ("p", "dmenu_run")
-            , ("t", myTerminal)
+            , ("t", terminal)
             , ("u", "uzbl-browser")
             , ("f", "firefox")
             , ("e", "emacs")
@@ -212,20 +213,20 @@ main = do
     xmobar1 <- spawnPipe "xmobar -x 1"
     safeSpawn "xmobar" [".music_xmobarrc"]
     xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
-        { terminal           = myTerminal
-        , focusedBorderColor = Theme.border
-        , normalBorderColor  = Theme.borderSecondary
-        , borderWidth        = myBorderWidth
-        , modMask            = mod4Mask
-        , workspaces         = myWorkspaces
-        , layoutHook         = myLayout
-        , manageHook         = myManageHook
-        , logHook            = myLogHook xmobar0 >> myLogHook xmobar1
-        , handleEventHook    = myEventHook
-        , focusFollowsMouse  = False
-        , clickJustFocuses   = False
+        { XC.terminal           = terminal
+        , XC.focusedBorderColor = Theme.border
+        , XC.normalBorderColor  = Theme.borderSecondary
+        , XC.borderWidth        = borderWidth
+        , XC.modMask            = mod4Mask
+        , XC.workspaces         = workspaces
+        , XC.layoutHook         = layoutHook
+        , XC.manageHook         = manageHook
+        , XC.logHook            = logHook xmobar0 >> logHook xmobar1
+        , XC.handleEventHook    = handleEventHook
+        , XC.focusFollowsMouse  = False
+        , XC.clickJustFocuses   = False
         }
         `additionalKeysP`
             multimediaKeys
         `additionalKeysP`
-            myKeys
+            keys
