@@ -1,10 +1,11 @@
 module Main where
 
 import XMonad                         ( Dimension, Event, mod4Mask, xmonad )
-import XMonad.Core                    ( ManageHook, WorkspaceId, X, io, withDisplay )
+import XMonad.Core                    ( ManageHook, Message, WorkspaceId, X, io, withDisplay, withWindowSet )
 import qualified XMonad.Core as XC    ( XConfig(..) )
 import XMonad.ManageHook              ( (-->), (<+>), (=?), className, composeAll, doShift, resource )
-import XMonad.Operations              ( getCleanedScreenInfo, sendMessage, windows, withFocused )
+import XMonad.Operations              ( getCleanedScreenInfo, sendMessage, sendMessageWithNoRefresh, windows, withFocused )
+import qualified XMonad.StackSet as W
 import XMonad.StackSet                ( RationalRect(..), greedyView, shift )
 
 import XMonad.Actions.Search          ( SearchEngine(SearchEngine), (!>), alpha, dictionary, google, hoogle, images, imdb, intelligent, maps, mathworld, namedEngine, prefixAware, searchEngine, selectSearchBrowser, thesaurus, use, wayback, wikipedia, wiktionary, youtube )
@@ -12,12 +13,13 @@ import XMonad.Hooks.DynamicLog        ( PP(..), dynamicLogWithPP, shorten, xmoba
 import XMonad.Hooks.ManageDocks       ( ToggleStruts(..), avoidStruts, docksEventHook, manageDocks )
 import XMonad.Hooks.ManageHelpers     ( doFullFloat, isFullscreen )
 import XMonad.Hooks.UrgencyHook       ( NoUrgencyHook(..), withUrgencyHook )
-import XMonad.Layout                  ( Full(..), Mirror(..), Tall(..), (|||) )
+import XMonad.Layout                  ( Full(..), Mirror(..), Tall(..) )
 import XMonad.Layout.Accordion        ( Accordion(..) )
 import XMonad.Layout.Decoration       ( Theme(..), shrinkText )
 import XMonad.Layout.Fullscreen       ( fullscreenFull )
 import XMonad.Layout.Grid             ( Grid(..) )
 import XMonad.Layout.IM               ( withIM )
+import XMonad.Layout.LayoutCombinators( (|||), JumpToLayout(..) )
 import XMonad.Layout.Minimize         ( MinimizeMsg(RestoreNextMinimizedWin), minimize, minimizeWindow )
 import XMonad.Layout.NoBorders        ( noBorders, smartBorders )
 import XMonad.Layout.PerWorkspace     ( onWorkspace )
@@ -269,8 +271,19 @@ multimediaKeys = [ (audioKey "Play"          , safeSpawn "mpc" ["toggle"])
   where mediaKey k = "<XF86" ++ k ++ ">"
         audioKey k = mediaKey $ "Audio" ++ k
 
+sendMessageToWorkspace :: Message a => a -> WorkspaceId -> X ()
+sendMessageToWorkspace a i =
+    withWindowSet $ \ws -> do
+        let c = W.workspace . W.current $ ws
+            v = map W.workspace . W.visible $ ws
+            h = W.hidden ws
+            o = head $ filter (\w -> W.tag w == i) (c : v ++ h)
+        sendMessageWithNoRefresh a o
+
 startupHook :: X ()
 startupHook = do
+    sendMessageToWorkspace (JumpToLayout "Tabbed") $ selectWorkspace 2
+
     hostname <- io getHostName
     paths    <- io $ mapM (getUserDataFile "xmobar") xmobarConfigs
     screens  <- fmap length $ withDisplay getCleanedScreenInfo
