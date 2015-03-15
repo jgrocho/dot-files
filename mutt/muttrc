@@ -9,21 +9,14 @@ set certificate_file = ~/.mutt/certificates
 # Decrypt and load passwords
 source "gpg -dq ~/.mutt/passwords.gpg |"
 
-# Configure IMAP for primary Gmail account
-set imap_user = tangleforest@gmail.com
-set imap_pass = $my_pw_tangleforest
-set folder    = imaps://tangleforest@imap.gmail.com/
-set spoolfile = "+INBOX"
-set imap_check_subscribed
+## tangleforest Gmail account
+source "~/.mutt/tangleforest"
+folder-hook $folder 'source ~/.mutt/tangleforest'
 
-# Configure SMTP for Gmail
-set smtp_url  = smtps://tangleforest@smtp.gmail.com/
-set smtp_pass = $my_pw_tangleforest
-set from      = tangleforest@gmail.com
-set realname  = "Jonathan Grochowski"
+## jongrocho Gmail account
+source "~/.mutt/jongrocho"
+folder-hook $folder 'source ~/.mutt/jongrocho'
 
-set postponed    = "+[Gmail]/Drafts"
-set record       = "+[Gmail]/Sent Mail"
 set move         = no
 set include
 set sort         = 'threads'

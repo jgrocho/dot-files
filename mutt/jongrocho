@@ -1,0 +1,19 @@
+## Recieve options
+set imap_user = jongrocho@gmail.com
+set imap_pass = $my_pw_jongrocho
+set folder    = imaps://jongrocho@imap.gmail.com/
+set spoolfile = "+INBOX"
+set postponed = "+Drafts"
+set record    = "+Sent Mail"
+
+## Send options
+set smtp_url  = smtps://jongrocho@smtp.gmail.com/
+set smtp_pass = $my_pw_jongrocho
+set realname  = "Jonathan Grochowski"
+set from      = jongrocho@gmail.com
+set hostname  = gmail.com
+# Connection options
+set ssl_force_tls = yes
+unset ssl_starttls
+
+account-hook $folder "set imap_user=jongrocho@gmail.com imap_pass=$my_pw_jongrocho"
