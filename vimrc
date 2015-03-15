@@ -30,6 +30,7 @@ Bundle 'nosami/Omnisharp'
 Bundle 'tpope/vim-dispatch'
 Bundle 'scrooloose/syntastic'
 Bundle 'derekwyatt/vim-scala'
+Bundle 'jamessan/vim-gnupg'
 "}}}
 
 filetype plugin indent on	" required
