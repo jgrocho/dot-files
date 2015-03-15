@@ -41,7 +41,7 @@
 
 ;;; Load solarized color-theme
 (setq solarized-termcolors 256)
-(load-theme 'solarized-dark t)
+(load-theme 'solarized-light t)
 
 ;;; Load ProofGeneral
 (setq proof-electric-terminator-enable t)

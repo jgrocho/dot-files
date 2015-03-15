@@ -27,7 +27,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L %?M?(#%03M)&(%4l)? %?y?(%.20Y) ?%s"
 auto_view text/html
 
 # Configure colors
-source ~/.mutt/colors-solarized/mutt-colors-solarized-dark-16.muttrc
+source ~/.mutt/colors-solarized/mutt-colors-solarized-light-16.muttrc
 
 bind editor <Tab> complete-query
 #macro pager \cb <pipe-entry>'urlview'<enter> 'Follow links with urlview'

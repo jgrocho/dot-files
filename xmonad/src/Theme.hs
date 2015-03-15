@@ -41,25 +41,25 @@ module Theme
 
   ) where
 
-import           Data.Monoid    ( Monoid(mappend), (<>) )
-import           Data.String    ( IsString(..) )
+import           Data.Monoid     ( Monoid(mappend), (<>) )
+import           Data.String     ( IsString(..) )
 import           Solarized
-import qualified Solarized.Dark as Dark
+import qualified Solarized.Light as Light
 
 background, backgroundSecondary, backgroundHighlight :: IsString a => a
-background          = Dark.base03
-backgroundSecondary = Dark.base03
-backgroundHighlight = Dark.base02
+background          = Light.base03
+backgroundSecondary = Light.base03
+backgroundHighlight = Light.base02
 
 foreground, foregroundSecondary, foregroundHighlight :: IsString a => a
-foreground          = Dark.base0
-foregroundSecondary = Dark.base01
-foregroundHighlight = Dark.base1
+foreground          = Light.base0
+foregroundSecondary = Light.base01
+foregroundHighlight = Light.base1
 
 border, borderSecondary, borderHighlight :: IsString a => a
-border          = Dark.base1
-borderSecondary = Dark.base02
-borderHighlight = Dark.base2
+border          = Light.base1
+borderSecondary = Light.base02
+borderHighlight = Light.base2
 
 active, activeText, activeBorder :: IsString a => a
 active         = background

@@ -37,13 +37,12 @@ filetype plugin indent on	" required
 "}}}
 
 " switch on syntax highlighting
-syntax on
+syntax enable
 
 set number
 set relativenumber
 nnoremap <F2> :set number! relativenumber!<CR>:set foldcolumn=0<CR>
 
-set background=dark
 colorscheme solarized
 
 highlight ExtraWhitespace ctermbg=2 guibg=2
