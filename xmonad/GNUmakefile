@@ -6,10 +6,6 @@ XMONADSRC   = xmonadrc.hs
 XMONAD      = $(HOME)/bin/xmonad
 XMONADRC    = dist/build/xmonadrc/xmonadrc
 
-XMOBARSRC   = xmobar.hs
-XMOBAR      = dist/build/xmobar/xmobar
-XMOBARRC    = xmobarrc
-
 GHC_CHECK   = ghc -V | grep -q '7\.8\.4' # Required compiler version.
 CABAL_FLAGS = --enable-optimization=2
 
@@ -17,10 +13,10 @@ CABAL_FLAGS = --enable-optimization=2
 .PHONEY: all install restart clean realclean ghc-version
 
 ################################################################################
-all: $(XMOBARRC) $(XMONADRC)
+all: $(XMONADRC)
 
 ################################################################################
-install: $(XMOBARRC) $(XMONADRC)
+install: $(XMONADRC)
 	install -Dm755 $(XMONADRC) $(XMONAD)
 
 ################################################################################
@@ -29,7 +25,7 @@ restart: install
 
 ################################################################################
 clean:
-	rm -rf dist $(XMOBARRC) $(XMONADRC) $(SANDBOX)
+	rm -rf dist $(XMONADRC) $(SANDBOX)
 
 ################################################################################
 realclean: clean
@@ -41,15 +37,8 @@ $(XMONADRC): $(SANDBOX) $(SRC) $(XMONADSRC)
 	cabal build
 
 ################################################################################
-$(XMOBAR): $(SANDBOX) $(SRC) $(XMOBARSRC)
-	$(GHC_CHECK)
-	cabal build xmobar
-
-################################################################################
-$(XMOBARRC) music_$(XMOBARRC): $(XMOBAR)
-	$(XMOBAR)
-
-################################################################################
 $(SANDBOX):
 	cabal sandbox init
+	cabal sandbox add-source ~/src/xmonad
+	cabal sandbox add-source ~/src/XMonadContrib
 	cabal install --dependencies-only

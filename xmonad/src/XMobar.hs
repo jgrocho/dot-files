@@ -1,10 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Main (main) where
+module XMobar
+  ( bottomConfig
+  , topConfig
+  ) where
 
 import           Data.Monoid      ( (<>) )
 import qualified Data.Text        as T
-import           Network.HostName ( HostName, getHostName )
+import           Network.HostName ( HostName )
 import qualified Theme            as Theme
 import           XMobarHs
 
@@ -67,8 +70,8 @@ hostTemplate host =
             ]
         ]
 
-myConfig :: HostName -> Config
-myConfig hostname = let host = lookupHost hostname in
+topConfig :: HostName -> Config
+topConfig hostname = let host = lookupHost hostname in
     sharedConfig { position = Top
                  , commands = [ Run $ MultiCpu ["-S", "True", "-L", "3", "-H", "50", "--normal", Theme.good, "--high", Theme.bad, "-t", "<autototal>", "-p", "2"] 10
                               , Run $ Memory ["-t", "<usedipat><usedratio>%", "--", "--used-icon-pattern", "<icon=circle_filling_%%.xpm/>"] 10
@@ -89,23 +92,21 @@ myConfig hostname = let host = lookupHost hostname in
                  , template = hostTemplate host
                  }
 
-musicConfig :: HostName -> Config
-musicConfig hostname = let host = lookupHost hostname in
+bottomConfig :: HostName -> Config
+bottomConfig hostname = let host = lookupHost hostname in
     sharedConfig { position = Bottom
-                 , commands = [ Run $ MPD ["-t", "<title> - <artist> (<album>)"] 10
+                 , commands = [ Run $ StdinReader
+                              , Run $ MPD ["-t", "<title> - <artist> (<album>)"] 10
                               , Run $ Mpris2 "spotify" ["-t", "<title> - <artist> (<album>)"] 10
                               , Run $ Volume "default" "Master" ["-t", "<volume><status>", "--", "-C", Theme.foreground, "-O", "<volumeipat>", "-c", Theme.foreground, "-o", "<icon=audio-volume-muted.xpm/>", "--volume-icon-pattern", "<icon=audio_%%.xpm/>"] 10
                               ]
-                 , template = foldr1 (<>) [ "" -- alias "mpd"
+                 , template = foldr1 (<>) [ alias "StdinReader"
                                           , "}"
-                                          , alias "mpris2"
                                           , "{"
-                                          , alias "default:Master"
+                                          , T.intercalate primarySeparator
+                                             [ {-alias "mpd"
+                                             ,-} alias "mpris2"
+                                             , alias "default:Master"
+                                             ]
                                           ]
                  }
-
-main :: IO ()
-main = do
-    hostname <- getHostName
-    myConfig hostname `exportTo` "xmobarrc"
-    musicConfig hostname `exportTo` "music_xmobarrc"
