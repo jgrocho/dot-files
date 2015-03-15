@@ -21,6 +21,7 @@ import XMonad.Layout.IM               ( withIM )
 import XMonad.Layout.Minimize         ( MinimizeMsg(RestoreNextMinimizedWin), minimize, minimizeWindow )
 import XMonad.Layout.NoBorders        ( noBorders, smartBorders )
 import XMonad.Layout.PerWorkspace     ( onWorkspace )
+import XMonad.Layout.Renamed          ( Rename(..), renamed )
 import XMonad.Layout.Tabbed           ( tabbed )
 import XMonad.Util.Dmenu              ( menuArgs )
 import XMonad.Util.EZConfig           ( additionalKeysP )
@@ -78,14 +79,15 @@ selectWorkspace = (!!) workspaces . pred
 -- On workspace 3, we have a Grid-ed IM layout, which places the buddy list
 -- window on the far left.
 layoutHook =
+    renamed [CutWordsLeft 1] $
     minimize $ smartBorders $
     onWorkspace (selectWorkspace 3) chatLayout $
     onWorkspace (selectWorkspace 5) gameLayout $
     avoidStruts
         (   tiled
-        ||| Mirror tiled
+        ||| (renamed [Replace "Wide"] $ Mirror tiled)
         ||| Accordion
-        ||| tabbedLayout
+        ||| (renamed [Replace "Tabbed"] $ tabbedLayout)
         ) |||
     fullscreenFull Full
   where
@@ -162,7 +164,6 @@ logHook = do
                 , ppSep     = xmobarColor Theme.foregroundSecondary "" " ║ "
                 , ppWsSep   = xmobarColor Theme.foregroundSecondary "" "│"
                 , ppTitle   = const ""
-                , ppLayout  = const ""
                 , ppOutput  = hPutStrLn handle
                 }
         botPP handle = dynamicLogWithPP $
