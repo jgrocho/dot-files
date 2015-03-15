@@ -252,3 +252,7 @@
     foreground = "#002b36"
     format = "<b>%s</b> %b"
     timeout = 3
+
+[spotify]
+    appname = "Spotify"
+    format = ""
