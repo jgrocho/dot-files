@@ -190,7 +190,7 @@ scratchpads = [ NS "terminal" spawnTerm  findTerm  manageTerm
   where spawnTerm   = terminal ++ " -name scratchpad"
         findTerm    = resource =? "scratchpad"
         manageTerm  = customFloating $ RationalRect l t w h
-          where h = 15 % 100
+          where h = 25 % 100
                 w = 1
                 t = 0
                 l = (1 - w) / 2
