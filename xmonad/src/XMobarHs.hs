@@ -23,8 +23,8 @@ import Data.String            ( IsString(..) )
 import Data.Text              ( Text, intercalate )
 import Data.Text.IO           ( writeFile )
 import GHC.Generics           ( Generic )
-import System.Directory       ( getHomeDirectory )
-import System.FilePath        ( (</>) )
+import System.Directory       ( createDirectoryIfMissing, getHomeDirectory )
+import System.FilePath        ( (</>), takeDirectory )
 import Text.Show.Text         ( Show(showbPrec), show )
 import Text.Show.Text.Generic ( genericShowbPrec )
 
@@ -281,4 +281,6 @@ export :: Config -> IO ()
 export cfg = getHomeDirectory >>= exportTo cfg . (</> ".xmobarrc")
 
 exportTo :: Config -> FilePath -> IO ()
-exportTo cfg file = writeFile file $ text cfg
+exportTo cfg file = do
+    createDirectoryIfMissing True $ takeDirectory file
+    writeFile file $ text cfg
