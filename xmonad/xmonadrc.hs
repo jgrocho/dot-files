@@ -68,7 +68,7 @@ borderWidth = 1
 workspaces :: [WorkspaceId]
 workspaces = named ++ map show [(length named +1)..9]
   where
-    names = ["main", "web", "chat", "music", "games"]
+    names = ["main", "web", "chat", "music", "full"]
     named = zipWith (\x -> ((show x ++) "❘" ++)) [1..] names
 
 selectWorkspace :: Int -> WorkspaceId
