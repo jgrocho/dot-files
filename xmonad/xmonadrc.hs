@@ -214,6 +214,7 @@ keys = [ ("M-b"  , sendMessage ToggleStruts)
        ++ [ ("M-i " ++ key, action) | (key, action) <- prefixActions ]
        ++ [ ("M-p " ++ key, safeSpawn program []) | (key, program) <- programList ]
        ++ [ ("M-n " ++ key, namedScratchpadAction scratchpads name) | (key, name) <- scratchpadList ]
+       ++ [ ("M-r " ++ show i, safeSpawn "pkill" ["-f", "-USR1", "redshift.*" ++ show i]) | i <- [0..1] ]
   where prefixActions =
             [ ("d", safeSpawn "xdotool" ["mousedown", "1"])
             , ("f", safeSpawn "xdotool" ["mousedown", "3"])
