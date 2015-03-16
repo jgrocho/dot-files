@@ -292,22 +292,22 @@ startupHook = do
     mapM_ spawnPipes $ zip xmobarConfigs paths
   where command screen path = intercalate " " ["xmobar",  "-x", show screen, path]
 
+config = def { XC.terminal           = terminal
+             , XC.focusedBorderColor = Theme.border
+             , XC.normalBorderColor  = Theme.borderSecondary
+             , XC.borderWidth        = borderWidth
+             , XC.modMask            = mod4Mask
+             , XC.workspaces         = workspaces
+             , XC.layoutHook         = layoutHook
+             , XC.manageHook         = manageHook
+             , XC.logHook            = logHook
+             , XC.handleEventHook    = handleEventHook
+             , XC.startupHook        = startupHook
+             , XC.focusFollowsMouse  = False
+             , XC.clickJustFocuses   = False
+             }
+             `additionalKeysP`
+                 (keys ++ multimediaKeys)
+
 main :: IO ()
-main = do
-    xmonad $ withUrgencyHook NoUrgencyHook $ def
-        { XC.terminal           = terminal
-        , XC.focusedBorderColor = Theme.border
-        , XC.normalBorderColor  = Theme.borderSecondary
-        , XC.borderWidth        = borderWidth
-        , XC.modMask            = mod4Mask
-        , XC.workspaces         = workspaces
-        , XC.layoutHook         = layoutHook
-        , XC.manageHook         = manageHook
-        , XC.logHook            = logHook
-        , XC.handleEventHook    = handleEventHook
-        , XC.startupHook        = startupHook
-        , XC.focusFollowsMouse  = False
-        , XC.clickJustFocuses   = False
-        }
-        `additionalKeysP`
-            (keys ++ multimediaKeys)
+main = xmonad $ withUrgencyHook NoUrgencyHook $ config
