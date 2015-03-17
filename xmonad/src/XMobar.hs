@@ -58,8 +58,10 @@ coreTempTemplate host = T.intercalate " " $ map ((<> "C") . wrap "<" ">" . ("cor
 
 hostTemplate :: Host -> T.Text
 hostTemplate host =
-    T.intercalate (alignSep sharedConfig)
+    T.concat
         [ alias "StdinReader"
+        , alignSep sharedConfig
+        , color Theme.red "" $ alias "updates"
         , T.intercalate primarySeparator $ filter (/= T.empty)
             [ T.intercalate secondarySeparator $ map alias [interface <> "wi", interface]
             , T.intercalate secondarySeparator $ map alias $ ["multicpu"]
@@ -78,6 +80,7 @@ topConfig hostname = let host = lookupHost hostname in
                               , Run $ Date dateFormat "date" 10
                               , Run $ Network interface ["-t", "↓<rx> ↑<tx>", "-S", "False"] 10
                               , Run $ Wireless interface ["-t", "<essid> <quality>%"] 10
+                              , Run $ Com "updates" [primarySeparator] "" 600
                               , Run $ StdinReader
                               ]
                               ++ (if hostBattery host
