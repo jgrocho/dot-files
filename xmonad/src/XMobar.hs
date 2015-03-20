@@ -59,16 +59,16 @@ coreTempTemplate host = T.intercalate " " $ map ((<> "C") . wrap "<" ">" . ("cor
 hostTemplate :: Host -> T.Text
 hostTemplate host =
     T.concat
-        [ alias "StdinReader"
+        [ alias "UnsafeStdinReader"
         , alignSep sharedConfig
         , color Theme.red "" $ alias "updates"
         , T.intercalate primarySeparator $ filter (/= T.empty)
-            [ T.intercalate secondarySeparator $ map alias [interface <> "wi", interface]
+            [ T.intercalate secondarySeparator $ [wrap "<action=`xdotool key super+p n`>" "</action>" $ alias $ interface <> "wi", alias interface]
             , T.intercalate secondarySeparator $ map alias $ ["multicpu"]
                                                              ++ (if hostTemp host then ["coretemp"] else [])
                                                              ++ (if hostFan host then ["cat0"] else [])
             , (if hostBattery host then alias "battery" else "") <> alias "memory"
-            , color Theme.cyan "" $ alias "date"
+            , color Theme.cyan "" $ wrap "<action=`calendar`>" "</action>" $ alias "date"
             ]
         ]
 
@@ -81,7 +81,7 @@ topConfig hostname = let host = lookupHost hostname in
                               , Run $ Network interface ["-t", "↓<rx> ↑<tx>", "-S", "False"] 10
                               , Run $ Wireless interface ["-t", "<essid> <quality>%"] 10
                               , Run $ Com "updates" [primarySeparator] "" 600
-                              , Run $ StdinReader
+                              , Run $ UnsafeStdinReader
                               ]
                               ++ (if hostBattery host
                                      then [ Run $ BatteryP ["BAT0"] ["-t", "<acstatus>", "--", "-O", "<leftipat><left>%" <> primarySeparator, "-o", "<leftipat><left>%" <> primarySeparator, "-i", "", "--off-icon-pattern", "<icon=battery_%%.xpm/>", "--on-icon-pattern", "<icon=battery_charging_%%.xpm/>"] 20 ]

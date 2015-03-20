@@ -18,7 +18,7 @@ module XMobarHs
 
 import Prelude         hiding ( Show(..), print, writeFile )
 import Data.List              ( foldl' )
-import Data.Monoid            ( Monoid(mappend, mempty), (<>) )
+import Data.Monoid            ( Monoid(mappend, mempty), (<>), mconcat )
 import Data.String            ( IsString(..) )
 import Data.Text              ( Text, intercalate )
 import Data.Text.IO           ( writeFile )
@@ -269,7 +269,7 @@ instance ToText a => ToText (Run a) where
     text (Run x) = "Run " <> text x
 
 color :: (Monoid a, IsString a, Eq a) => a -> a -> a -> a
-color fc bc content = foldl' mappend "" ["<fc=", fc, if mempty == bc then "" else "," <> bc, ">", content, "</fc>"]
+color fc bc content = mconcat ["<fc=", fc, if mempty == bc then "" else "," <> bc, ">", content, "</fc>"]
 
 wrap :: Monoid a => a -> a -> a -> a
 wrap l r m = l <> m <> r

@@ -46,7 +46,7 @@ import           SpawnNamedPipes ( getNamedPipes, spawnNamedPipes )
 import           Theme           ( atSize )
 import qualified Theme as Theme
 import           XMobar          ( bottomConfig, topConfig )
-import           XMobarHs        ( exportTo )
+import           XMobarHs        ( exportTo, wrap )
 
 xmobarPipePrefix :: String
 xmobarPipePrefix = "xmobar"
@@ -160,11 +160,12 @@ logHook = do
     sequence_ $ zipWith (\pp hs -> mapM_ pp $ fromMaybe [] hs) [topPP, botPP] handles
   where topPP handle = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $
             def { ppCurrent = xmobarColor Theme.foregroundHighlight Theme.backgroundHighlight
-                , ppVisible = xmobarColor Theme.activeText Theme.active
-                , ppHidden  = xmobarColor Theme.inactiveText Theme.inactive
-                , ppUrgent  = xmobarColor Theme.urgentText Theme.urgent . (:) '!'
+                , ppVisible = xmobarColor Theme.activeText Theme.active . clickableWs
+                , ppHidden  = xmobarColor Theme.inactiveText Theme.inactive . clickableWs
+                , ppUrgent  = xmobarColor Theme.urgentText Theme.urgent . (:) '!' . clickableWs
                 , ppSep     = xmobarColor Theme.foregroundSecondary "" " ║ "
                 , ppWsSep   = xmobarColor Theme.foregroundSecondary "" "│"
+                , ppLayout  = wrap "<action=`xdotool key super+space`>" "</action>" . raw
                 , ppTitle   = const ""
                 , ppOutput  = hPutStrLn handle
                 }
@@ -179,6 +180,10 @@ logHook = do
                 , ppLayout  = const ""
                 , ppOutput  = hPutStrLn handle
                 }
+        raw str = let len = show $ length str
+                  in concat ["<raw=", len, ":", str, "/>"]
+        clickableWs ws = let i = [head ws]
+                         in concat ["<action=`xdotool key super+", i, "`>", raw ws, "</action>"]
 
 handleEventHook :: Event -> X All
 handleEventHook = XC.handleEventHook def <+> docksEventHook
