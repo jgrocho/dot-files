@@ -231,6 +231,7 @@ keys = [ ("M-b"  , sendMessage ToggleStruts)
             , ("e", "emacs")
             , ("v", "vlc")
             , ("s", "spotify")
+            , ("n", "dmenu_netctl")
             ]
         scratchpadList =
             [ ("t", "terminal")
