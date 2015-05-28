@@ -229,14 +229,14 @@ keys = [ ("M-b"  , sendMessage ToggleStruts)
             , ("o", safePromptSelection "xdg-open")
             ]
         programList =
-            [ ("p", "dmenu_run")
+            [ ("e", "emacs")
+            , ("f", "firefox")
+            , ("n", "dmenu_netctl")
+            , ("p", "dmenu_run")
+            , ("s", "spotify")
             , ("t", terminal)
             , ("u", "uzbl-browser")
-            , ("f", "firefox")
-            , ("e", "emacs")
             , ("v", "vlc")
-            , ("s", "spotify")
-            , ("n", "dmenu_netctl")
             ]
         scratchpadList =
             [ ("t", "terminal")
