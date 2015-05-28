@@ -229,7 +229,8 @@ keys = [ ("M-b"  , sendMessage ToggleStruts)
             , ("o", safePromptSelection "xdg-open")
             ]
         programList =
-            [ ("e", "emacs")
+            [ ("c", "google-chrome-stable")
+            , ("e", "emacs")
             , ("f", "firefox")
             , ("n", "dmenu_netctl")
             , ("p", "dmenu_run")
