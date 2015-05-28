@@ -278,8 +278,15 @@ multimediaKeys = [ (audioKey "Play"          , safeSpawn "mpc" ["toggle"])
                  , (mediaKey "Battery"       , safeSpawn "sudo" ["ignore-lid"])
                  , (mediaKey "WebCam"        , safeSpawn "sudo" ["fan-switch"])
                  ]
+                 ++ [ ("<XF86Launch1> " ++ key, safeSpawn "sudo" ["systemctl", action]) | (key, action) <- powerKeys ]
   where mediaKey k = "<XF86" ++ k ++ ">"
         audioKey k = mediaKey $ "Audio" ++ k
+        powerKeys =
+            [ ("h", "hibernate")
+            , ("p", "poweroff" )
+            , ("r", "reboot"   )
+            , ("s", "suspend"  )
+            ]
 
 sendMessageToWorkspace :: Message a => a -> WorkspaceId -> X ()
 sendMessageToWorkspace a i =
