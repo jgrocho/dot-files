@@ -8,7 +8,7 @@ import XMonad.Operations              ( getCleanedScreenInfo, sendMessage, sendM
 import qualified XMonad.StackSet as W
 import XMonad.StackSet                ( RationalRect(..), greedyView, shift )
 
-import XMonad.Actions.Search          ( SearchEngine(SearchEngine), (!>), alpha, dictionary, google, hoogle, images, imdb, intelligent, maps, mathworld, namedEngine, prefixAware, searchEngine, selectSearchBrowser, thesaurus, use, wayback, wikipedia, wiktionary, youtube )
+import XMonad.Actions.Search          ( SearchEngine(SearchEngine), (!>), alpha, dictionary, google, hoogle, images, imdb, intelligent, maps, mathworld, namedEngine, prefixAware, searchEngine, selectSearchBrowser, thesaurus, use, wayback, wikipedia, wiktionary )
 import XMonad.Hooks.DynamicLog        ( PP(..), dynamicLogWithPP, shorten, xmobarColor )
 import XMonad.Hooks.ManageDocks       ( ToggleStruts(..), avoidStruts, docksEventHook, manageDocks )
 import XMonad.Hooks.ManageHelpers     ( doFullFloat, isFullscreen )
@@ -253,11 +253,13 @@ keys = [ ("M-b"  , sendMessage ToggleStruts)
         genius        = searchEngine "genius"        "http://genius.com/search?q="
         github        = searchEngine "github"        "https://github.com/search?type=Everything&start_value=1&q="
         hackage       = searchEngine "hackage"       "http://hackage.haskell.org/packages/search?terms="
+        isup          = searchEngine "isup"          "http://www.downforeveryoneorjustme.com/"
         mdn           = searchEngine "mdn"           "https://developer.mozilla.org/en-US/search?q="
         openstreetmap = searchEngine "openstreetmap" "http://www.openstreetmap.org/search?query="
         soundcloud    = searchEngine "soundcloud"    "https://soundcloud.com/search?q="
         urban         = searchEngine "urban"         "http://www.urbandictionary.com/define.php?term="
-        searchList    = [alpha, amazon, aur, ddg, dictionary, genius, github, google, hackage, hoogle, images, imdb, maps, mathworld, mdn, openstreetmap, soundcloud, thesaurus, urban, wayback, wikipedia, wiktionary, youtube]
+        youtube       = searchEngine "youtube"       "https://www.youtube.com/results?search_query="
+        searchList    = [alpha, amazon, aur, ddg, dictionary, genius, github, google, hackage, hoogle, images, imdb, isup, maps, mathworld, mdn, openstreetmap, soundcloud, thesaurus, urban, wayback, wikipedia, wiktionary, youtube]
         multiEngine   = namedEngine "multi" $ intelligent $ foldr1 (!>) $ searchList ++ [prefixAware ddg]
 
 multimediaKeys :: [(String, X ())]
