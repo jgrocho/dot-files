@@ -23,3 +23,6 @@ Session.vim
 .virthualenv
 # hsenv folders
 .hsenv_*
+
+# Haskell stack tool files
+.stack-work
