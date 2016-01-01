@@ -8,7 +8,7 @@ function git_ps1() {
     if [[ -r /usr/share/git/git-prompt.sh ]]; then
         source /usr/share/git/git-prompt.sh
         builtin hash __git_ps1 2>&- \
-          && __git_ps1 " on \[\e[0;36m\]%s \[\e[0;32m\]∓\[\e[0m\]"
+          && __git_ps1 " on \[\e[0;32m\]\[\e[0m\] \[\e[0;36m\]%s\[\e[0m\]"
     fi
 }
 
