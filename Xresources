@@ -14,7 +14,7 @@ dmenu.selbackground:    S_base02
 XTerm*dynamicColors:    true
 
 !! Set the font to inconsolata
-*font:                  xft:inconsolata:size=11
+*font:                  xft:Fira Mono plus Octicons:size=11
 dmenu.font:             inconsolata-11
 Emacs.FontBackend:      xft
 Emacs.font:             inconsolata-g-12
@@ -31,3 +31,22 @@ URxvt*visualBell:       true
 URxvt.iso14755:         false
 URxvt.intensityStyles:  false
 URxvt.urgentOnBell:     true
+
+!! dim
+dim*font:                    xft:inconsolata:size=13
+dim*background:              S_base3
+dim*foreground:              S_base00
+dim*fading:                  40
+dim*fadeColor:               S_base3
+dim*cursorColor:             S_base01
+dim*pointerColorBackground:  S_base1
+dim*pointerColorForeground:  S_base01
+
+dim*color0:                  S_base2
+dim*color7:                  S_base02
+dim*color8:                  S_base3
+dim*color10:                 S_base1
+dim*color11:                 S_base0
+dim*color12:                 S_base00
+dim*color14:                 S_base01
+dim*color15:                 S_base03
