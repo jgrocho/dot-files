@@ -66,12 +66,12 @@ cacheIsShared = false
 
 # Uncomment this if you want to disable the on-disk cache:
 
-diskCacheRoot = ""
+#diskCacheRoot = ""
 
 # Uncomment this if you want to put the on-disk cache in a
 # non-standard location:
 
-diskCacheRoot = "~/.local/share/polipo/cache/"
+diskCacheRoot = "~/.cache/polipo/"
 
 # Uncomment this if you want to disable the local web server:
 
