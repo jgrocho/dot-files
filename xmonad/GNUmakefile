@@ -6,7 +6,7 @@ XMONADSRC   = xmonadrc.hs
 XMONAD      = $(HOME)/bin/xmonad
 XMONADRC    = dist/build/xmonadrc/xmonadrc
 
-GHC_CHECK   = ghc -V | grep -q '7\.8\.4' # Required compiler version.
+GHC_CHECK   = ghc -V | grep -q '7\.10\.3' # Required compiler version.
 CABAL_FLAGS = --enable-optimization=2
 
 ################################################################################
