@@ -32,15 +32,17 @@ import XMonad.Util.Run                ( safeSpawn, spawnPipe )
 import XMonad.Util.WindowProperties   ( Property(..) )
 import XMonad.Util.XSelection         ( safePromptSelection )
 
-import Control.Monad                  ( forM_, mapM, mapM_, when )
-import Data.Default                   ( def )
-import Data.List                      ( intercalate )
-import Data.Maybe                     ( fromMaybe )
-import Data.Monoid                    ( All )
-import Data.Ratio                     ( (%) )
-import Network.HostName               ( getHostName )
-import System.IO                      ( Handle, hPutStrLn )
-import System.Environment.XDG.BaseDir ( getUserDataFile )
+import           Control.Monad                  ( forM_, mapM, mapM_, when )
+import qualified Data.ByteString                as B
+import           Data.Default                   ( def )
+import           Data.List                      ( intercalate )
+import           Data.Maybe                     ( fromJust, fromMaybe )
+import           Data.Monoid                    ( All )
+import           Data.Ratio                     ( (%) )
+import           Data.Yaml                      ( decode )
+import           Network.HostName               ( getHostName )
+import           System.IO                      ( Handle, hPutStrLn )
+import           System.Environment.XDG.BaseDir ( getUserDataFile )
 
 import           SpawnNamedPipes ( getNamedPipes, spawnNamedPipes )
 import           Theme           ( atSize )
@@ -72,7 +74,7 @@ workspaces = named ++ map show [(length named +1)..9]
     named = zipWith (\x -> ((show x ++) "❘" ++)) [1..] names
 
 selectWorkspace :: Int -> WorkspaceId
-selectWorkspace = (!!) workspaces . pred
+selectWorkspace = (!!) (XC.workspaces config) . pred
 
 -- Define the layout.
 -- We have vertical and horizontal Tall layouts, an Accordion layout and a
@@ -217,9 +219,10 @@ keys = [ ("M-b"  , sendMessage ToggleStruts)
        ++ [ ("M-C-S-" ++ k, (windows $ shift i) >> (windows $ greedyView i))
               | (i, k) <- zip workspaces $ map show [1..9] ]
        ++ [ ("M-i " ++ key, action) | (key, action) <- prefixActions ]
-       ++ [ ("M-p " ++ key, safeSpawn program []) | (key, program) <- programList ]
+       ++ [ ("M-p " ++ key, safeSpawn program args) | (key, program, args) <- programList ]
        ++ [ ("M-n " ++ key, namedScratchpadAction scratchpads name) | (key, name) <- scratchpadList ]
        ++ [ ("M-r " ++ show i, safeSpawn "pkill" ["-f", "-USR1", "redshift.*" ++ show i]) | i <- [0..1] ]
+       ++ [ ("M-c " ++ key, safeSpawn "dmenu_systemctl" args) | (key, args) <- [("s", ["--system"]), ("u", ["--user"])] ]
   where prefixActions =
             [ ("d", safeSpawn "xdotool" ["mousedown", "1"])
             , ("f", safeSpawn "xdotool" ["mousedown", "3"])
@@ -229,15 +232,16 @@ keys = [ ("M-b"  , sendMessage ToggleStruts)
             , ("o", safePromptSelection "xdg-open")
             ]
         programList =
-            [ ("c", "google-chrome-stable")
-            , ("e", "emacs")
-            , ("f", "firefox")
-            , ("n", "dmenu_netctl")
-            , ("p", "dmenu_run")
-            , ("s", "spotify")
-            , ("t", terminal)
-            , ("u", "uzbl-browser")
-            , ("v", "vlc")
+            [ ("c", "google-chrome-stable", []                 )
+            , ("d", "urxvt"               , [ "-name", "dim" ] )
+            , ("e", "emacs"               , []                 )
+            , ("f", "firefox"             , []                 )
+            , ("n", "dmenu_netctl"        , []                 )
+            , ("p", "dmenu_run"           , []                 )
+            , ("s", "spotify"             , []                 )
+            , ("t", terminal              , []                 )
+            , ("u", "uzbl-browser"        , []                 )
+            , ("v", "vlc"                 , []                 )
             ]
         scratchpadList =
             [ ("t", "terminal")

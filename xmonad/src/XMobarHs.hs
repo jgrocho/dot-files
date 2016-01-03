@@ -16,17 +16,17 @@ module XMobarHs
   , exportTo
   ) where
 
-import Prelude         hiding ( Show(..), print, writeFile )
-import Data.List              ( foldl' )
-import Data.Monoid            ( Monoid(mappend, mempty), (<>), mconcat )
-import Data.String            ( IsString(..) )
-import Data.Text              ( Text, intercalate )
-import Data.Text.IO           ( writeFile )
-import GHC.Generics           ( Generic )
-import System.Directory       ( createDirectoryIfMissing, getHomeDirectory )
-import System.FilePath        ( (</>), takeDirectory )
-import Text.Show.Text         ( Show(showbPrec), show )
-import Text.Show.Text.Generic ( genericShowbPrec )
+import Prelude   hiding ( print, writeFile )
+import Data.List        ( foldl' )
+import Data.Monoid      ( Monoid(mappend, mempty), (<>), mconcat )
+import Data.String      ( IsString(..) )
+import Data.Text        ( Text, intercalate )
+import Data.Text.IO     ( writeFile )
+import GHC.Generics     ( Generic, Generic1 )
+import System.Directory ( createDirectoryIfMissing, getHomeDirectory )
+import System.FilePath  ( (</>), takeDirectory )
+import TextShow         ( TextShow(showbPrec), showt )
+import TextShow.Generic ( genericShowbPrec )
 
 class ToText a where
     text :: a -> Text
@@ -35,10 +35,10 @@ instance ToText Text where
     text = surround "\""
 
 instance ToText Int where
-    text = show
+    text = showt
 
 instance ToText Bool where
-    text = show
+    text = showt
 
 instance ToText a => ToText [a] where
     text = wrap "[" "]" . intercalate "," . map text
@@ -83,29 +83,30 @@ instance ToText Config where
             h x = map (\y -> (fst y, snd y x)) cfgPairs
 
 cfgPairs :: [(Text, Config -> Text)]
-cfgPairs = [ ( "font"             , text . font             )
-           , ( "additionalFonts"  , text . additionalFonts  )
-           , ( "bgColor"          , text . bgColor          )
-           , ( "fgColor"          , text . fgColor          )
-           , ( "alpha"            , text . alpha            )
-           , ( "position"         , show . position         )
-           , ( "textOffset"       , text . textOffset       )
-           , ( "iconOffset"       , text . iconOffset       )
-           , ( "lowerOnStart"     , text . lowerOnStart     )
-           , ( "hideOnStart"      , text . hideOnStart      )
-           , ( "allDesktops"      , text . allDesktops      )
-           , ( "overrideRedirect" , text . overrideRedirect )
-           , ( "pickBroadest"     , text . pickBroadest     )
-           , ( "persistent"       , text . persistent       )
-           , ( "border"           , show . border           )
-           , ( "borderColor"      , text . borderColor      )
-           , ( "borderWidth"      , text . borderWidth      )
-           , ( "iconRoot"         , text . iconRoot         )
-           , ( "commands"         , text . commands         )
-           , ( "sepChar"          , text . sepChar          )
-           , ( "alignSep"         , text . alignSep         )
-           , ( "template"         , text . template         )
-           ]
+cfgPairs =
+    [ ( "font"             , text . font             )
+    , ( "additionalFonts"  , text . additionalFonts  )
+    , ( "bgColor"          , text . bgColor          )
+    , ( "fgColor"          , text . fgColor          )
+    , ( "alpha"            , text . alpha            )
+    , ( "position"         , text . position         )
+    , ( "textOffset"       , text . textOffset       )
+    , ( "iconOffset"       , text . iconOffset       )
+    , ( "lowerOnStart"     , text . lowerOnStart     )
+    , ( "hideOnStart"      , text . hideOnStart      )
+    , ( "allDesktops"      , text . allDesktops      )
+    , ( "overrideRedirect" , text . overrideRedirect )
+    , ( "pickBroadest"     , text . pickBroadest     )
+    , ( "persistent"       , text . persistent       )
+    , ( "border"           , text . border           )
+    , ( "borderColor"      , text . borderColor      )
+    , ( "borderWidth"      , text . borderWidth      )
+    , ( "iconRoot"         , text . iconRoot         )
+    , ( "commands"         , text . commands         )
+    , ( "sepChar"          , text . sepChar          )
+    , ( "alignSep"         , text . alignSep         )
+    , ( "template"         , text . template         )
+    ]
 
 config :: Config
 config =
@@ -143,12 +144,15 @@ data Position = Top    | TopP    Int Int | TopW    Align Int | TopSize    Align 
                        }
               deriving Generic
 
-instance Show Position where
+instance TextShow Position where
     showbPrec = genericShowbPrec
+
+instance ToText Position where
+    text = showt
 
 data Align = L | C | R deriving Generic
 
-instance Show Align where
+instance TextShow Align where
     showbPrec = genericShowbPrec
 
 data Border = TopB    | TopBM    Int
@@ -157,8 +161,11 @@ data Border = TopB    | TopBM    Int
             | NoBorder
             deriving Generic
 
-instance Show Border where
+instance TextShow Border where
     showbPrec = genericShowbPrec
+
+instance ToText Border where
+    text = showt
 
 data Command = Uptime                                  [Text] Int
              | Weather            Text                 [Text] Int
@@ -174,13 +181,14 @@ data Command = Uptime                                  [Text] Int
              | BatteryN           [Text]               [Text] Int Text
              | TopProc                                 [Text] Int
              | TopMem                                  [Text] Int
-             | DiskU              [Text]               [Text] Int
+             | DiskU              [(Text, Text)]       [Text] Int
              | DiskIO             [Text]               [Text] Int
              | ThermalZone        Int                  [Text] Int
              | CpuFreq                                 [Text] Int
              | CoreTemp                                [Text] Int
              | Volume             Text   Text          [Text] Int
              | MPD                                     [Text] Int
+             | AutoMPD                                 [Text]
              | Mpris1             Text                 [Text] Int
              | Mpris2             Text                 [Text] Int
              | Mail                                    [Text]     Text
@@ -192,6 +200,7 @@ data Command = Uptime                                  [Text] Int
              | Kbd                [(Text, Text)]
              | Locks
              | CatInt             Int Text             [Text] Int
+             | Fan                Text                 [Text] Int
              | Com                Text [Text] Text            Int
              | StdinReader
              | UnsafeStdinReader
@@ -228,6 +237,7 @@ instance ToText Command where
            (CoreTemp args rate)                  -> textData "CoreTemp" args rate
            (Volume mixer element args rate)      -> textData "Volume" mixer element args rate
            (MPD args rate)                       -> textData "MPD" args rate
+           (AutoMPD args)                        -> textData "AutoMPD" args
            (Mpris1 name args rate)               -> textData "Mpris1" name args rate
            (Mpris2 name args rate)               -> textData "Mpris2" name args rate
            (Mail args alias)                     -> textData "Mail" args alias
@@ -239,6 +249,7 @@ instance ToText Command where
            (Kbd opts)                            -> textData "KBD" opts
            (Locks)                               -> textData "Locks"
            (CatInt n fn args rate)               -> textData "CatInt" n fn args rate
+           (Fan path args rate)                  -> textData "Fan" path args rate
            (Com prog args alias rate)            -> textData "Com" prog args alias rate
            (StdinReader)                         -> textData "StdinReader"
            (UnsafeStdinReader)                   -> textData "UnsafeStdinReader"
