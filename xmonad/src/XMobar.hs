@@ -66,7 +66,8 @@ hostTemplate host =
             [ T.intercalate secondarySeparator $ [wrap "<action=`xdotool key super+p n`>" "</action>" $ alias $ interface <> "wi", alias interface]
             , T.intercalate secondarySeparator $ map alias $ ["multicpu"]
                                                              ++ (if hostTemp host then ["coretemp"] else [])
-                                                             ++ (if hostFan host then ["cat0"] else [])
+                                                             ++ (if hostFan host then ["fan"] else [])
+            , alias "disku"
             , (if hostBattery host then alias "battery" else "") <> alias "memory"
             , color Theme.cyan "" $ wrap "<action=`calendar`>" "</action>" $ alias "date"
             ]
@@ -81,6 +82,7 @@ topConfig hostname = let host = lookupHost hostname in
                               , Run $ Network interface ["-t", "↓<rx> ↑<tx>", "-S", "False"] 10
                               , Run $ Wireless interface ["-t", "<essid> <quality>%"] 10
                               , Run $ Com "updates" [primarySeparator] "" 600
+                              , Run $ DiskU [("/", "/ <free>")] ["-L", "10", "-l", Theme.bad, "-H", "60", "-h", Theme.good] 20
                               , Run $ UnsafeStdinReader
                               ]
                               ++ (if hostBattery host
@@ -90,7 +92,7 @@ topConfig hostname = let host = lookupHost hostname in
                                      then [ Run $ CoreTemp ["-L", "40", "-H", "60", "-l", Theme.coldest, "-h", Theme.hottest, "-t", coreTempTemplate host] 20 ]
                                      else [])
                               ++ (if hostFan host
-                                     then [ Run $ CatInt 0 "/sys/devices/platform/thinkpad_hwmon/fan1_input" ["-L", "3170", "-H", "3900", "-l", Theme.coldest, "-h", Theme.hottest] 20 ]
+                                     then [ Run $ Fan "/sys/devices/platform/thinkpad_hwmon/fan1_input" ["-L", "3170", "-H", "3900", "-l", Theme.coldest, "-h", Theme.hottest, "-w", "4", "-t", "<speedipat><speed>", "--", "--speed-icon-pattern", "<icon=fan_%%.xpm/>"] 20 ]
                                      else [])
                  , template = hostTemplate host
                  }
@@ -99,7 +101,7 @@ bottomConfig :: HostName -> Config
 bottomConfig hostname = let host = lookupHost hostname in
     sharedConfig { position = Bottom
                  , commands = [ Run $ StdinReader
-                              , Run $ MPD ["-t", "<title> - <artist> (<album>)"] 10
+                              , Run $ AutoMPD ["-t", "<title> - <artist> (<album>)"]
                               , Run $ Mpris2 "spotify" ["-t", "<title> - <artist> (<album>)"] 10
                               , Run $ Volume "default" "Master" ["-t", "<volume><status>", "--", "-C", Theme.foreground, "-O", "<volumeipat>", "-c", Theme.foreground, "-o", "<icon=audio-volume-muted.xpm/>", "--volume-icon-pattern", "<icon=audio_%%.xpm/>"] 10
                               ]
@@ -107,8 +109,8 @@ bottomConfig hostname = let host = lookupHost hostname in
                                           , "}"
                                           , "{"
                                           , T.intercalate primarySeparator
-                                             [ {-alias "mpd"
-                                             ,-} alias "mpris2"
+                                             [ alias "autompd"
+                                             , alias "mpris2"
                                              , alias "default:Master"
                                              ]
                                           ]
