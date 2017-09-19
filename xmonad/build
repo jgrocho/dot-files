@@ -1,0 +1,4 @@
+#!/bin/sh
+cd ~/.xmonad
+stack build
+install -m 755 $(stack path --dist-dir)/build/xmonadrc/xmonadrc $1

@@ -43,6 +43,7 @@ import           Network.HostName               ( getHostName )
 import           System.IO                      ( Handle, hPutStrLn )
 import           System.Environment.XDG.BaseDir ( getUserDataFile )
 
+import qualified Settings as S
 import           SpawnNamedPipes ( getNamedPipes, spawnNamedPipes )
 import           Theme           ( atSize )
 import qualified Theme as Theme
@@ -190,13 +191,14 @@ handleEventHook :: Event -> X All
 handleEventHook = XC.handleEventHook def <+> docksEventHook
 
 scratchpads :: [ NamedScratchpad ]
-scratchpads = [ NS "terminal" spawnTerm  findTerm  manageTerm
-              , NS "mixer"    spawnMixer findMixer manageMixer
+scratchpads = [ NS "terminal" spawnTerm   findTerm   manageTerm
+              , NS "mixer"    spawnMixer  findMixer  manageMixer
+              , NS "pwsafe"   spawnPwsafe findPwsafe managePwsafe
               ]
   where spawnTerm   = terminal ++ " -name scratchpad"
         findTerm    = resource =? "scratchpad"
         manageTerm  = customFloating $ RationalRect l t w h
-          where h = 25 % 100
+          where h = 1 % 4
                 w = 1
                 t = 0
                 l = (1 - w) / 2
@@ -207,6 +209,13 @@ scratchpads = [ NS "terminal" spawnTerm  findTerm  manageTerm
                 w = 6 % 10
                 t = (1 - h) / 2
                 l = (1 - w) / 2
+        spawnPwsafe  = "pwsafe"
+        findPwsafe   = className =? "Pwsafe"
+        managePwsafe = customFloating $ RationalRect l t w h
+          where h = 1
+                w = 1 % 4
+                t = 0
+                l = 1 - w
 
 keys :: [(String, X ())]
 keys = [ ("M-b"  , sendMessage ToggleStruts)
@@ -235,6 +244,7 @@ keys = [ ("M-b"  , sendMessage ToggleStruts)
             , ("d", "urxvt"               , [ "-name", "dim" ] )
             , ("e", "emacs"               , []                 )
             , ("f", "firefox"             , []                 )
+            , ("i", "dmenu_expressvpn"    , []                 )
             , ("n", "dmenu_netctl"        , []                 )
             , ("p", "dmenu_run"           , []                 )
             , ("s", "spotify"             , []                 )
@@ -245,6 +255,7 @@ keys = [ ("M-b"  , sendMessage ToggleStruts)
         scratchpadList =
             [ ("t", "terminal")
             , ("m", "mixer")
+            , ("p", "pwsafe")
             ]
         searchMulti = do
             let names = [name ++ ":" | SearchEngine name _ <- searchList]
@@ -330,4 +341,7 @@ config = def { XC.terminal           = terminal
                  (keys ++ multimediaKeys)
 
 main :: IO ()
-main = xmonad $ withUrgencyHook NoUrgencyHook $ config
+main = do
+    -- yml <- B.readFile "settings.yaml"
+    -- let settings = fromJust $ decode yml :: S.Settings
+    xmonad $ withUrgencyHook NoUrgencyHook $ config

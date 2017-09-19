@@ -13,6 +13,7 @@ cabal-version: >=1.8
 ------------------------------------------------------------------------------
 library
   exposed-modules:
+    Settings
     Solarized
     Solarized.Dark
     Solarized.Light
@@ -26,27 +27,29 @@ library
   hs-source-dirs: src
 
   build-depends: base >= 4.0 && < 5.0
-               , xmonad == 0.12
-               , xmonad-contrib == 0.12
-               , bytestring >= 0.10 && < 0.11
-               , containers >= 0.5 && < 0.6
-               , directory >= 1.2 && < 1.3
-               , filepath >= 1.4 && < 1.5
-               , hostname == 1.0
-               , text >= 1.2 && < 1.3
-               , text-show >= 2.1 && < 2.2
+               , xmonad
+               , xmonad-contrib
+               , bytestring
+               , containers
+               , directory
+               , filepath
+               , hostname
+               , text
+               , text-show
+               , yaml
 
 ------------------------------------------------------------------------------
 executable xmonadrc
-  main-is: xmonadrc.hs
+  main-is: xmonad.hs
   build-depends: base
                , xmonad
                , xmonad-contrib
                , xmonadrc
                , bytestring
                , containers
-               , data-default >= 0.5 && < 0.6
+               , data-default
                , directory
                , hostname
                , text
-               , xdg-basedir >= 0.2 && < 0.3
+               , xdg-basedir
+               , yaml

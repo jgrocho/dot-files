@@ -39,9 +39,15 @@ hash VBoxClient-all 2>/dev/null && { VBoxClient-all & }
   && (source ~/.arbtt/.virthualenv/bin/activate \
     && arbtt-capture &)
 
+xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation" 1
+xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Button" 2
+xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Timeout" 200
+xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 6 7 4 5
+xinput set-prop "TPPS/2 IBM TrackPoint" "Device Accel Constant Deceleration" 0.95
+
 # xmonad is not a reparenting window manager, tell java
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 # Start xmonad from the user's binary just in case anything ever happens to
 # xmonad (e.g. is uninstalled)
-exec ~/bin/xmonad
+exec ~/.local/bin/xmonad

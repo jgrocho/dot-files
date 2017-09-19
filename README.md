@@ -183,6 +183,15 @@ global `/etc/X11/xinit/xinitrc` file is sourced and, failing that, a
 default window manager (`twm`) is started with a single `xterm`
 instance.
 
+### XMonad
+
+My go to window manager is now `xmonad`. With `stack` installed, it is
+easy to get started as well. From `~/.xmonad` (which should be a link to
+`./xmonad`), run `stack setup` (probably with option `--install-ghc`),
+and then `stack install xmonad`. This will copy the `xmonad` binary to
+`~/.local/bin/`. Then `xmonad --recompile` and `xmonad --restart` will
+behave as expected.
+
 ### Xresources
 
 This file is really the meat of X's configuration (or it should be).
