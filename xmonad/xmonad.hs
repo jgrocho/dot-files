@@ -1,39 +1,39 @@
 module Main where
 
-import XMonad                         ( Dimension, Event, mod4Mask, xmonad )
-import XMonad.Core                    ( ManageHook, Message, WorkspaceId, X, io, withDisplay, withWindowSet )
-import qualified XMonad.Core as XC    ( XConfig(..) )
-import XMonad.ManageHook              ( (-->), (<+>), (=?), className, composeAll, doShift, resource )
-import XMonad.Operations              ( getCleanedScreenInfo, sendMessage, sendMessageWithNoRefresh, windows, withFocused )
+import XMonad                          ( Dimension, Event, mod4Mask, xmonad )
+import XMonad.Core                     ( ManageHook, Message, WorkspaceId, X, io, withDisplay, withWindowSet )
+import qualified XMonad.Core as XC     ( XConfig(..) )
+import XMonad.ManageHook               ( (-->), (<+>), (=?), className, composeAll, doShift, resource )
+import XMonad.Operations               ( getCleanedScreenInfo, sendMessage, sendMessageWithNoRefresh, windows, withFocused )
 import qualified XMonad.StackSet as W
-import XMonad.StackSet                ( RationalRect(..), greedyView, shift )
+import XMonad.StackSet                 ( RationalRect(..), greedyView, shift )
+import XMonad.Actions.Search           ( SearchEngine(SearchEngine), (!>), alpha, dictionary, google, hoogle, images, imdb, intelligent, maps, mathworld, namedEngine, prefixAware, searchEngine, selectSearchBrowser, thesaurus, use, wayback, wikipedia, wiktionary )
+import XMonad.Hooks.DynamicLog         ( PP(..), dynamicLogWithPP, shorten, xmobarColor )
+import XMonad.Hooks.ManageDocks        ( ToggleStruts(..), avoidStruts, docksEventHook, manageDocks )
+import XMonad.Hooks.ManageHelpers      ( doFullFloat, isFullscreen )
+import XMonad.Hooks.UrgencyHook        ( NoUrgencyHook(..), withUrgencyHook )
+import XMonad.Layout                   ( Full(..), Mirror(..), Tall(..) )
+import XMonad.Layout.Accordion         ( Accordion(..) )
+import XMonad.Layout.Decoration        ( Theme(..), shrinkText )
+import XMonad.Layout.Fullscreen        ( fullscreenFull )
+import XMonad.Layout.Grid              ( Grid(..) )
+import XMonad.Layout.IM                ( withIM )
+import XMonad.Layout.LayoutCombinators ( (|||), JumpToLayout(..) )
+import XMonad.Layout.Minimize          ( MinimizeMsg(RestoreNextMinimizedWin), minimize, minimizeWindow )
+import XMonad.Layout.NoBorders         ( noBorders, smartBorders )
+import XMonad.Layout.PerWorkspace      ( onWorkspace )
+import XMonad.Layout.Renamed           ( Rename(..), renamed )
+import XMonad.Layout.Tabbed            ( tabbed )
+import XMonad.Util.Dmenu               ( menuArgs )
+import XMonad.Util.EZConfig            ( additionalKeysP )
+import XMonad.Util.NamedScratchpad     ( NamedScratchpad(NS), customFloating, defaultFloating, namedScratchpadAction, namedScratchpadFilterOutWorkspacePP, namedScratchpadManageHook )
+import XMonad.Util.Run                 ( safeSpawn, spawnPipe )
+import XMonad.Util.WindowProperties    ( Property(..) )
+import XMonad.Util.XSelection          ( safePromptSelection )
 
-import XMonad.Actions.Search          ( SearchEngine(SearchEngine), (!>), alpha, dictionary, google, hoogle, images, imdb, intelligent, maps, mathworld, namedEngine, prefixAware, searchEngine, selectSearchBrowser, thesaurus, use, wayback, wikipedia, wiktionary )
-import XMonad.Hooks.DynamicLog        ( PP(..), dynamicLogWithPP, shorten, xmobarColor )
-import XMonad.Hooks.ManageDocks       ( ToggleStruts(..), avoidStruts, docksEventHook, manageDocks )
-import XMonad.Hooks.ManageHelpers     ( doFullFloat, isFullscreen )
-import XMonad.Hooks.UrgencyHook       ( NoUrgencyHook(..), withUrgencyHook )
-import XMonad.Layout                  ( Full(..), Mirror(..), Tall(..) )
-import XMonad.Layout.Accordion        ( Accordion(..) )
-import XMonad.Layout.Decoration       ( Theme(..), shrinkText )
-import XMonad.Layout.Fullscreen       ( fullscreenFull )
-import XMonad.Layout.Grid             ( Grid(..) )
-import XMonad.Layout.IM               ( withIM )
-import XMonad.Layout.LayoutCombinators( (|||), JumpToLayout(..) )
-import XMonad.Layout.Minimize         ( MinimizeMsg(RestoreNextMinimizedWin), minimize, minimizeWindow )
-import XMonad.Layout.NoBorders        ( noBorders, smartBorders )
-import XMonad.Layout.PerWorkspace     ( onWorkspace )
-import XMonad.Layout.Renamed          ( Rename(..), renamed )
-import XMonad.Layout.Tabbed           ( tabbed )
-import XMonad.Util.Dmenu              ( menuArgs )
-import XMonad.Util.EZConfig           ( additionalKeysP )
-import XMonad.Util.NamedScratchpad    ( NamedScratchpad(NS), customFloating, defaultFloating, namedScratchpadAction, namedScratchpadFilterOutWorkspacePP, namedScratchpadManageHook )
-import XMonad.Util.Run                ( safeSpawn, spawnPipe )
-import XMonad.Util.WindowProperties   ( Property(..) )
-import XMonad.Util.XSelection         ( safePromptSelection )
-
-import           Control.Monad                  ( forM_, mapM, mapM_, when )
-import qualified Data.ByteString                as B
+import           Control.Applicative            ( (<$>) )
+import           Control.Monad                  ( forM_, mapM, mapM_, when, zipWithM_ )
+import qualified Data.ByteString as B
 import           Data.Default                   ( def )
 import           Data.List                      ( intercalate )
 import           Data.Maybe                     ( fromJust, fromMaybe )
@@ -46,7 +46,7 @@ import           System.Environment.XDG.BaseDir ( getUserDataFile )
 import qualified Settings as S
 import           SpawnNamedPipes ( getNamedPipes, spawnNamedPipes )
 import           Theme           ( atSize )
-import qualified Theme as Theme
+import qualified Theme
 import           XMobar          ( bottomConfig, topConfig )
 import           XMobarHs        ( exportTo, wrap )
 
@@ -89,9 +89,9 @@ layoutHook =
     onWorkspace (selectWorkspace 5) gameLayout $
     avoidStruts
         (   tiled
-        ||| (renamed [Replace "Wide"] $ Mirror tiled)
+        ||| renamed [Replace "Wide"] (Mirror tiled)
         ||| Accordion
-        ||| (renamed [Replace "Tabbed"] $ tabbedLayout)
+        ||| renamed [Replace "Tabbed"] tabbedLayout
         ) |||
     fullscreenFull Full
   where
@@ -111,7 +111,7 @@ layoutHook =
     chatLayout = avoidStruts $ withIM (1%7) pidginRoster Grid
     pidginRoster = ClassName "Pidgin" `And` Role "buddy_list"
 
-    gameLayout = noBorders $ Full
+    gameLayout = noBorders Full
 
     solarizedTheme = def
         { activeColor         = Theme.active
@@ -157,9 +157,9 @@ manageHook = composeAll
 -- Configures xmobar.
 logHook :: X ()
 logHook = do
-    let names = zipWith (++) (repeat xmobarPipePrefix) xmobarConfigs
+    let names = map (xmobarPipePrefix ++) xmobarConfigs
     handles <- mapM getNamedPipes names
-    sequence_ $ zipWith (\pp hs -> mapM_ pp $ fromMaybe [] hs) [topPP, botPP] handles
+    zipWithM_ (\pp hs -> mapM_ pp $ fromMaybe [] hs) [topPP, botPP] handles
   where topPP handle = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $
             def { ppCurrent = xmobarColor Theme.foregroundHighlight Theme.backgroundHighlight
                 , ppVisible = xmobarColor Theme.activeText Theme.active . clickableWs
@@ -224,7 +224,7 @@ keys = [ ("M-b"  , sendMessage ToggleStruts)
        , ("M-s"  , searchMulti)
        , ("M-S-s", selectSearchBrowser "xdg-open" google)
        ]
-       ++ [ ("M-C-S-" ++ k, (windows $ shift i) >> (windows $ greedyView i))
+       ++ [ ("M-C-S-" ++ k, windows (shift i) >> windows ( greedyView i))
               | (i, k) <- zip workspaces $ map show [1..9] ]
        ++ [ ("M-i " ++ key, action) | (key, action) <- prefixActions ]
        ++ [ ("M-p " ++ key, safeSpawn program args) | (key, program, args) <- programList ]
@@ -317,11 +317,11 @@ startupHook = do
 
     hostname <- io getHostName
     paths    <- io $ mapM (getUserDataFile "xmobar") xmobarConfigs
-    screens  <- fmap length $ withDisplay getCleanedScreenInfo
+    screens  <- length <$> withDisplay getCleanedScreenInfo
     io $ mapM_ (uncurry exportTo) $ zip [topConfig hostname, bottomConfig hostname] paths
     let spawnPipes (cfg, path) = spawnNamedPipes [command screen path | screen <- [0..screens-1]] $ xmobarPipePrefix ++ cfg
     mapM_ spawnPipes $ zip xmobarConfigs paths
-  where command screen path = intercalate " " ["xmobar",  "-x", show screen, path]
+  where command screen path = unwords ["xmobar",  "-x", show screen, path]
 
 config = def { XC.terminal           = terminal
              , XC.focusedBorderColor = Theme.border
@@ -341,7 +341,4 @@ config = def { XC.terminal           = terminal
                  (keys ++ multimediaKeys)
 
 main :: IO ()
-main = do
-    -- yml <- B.readFile "settings.yaml"
-    -- let settings = fromJust $ decode yml :: S.Settings
-    xmonad $ withUrgencyHook NoUrgencyHook $ config
+main = xmonad $ withUrgencyHook NoUrgencyHook config
