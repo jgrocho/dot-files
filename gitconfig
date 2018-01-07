@@ -1,6 +1,7 @@
 [user]
     name = Jonathan Grochowski
     email = jongrocho@gmail.com
+    signingkey = 0x97DBF61280542A38
 
 [alias]
     hist = log --pretty=tformat:\"%C(red)%h%Creset %C(green)%ad%Creset | %s%C(yellow)%d%Creset %C(bold)[%an]%Creset\" --graph --date=short
@@ -27,3 +28,5 @@
     cmd = gitconflicts vim $BASE $LOCAL $REMOTE $MERGED
     trustExitCode = true
     keepBackup = false
+[commit]
+    gpgsign = true
