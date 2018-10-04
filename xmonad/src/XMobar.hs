@@ -98,7 +98,7 @@ topConfig hostname = let host = lookupHost hostname in
                  }
 
 bottomConfig :: HostName -> Config
-bottomConfig hostname = let host = lookupHost hostname in
+bottomConfig hostname =
     sharedConfig { position = Bottom
                  , commands = [ Run $ StdinReader
                               , Run $ AutoMPD ["-t", "<title> - <artist> (<album>)"]
@@ -107,6 +107,7 @@ bottomConfig hostname = let host = lookupHost hostname in
                               ]
                  , template = foldr1 (<>) [ alias "StdinReader"
                                           , "}"
+                                          , T.pack hostname
                                           , "{"
                                           , T.intercalate primarySeparator
                                              [ alias "autompd"
