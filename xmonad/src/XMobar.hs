@@ -23,6 +23,7 @@ hosts :: [(HostName, Host)]
 hosts = [ (""      , Host 1 1 False False False )
         , ("qubert", Host 2 4 True  True  True  )
         , ("randy" , Host 1 2 False False False )
+        , ("theia" , Host 4 4 False True  False )
         ]
 
 lookupHost :: HostName -> Host

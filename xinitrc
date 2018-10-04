@@ -17,6 +17,7 @@ xsetroot -cursor_name left_ptr
 # Set screen layout based on hostname
 case "$HOSTNAME" in
   qubert) xrandr --output LVDS1 --auto --primary --output VGA1 --auto --above LVDS1 ;;
+  theia)  xrandr --output HDMI-0 --auto --primary ;;
 esac
 
 declare units=(
