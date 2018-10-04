@@ -1,47 +1,51 @@
-" Vundle: {{{
-set nocompatible
-filetype off                    " required!
+" Plug: {{{
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+" Auto-install plug {{{
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+" }}}
 
-" Vundle manages Vundle required
-Bundle 'gmarik/vundle'
+call plug#begin('~/.vim/plugged')
 
-" My Bundles: {{{
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'godlygeek/tabular'
-Bundle 'scrooloose/nerdtree'
-Bundle 'git://vim-latex.git.sourceforge.net/gitroot/vim-latex/vim-latex'
-Bundle 'VimClojure'
-Bundle 'pbrisbin/html-template-syntax'
-Bundle 'rodjek/vim-puppet'
-Bundle 'jnwhiteh/vim-golang'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'jelera/vim-javascript-syntax'
-Bundle 'ctrlp.vim'
-Bundle 'Tabular'
-Bundle 'tpope/vim-fugitive'
-Bundle 'textobj-user'
-Bundle 'textobj-entire'
-Bundle 'nosami/Omnisharp'
-Bundle 'tpope/vim-dispatch'
-Bundle 'scrooloose/syntastic'
-Bundle 'derekwyatt/vim-scala'
-Bundle 'jamessan/vim-gnupg'
-Bundle 'lambdatoast/elm.vim'
-Bundle 'eagletmt/ghcmod-vim'
-Bundle 'eagletmt/neco-ghc'
-Bundle 'tomtom/tlib_vim'
-Bundle 'MarcWeber/vim-addon-mw-utils'
-Bundle 'garbas/vim-snipmate'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'ervandew/supertab'
-Bundle 'Shougo/neocomplete.vim'
-Bundle 'Shougo/vimproc.vim'
+" My Plugins: {{{
+Plug 'altercation/vim-colors-solarized'
+Plug 'godlygeek/tabular'
+Plug 'scrooloose/nerdtree'
+"Plug 'git://vim-latex.git.sourceforge.net/gitroot/vim-latex/vim-latex'
+Plug 'lukerandall/haskellmode-vim'
+Plug 'vim-scripts/VimClojure'
+Plug 'vim-scripts/indenthaskell.vim'
+Plug 'pbrisbin/html-template-syntax'
+Plug 'rodjek/vim-puppet'
+Plug 'jnwhiteh/vim-golang'
+Plug 'airblade/vim-gitgutter'
+Plug 'jelera/vim-javascript-syntax'
+Plug 'vim-scripts/ctrlp.vim'
+Plug 'vim-scripts/Tabular'
+Plug 'tpope/vim-fugitive'
+Plug 'vim-scripts/textobj-user'
+Plug 'vim-scripts/textobj-entire'
+Plug 'nosami/Omnisharp'
+Plug 'tpope/vim-dispatch'
+Plug 'scrooloose/syntastic'
+Plug 'derekwyatt/vim-scala'
+Plug 'jamessan/vim-gnupg'
+Plug 'lambdatoast/elm.vim'
+Plug 'eagletmt/ghcmod-vim'
+Plug 'eagletmt/neco-ghc'
+Plug 'tomtom/tlib_vim'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'garbas/vim-snipmate'
+Plug 'scrooloose/nerdcommenter'
+Plug 'ervandew/supertab'
+Plug 'Shougo/neocomplete.vim'
+Plug 'Shougo/vimproc.vim'
 "}}}
 
-filetype plugin indent on	" required
+call plug#end()
 "}}}
 
 " switch on syntax highlighting

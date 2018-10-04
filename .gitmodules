@@ -1,9 +1,6 @@
 [submodule "emacs.d/emacs-color-theme-solarzied"]
 	path = emacs.d/emacs-color-theme-solarzied
 	url = https://github.com/sellout/emacs-color-theme-solarized.git
-[submodule "vim/bundle/vundle"]
-	path = vim/bundle/vundle
-	url = https://github.com/gmarik/vundle.git
 [submodule "mutt/colors-solarized"]
 	path = mutt/colors-solarized
 	url = https://github.com/altercation/mutt-colors-solarized.git
