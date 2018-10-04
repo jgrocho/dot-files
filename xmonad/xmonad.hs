@@ -43,7 +43,6 @@ import           Network.HostName               ( getHostName )
 import           System.IO                      ( Handle, hPutStrLn )
 import           System.Environment.XDG.BaseDir ( getUserDataFile )
 
-import qualified Settings as S
 import           SpawnNamedPipes ( getNamedPipes, spawnNamedPipes )
 import           Theme           ( atSize )
 import qualified Theme

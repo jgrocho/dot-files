@@ -13,7 +13,6 @@ cabal-version: >=1.8
 ------------------------------------------------------------------------------
 library
   exposed-modules:
-    Settings
     Solarized
     Solarized.Dark
     Solarized.Light
